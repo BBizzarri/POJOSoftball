@@ -1,6 +1,7 @@
 <template>
     <div class="header">
         <h1 class="header-text">Philipsburg Osceola Junior Olympic Softball</h1>
+          <button><router-link to="/login" replace>Login</router-link></button>
     </div>
 </template>
   

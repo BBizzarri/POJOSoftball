@@ -1,8 +1,5 @@
 import { createApp } from 'vue'
-// import UnderConstruction from './UnderConstruction.vue'
-// import App from './App.vue';
-import Regisrations from './Registrations.vue'
+import Router from "./router/router.js"
+import App from './App.vue';
 
-// createApp(UnderConstruction).mount('#app')
-// createApp(App).mount('#app')
-createApp(Regisrations).mount('#app')
+createApp(App).use(Router).mount('#app')
