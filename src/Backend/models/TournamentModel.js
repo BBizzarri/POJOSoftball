@@ -39,7 +39,7 @@ export const addTournament=(data, result) => {
 
 //update tournament 
 export const updateTournamentById = (data, id, result) => {
-    db.query("UPDATE Tournaments SET TournamentName = ?, TournamentDescription = ?, AgeGroup = ?, StartDate = ?, EndDate = ?, Location = ?, GameGuarentee = ?, Cost = ?, TeamMax = ?, ContactName = ?, ContactPhone = ?, CoverImage = ? WHERE TournamentID = ?", [data.TournamentName, data.TournamentDescription, data.AgeGroup, data.StartDate, data.EndDate, data.Location, data.GameGuarentee, data.Cost, data.TeamMax, data.ContactName, data.ContactPhone, data.CoverImage, id], (err, results) => {
+    db.query("UPDATE Tournaments SET TournamentName = ?, TournamentDescription = ?, AgeGroup = ?, StartDate = ?, EndDate = ?, Location = ?, GameGuarentee = ?, Cost = ?, TeamMax = ?, ContactName = ?, ContactPhone = ?, CoverImage = ?, ShowTournament = ? WHERE TournamentID = ?", [data.TournamentName, data.TournamentDescription, data.AgeGroup, data.StartDate, data.EndDate, data.Location, data.GameGuarentee, data.Cost, data.TeamMax, data.ContactName, data.ContactPhone, data.CoverImage, data.ShowTournament, id], (err, results) => {
         if(err){
             console.log(err);
             result(err,null)

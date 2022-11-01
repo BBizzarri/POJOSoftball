@@ -1,0 +1,32 @@
+CREATE TABLE `tournaments` (
+  `TournamentID` int(11) NOT NULL AUTO_INCREMENT,
+  `TournamentName` varchar(255) DEFAULT NULL,
+  `TournamentDescription` varchar(255) DEFAULT NULL,
+  `AgeGroup` varchar(255) DEFAULT NULL,
+  `StartDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `GameGuarentee` int(11) DEFAULT NULL,
+  `Cost` decimal(13,2) DEFAULT NULL,
+  `TeamMax` int(11) DEFAULT NULL,
+  `ContactName` varchar(255) DEFAULT NULL,
+  `ContactPhone` varchar(255) DEFAULT NULL,
+  `CoverImage` varchar(255) DEFAULT NULL,
+  `ShowTournament` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`TournamentID`)
+) 
+
+CREATE TABLE `events` (
+  `EventID` int(11) DEFAULT NULL,
+  `EventName` varchar(255) DEFAULT NULL,
+  `EventDescription` varchar(255) DEFAULT NULL,
+  `EventTime` varchar(255) DEFAULT NULL,
+  `StartDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `ContactName` varchar(255) DEFAULT NULL,
+  `ContactPhone` varchar(255) DEFAULT NULL,
+  `CoverImage` varchar(255) DEFAULT NULL,
+  `ShowEvent` tinyint(1) DEFAULT NULL
+)
+

@@ -1,7 +1,7 @@
 
 import RegistrationsPage from "../views/RegistrationsPage.vue"
 import UnderConstruction from "../views/UnderConstruction.vue"
-import LoginPage from "../components/LoginPage.vue"
+import LoginPage from "../views/LoginPage.vue"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [

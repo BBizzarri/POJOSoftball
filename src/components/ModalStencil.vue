@@ -2,7 +2,7 @@
   <transition name="modal">
       <div class="modal-mask">
         <div class="modal-wrapper">
-          <div class="modal-container">
+          <div :class="getModalContainerClass">
             <div class="modal-header">
               <slot name="header">
               </slot>
@@ -25,6 +25,23 @@
 <script>
 export default {
     name: "ModalStencil",
+    props: {
+      modal_type: {
+        type: String,
+        default: ''
+      }
+    },
+    computed: {
+      getModalContainerClass () {
+        if (this.modal_type === 'tournament_modal') {
+          return 'tournament-modal-container';
+        } else if (this.modal_type === 'event_modal') {
+          return 'event-modal-container';
+        } else {
+          return null;
+        }
+      }
+    }
 }
 </script>
 
@@ -46,13 +63,25 @@ export default {
   vertical-align: middle;
 }
 
-.modal-container {
+.tournament-modal-container {
   width: 400px;
-  height: 65%;
+  height: 70%;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
-  background-color: #fff;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.event-modal-container {
+  width: 400px;
+  height: 62%;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
+  background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
