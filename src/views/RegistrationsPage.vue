@@ -46,7 +46,7 @@
             <td>{{ tournament.Location }}</td>
             <td>{{ getDate(tournament.StartDate, tournament.EndDate) }}</td>
             <td>{{ tournament.AgeGroup }}</td>
-            <td><a class="register-link" href="#">More Info</a></td>
+            <td><a class="register-link" @click="openMoreInfoTournament(tournament.id)">More Info</a></td>
 
           </tr>
         </table>
@@ -81,7 +81,7 @@
               <td>{{ event.Location }}</td>
               <td>{{ getTime(event.StartTime, event.EndTime) }}</td>
               <td>{{ getDate(event.StartDate, event.EndDate) }}</td>
-              <td><a class="register-link" href="#">More Info</a></td>
+              <td><a class="register-link" @click="openMoreInfoEvent(event.id)">More Info</a></td>
             </tr>
         </table>
       </div>
@@ -90,6 +90,12 @@
       </div>
     </div>
     <BottomFooter />
+    <MoreInfo
+      :show="showMoreInfo"
+      :tournament_or_event="showMoreInfoType === 'tournament' ? tournament_info : event_info"
+      :type="showMoreInfoType"
+      @close="closeMoreInfoModal()"
+    />
   </div>
 </template>
 
@@ -97,6 +103,7 @@
 import TopPageHeader from '../components/TopPageHeader.vue';
 // import NavBar from '../components/NavBar.vue';
 import BottomFooter from '../components/BottomFooter';
+import MoreInfo from '../components/MoreInfo.vue';
 import { 
   useLoadTournaments,
   useLoadEvents,
@@ -109,7 +116,7 @@ import 'firebase/storage';
       // NavBar,
       TopPageHeader,
       BottomFooter,
-      // ModalStencil
+      MoreInfo,
     },
   
     data () {
@@ -149,7 +156,9 @@ import 'firebase/storage';
           contact_phone: "",
           cover_image: "",
           show: true,
-        }
+        },
+        showMoreInfo: false,
+        showMoreInfoType: null,
       }
     },
     async mounted () {
@@ -188,6 +197,64 @@ import 'firebase/storage';
       getTime (start_time, end_time) {
         return start_time + ' - ' + end_time;
       },
+      openMoreInfoTournament (tournament_id) {
+            this.showMoreInfoType = 'tournament'
+            this.tournament_id_to_edit = tournament_id;
+            const tournament_to_show = this.current_tournaments.find(tournament => tournament.id === tournament_id);
+            this.tournament_info.tournament_name = tournament_to_show.TournamentName;
+            this.tournament_info.description = tournament_to_show.TournamentDescription;
+            this.tournament_info.age_group = tournament_to_show.AgeGroup;
+            this.tournament_info.start_date = tournament_to_show.StartDate;
+            this.tournament_info.end_date = tournament_to_show.EndDate;
+            this.tournament_info.location = tournament_to_show.Location;
+            this.tournament_info.game_guarentee = tournament_to_show.GameGuarentee;
+            this.tournament_info.cost = tournament_to_show.Cost;
+            this.tournament_info.team_max = tournament_to_show.TeamMax;
+            this.tournament_info.contact_name = tournament_to_show.ContactName;
+            this.tournament_info.contact_phone = tournament_to_show.ContactPhone;
+            this.tournament_info.cover_image = tournament_to_show.CoverImage;
+            this.showMoreInfo = true;
+        },
+        openMoreInfoEvent (event_id) {
+            console.log('here');
+            this.showMoreInfoType = 'event'
+            this.event_id_to_edit = event_id;
+            const event_to_show = this.current_events.find(event => event.id === event_id);
+            this.event_info.event_name = event_to_show.EventName;
+            this.event_info.description = event_to_show.EventDescription;
+            this.event_info.start_time = event_to_show.StartTime;
+            this.event_info.end_time = event_to_show.EndTime;
+            this.event_info.start_date = event_to_show.StartDate;
+            this.event_info.end_date = event_to_show.EndDate;
+            this.event_info.location = event_to_show.Location;
+            this.event_info.contact_name = event_to_show.ContactName;
+            this.event_info.contact_phone = event_to_show.ContactPhone;
+            this.event_info.cover_image = event_to_show.CoverImage;
+            this.showMoreInfo = true;
+        },
+        closeMoreInfoModal () {
+            this.tournament_info.tournament_name = "";
+            this.tournament_info.description = "";
+            this.tournament_info.age_group = "";
+            this.tournament_info.start_date = "";
+            this.tournament_info.end_date = "";
+            this.tournament_info.location = "";
+            this.tournament_info.game_guarentee = "";
+            this.tournament_info.cost = "";
+            this.tournament_info.team_max = "";
+            this.tournament_info.contact_name = "";
+            this.tournament_info.contact_phone = "";
+            this.event_info.event_name = "";
+            this.event_info.description = "";
+            this.event_info.start_time = "";
+            this.event_info.end_time = "";
+            this.event_info.start_date = "";
+            this.event_info.end_date = "";
+            this.event_info.location = "";
+            this.event_info.contact_name = "";
+            this.event_info.contact_phone = "";
+            this.showMoreInfo = false;
+        }
     }
 }
   </script>
