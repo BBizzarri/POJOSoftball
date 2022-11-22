@@ -24,7 +24,7 @@ export default {
             if(this.input.username != "" && this.input.password != "") {
                 if(this.input.username == 'pojo_softball' && this.input.password == 'pojosoftballadmin') {
                     this.$emit("authenticated", true);
-                    this.$router.replace({ path:'/registration' });
+                    this.$router.replace({ path:'/adminregistration' });
                 } else {
                     console.log("The username and / or password is incorrect");
                 }

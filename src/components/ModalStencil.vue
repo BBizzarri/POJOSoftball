@@ -37,6 +37,10 @@ export default {
           return 'tournament-modal-container';
         } else if (this.modal_type === 'event_modal') {
           return 'event-modal-container';
+        } else if (this.modal_type === 'more_info_modal_image') {
+          return 'more-info-container-image';
+        } else if (this.modal_type === 'more_info_modal_no_image') {
+          return 'more-info-container-no-image';
         } else {
           return null;
         }
@@ -78,6 +82,30 @@ export default {
 .event-modal-container {
   width: 400px;
   height: 62%;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.more-info-container-image {
+  width: 1000px;
+  height: 65%;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.more-info-container-no-image {
+  width: 400px;
+  height: 60%;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;

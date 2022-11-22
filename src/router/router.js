@@ -1,7 +1,9 @@
 
 import RegistrationsPage from "../views/RegistrationsPage.vue"
+import AdminRegistrationsPage from "../views/AdminRegistrationsPage.vue"
 import UnderConstruction from "../views/UnderConstruction.vue"
 import LoginPage from "../views/LoginPage.vue"
+import MoreInfo from "../components/MoreInfo"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
@@ -11,14 +13,24 @@ const routes = [
         component: LoginPage
     },
     {
-        path: "/registration",
+        path: "/",
         name: "Registration",
         component: RegistrationsPage
     },
     {
-        path: "/",
+        path: "/adminregistration",
+        name: "AdminRegistration",
+        component: AdminRegistrationsPage
+    },
+    {
+        path: "/underConstruction",
         name: "UnderConstruction",
         component: UnderConstruction
+    },
+    {
+        path: "/moreinfo",
+        name: "MoreInfo",
+        component: MoreInfo
     }
 ]
 
