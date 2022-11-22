@@ -128,6 +128,8 @@
                 <label class="sr-only form-label" for="coverImage">Show Tournament</label>
                 <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="tournament_info.show">
               </div>
+            </template>
+            <template v-slot:footer>
               <div class="form-button-cont">
                 <button type="submit" class="form-cancel-button" @click="closeModal('tournament')">Cancel</button>
                 <button type="submit" class="form-submit-button" @click="addEditNewTournament">Submit</button>
@@ -236,6 +238,8 @@
                   <label class="sr-only form-label" for="coverImage">Show Event</label>
                   <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="event_info.show">
                 </div>
+              </template>
+              <template v-slot:footer>
                 <div class="form-button-cont">
                   <button type="submit" class="form-cancel-button" @click="closeModal('event')">Cancel</button>
                   <button type="submit" class="form-submit-button" @click="addEditNewEvent">Submit</button>

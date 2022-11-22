@@ -69,7 +69,7 @@ export default {
 
 .tournament-modal-container {
   width: 400px;
-  height: 70%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -81,7 +81,7 @@ export default {
 
 .event-modal-container {
   width: 400px;
-  height: 62%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -93,7 +93,7 @@ export default {
 
 .more-info-container-image {
   width: 1000px;
-  height: 65%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -105,7 +105,7 @@ export default {
 
 .more-info-container-no-image {
   width: 400px;
-  height: 60%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -140,5 +140,9 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.modal-footer {
+  margin-bottom: 50px;
 }
 </style>
