@@ -41,9 +41,10 @@
               <th class="short-th"></th>
               <th class="short-th"></th>
               <th class="short-th"></th>
+              <th class="short-th">Visible</th>
             </tr>
             <tr 
-              v-for="tournament in current_tournaments"
+              v-for="tournament in tournaments_to_show"
               :key="tournament.TournamentID"
             >
               <td>{{ tournament.TournamentName }}</td>
@@ -53,6 +54,7 @@
               <td><a class="register-link" @click="openMoreInfoTournament(tournament.id)">More Info</a></td>
               <td><a class="register-link" @click="openTournamentAddEditModal('edit', tournament.id)">Edit</a></td>
               <td><a class="register-link" @click="deleteTournament(tournament.id)">Delete</a></td>
+              <td class="checkbox"><input type="checkbox" name="tournamnet_visible" style="pointer-events: none;" :checked="tournament.ShowTournament"/></td>
   
             </tr>
           </table>
@@ -160,9 +162,10 @@
               <th class="short-th"></th>
               <th class="short-th"></th>
               <th class="short-th"></th>
+              <th class="short-th">Visible</th>
             </tr>
             <tr 
-                v-for="event in current_events"
+                v-for="event in events_to_show"
                 :key="event.EventID"
               >
                 <td>{{ event.EventName }}</td>
@@ -172,6 +175,7 @@
                 <td><a class="register-link" @click="openMoreInfoEvent(event.id)">More Info</a></td>
                 <td><a class="register-link" @click="openEventAddEditModal('edit', event.id)">Edit</a></td>
                 <td><a class="register-link" @click="deleteEvent(event.id)">Delete</a></td>
+                <td class="checkbox"><input type="checkbox" name="event_visible" style="pointer-events: none;" :checked="event.ShowEvent" /></td>
               </tr>
           </table>
           <ModalStencil
@@ -314,7 +318,7 @@
             contact_phone: "",
             cover_image: "",
             image: null,
-            show: true,
+            show: false,
           },
           event_info: {
             event_name: "",
@@ -328,7 +332,7 @@
             contact_phone: "",
             cover_image: "",
             image: null,
-            show: true,
+            show: false,
           },
           showMoreInfo: false,
           showMoreInfoType: null,
@@ -337,6 +341,24 @@
       async mounted () {
         this.current_tournaments = useLoadTournaments()
         this.current_events = useLoadEvents()
+      },
+      computed : {
+        tournaments_to_show () {
+        if (this.current_tournaments) {
+          const tournaments = this.current_tournaments.slice();
+          return tournaments.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+        } else {
+          return [];
+        }
+      },
+      events_to_show () {
+        if (this.current_events) {
+          const events = this.current_events.slice();
+          return events.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+        } else {
+          return [];
+        }
+      }
       },
       methods: {
         selectImgFile (type) {
@@ -413,14 +435,22 @@
           }  
         },
         getDate (start_date, end_date) {
-          const new_start_date = new Date(start_date);
-          const new_end_date = new Date(end_date);
-          const final_start_date = new_start_date.toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"});
-          const final_end_date = new_end_date.toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"});
-          if (final_start_date ===  final_end_date) {
-            return final_start_date;
+          const arr_start_date = start_date.split('-');
+          const arr_end_date = end_date.split('-');
+
+          if (arr_start_date[1].charAt( 0 ) === '0') {
+            console.log('here')
+            arr_start_date[1] = arr_start_date[1].substring(1);
+          }
+          if (arr_end_date[1].charAt( 0 ) === '0') {
+            arr_end_date[1] = arr_end_date[1].substring(1);
+          }
+          const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+          if (start_date ===  end_date) {
+            return months[arr_start_date[1]] + ' ' + arr_start_date[2] + ', ' + arr_start_date[0];
           } else {
-            return final_start_date + ' - ' + final_end_date;
+            return months[arr_start_date[1]] + ' ' + arr_start_date[2] + ', ' + arr_start_date[0] + ' - ' + months[arr_end_date[1]] + ' ' + arr_end_date[2] + ', ' + arr_end_date[0];
           }
         },
         getTime (start_time, end_time) {
@@ -470,7 +500,7 @@
                   Location: this.event_info.location,
                   ContactName: this.event_info.contact_name,
                   ContactPhone: this.event_info.contact_phone,
-                  CoverImage: this.event_info.image,
+                  CoverImage: this.event_info.cover_image,
                   ShowEvent: this.event_info.show,
                 });  
               } catch(err) {
@@ -506,7 +536,7 @@
             this.event_info.contact_name = "";
             this.event_info.contact_phone = "";
             this.event_info.cover_image = "";
-            this.event_info.show = "";
+            this.event_info.show = false;
             this.$router.push("/adminregistration");
             this.showEventModal = false;
           }  
@@ -554,7 +584,7 @@
             this.tournament_info.contact_name = "";
             this.tournament_info.contact_phone = "";
             this.tournament_info.cover_image = "";
-            this.tournament_info.show = "";
+            this.tournament_info.show = false;
           } else {
             this.showEventModal = false
             this.event_info.event_name = "";
@@ -567,7 +597,7 @@
             this.event_info.contact_name = "";
             this.event_info.contact_phone = "";
             this.event_info.cover_image = "";
-            this.event_info.show = "";
+            this.event_info.show = false;
           }  
         },
         validModal(modal) {
@@ -663,13 +693,11 @@
     <style scoped>
   
     .heading-container-tournament {
-      padding-right: 95px;
       width: 65%;
       float: left;
     }
 
     .heading-container-event {
-      padding-right: 130px;
       width: 65%;
       float: left;
     }
@@ -746,7 +774,8 @@
   }
   
   .register-link {
-    text-decoration: none;
+    cursor: pointer;
+    text-decoration: underline;
   }
   
   .container {
@@ -799,7 +828,7 @@
   }
   
   .add-tournament-button {
-    float: left;
+    float: right;
     margin-top: 20px;
     padding: 10px;
     margin-bottom: 50px;
@@ -810,6 +839,10 @@
     text-align: center;
     width: 100%;
     margin-bottom: 50px;
+  }
+
+  .checkbox {
+    text-align: center;
   }
   
     </style>

@@ -60,7 +60,7 @@
         <h1 class="heading">Register For POJO Events</h1>
       </div>  
       <div 
-        v-if="current_events?.filter(event => event.ShowEvent === show).length"
+        v-if="current_events?.filter(event => event.ShowEvent === true).length"
         class="table-cont"
       >
         <table>
@@ -168,31 +168,40 @@ import 'firebase/storage';
     computed: {
       tournaments_to_show () {
         if (this.current_tournaments) {
-          return this.current_tournaments.filter(tournament => tournament.ShowTournament === true)
+          const tournaments = this.current_tournaments.slice();
+          return tournaments.filter(tournament => tournament.ShowTournament === true).sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
         } else {
-          return null
+          return [];
         }
       },
       events_to_show () {
         if (this.current_events) {
-          return this.current_events?.filter(event => event.ShowEvent === true)
+          const events = this.current_events.slice();
+          return events.filter(event => event.ShowEvent === true).slice().sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
         } else {
-          return null
+          return [];
         }
-       
       }
     },
     methods: {
       getDate (start_date, end_date) {
-        const new_start_date = new Date(start_date);
-        const new_end_date = new Date(end_date);
-        const final_start_date = new_start_date.toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"});
-        const final_end_date = new_end_date.toLocaleString('en-us', { year:"numeric", month:"short", day:"numeric"});
-        if (final_start_date ===  final_end_date) {
-          return final_start_date;
-        } else {
-          return final_start_date + ' - ' + final_end_date;
-        }
+        const arr_start_date = start_date.split('-');
+          const arr_end_date = end_date.split('-');
+
+          if (arr_start_date[1].charAt( 0 ) === '0') {
+            console.log('here')
+            arr_start_date[1] = arr_start_date[1].substring(1);
+          }
+          if (arr_end_date[1].charAt( 0 ) === '0') {
+            arr_end_date[1] = arr_end_date[1].substring(1);
+          }
+          const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+          if (start_date ===  end_date) {
+            return months[arr_start_date[1]] + ' ' + arr_start_date[2] + ', ' + arr_start_date[0];
+          } else {
+            return months[arr_start_date[1]] + ' ' + arr_start_date[2] + ', ' + arr_start_date[0] + ' - ' + months[arr_end_date[1]] + ' ' + arr_end_date[2] + ', ' + arr_end_date[0];
+          }
       },
       getTime (start_time, end_time) {
         return start_time + ' - ' + end_time;
@@ -346,7 +355,8 @@ td {
 }
 
 .register-link {
-  text-decoration: none;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .container {

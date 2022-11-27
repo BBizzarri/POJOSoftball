@@ -19,11 +19,11 @@
               </div>
               <div v-if="tournament_or_event.start_date" class="form-input-cont">
                 <label class="sr-only form-label" for="startDate">Start Date:</label>
-                <label class="sr-only form-label info">{{ tournament_or_event.start_date }}</label>
+                <label class="sr-only form-label info">{{ getDate(tournament_or_event.start_date) }}</label>
               </div>
               <div v-if="tournament_or_event.end_date" class="form-input-cont">
                 <label class="sr-only form-label" for="endDate">End Date:</label>
-                <label class="sr-only form-label info">{{ tournament_or_event.end_date }}</label>
+                <label class="sr-only form-label info">{{ getDate(tournament_or_event.end_date) }}</label>
               </div>
               <div v-if="tournament_or_event.location" class="form-input-cont">
                 <label class="sr-only form-label" for="location">Location:</label>
@@ -86,11 +86,11 @@
               </div>
               <div v-if="tournament_or_event.start_date" class="form-input-cont">
                 <label class="sr-only form-label" for="startDate">Start Date:</label>
-                <label class="sr-only form-label info">{{ tournament_or_event.start_date }}</label>
+                <label class="sr-only form-label info">{{ getDate(tournament_or_event.start_date) }}</label>
               </div>
               <div v-if="tournament_or_event.end_date" class="form-input-cont">
                 <label class="sr-only form-label" for="endDate">End Date:</label>
-                <label class="sr-only form-label info">{{ tournament_or_event.end_date }}</label>
+                <label class="sr-only form-label info">{{ getDate(tournament_or_event.end_date) }}</label>
               </div>
               <div v-if="tournament_or_event.location" class="form-input-cont">
                 <label class="sr-only form-label" for="location">Location:</label>
@@ -142,6 +142,15 @@ export default {
     methods: {
       closeModal () {
         this.$emit('close')
+      },
+      getDate (date) {
+        const arr_date = date.split('-');
+        if (arr_date[1].charAt( 0 ) === '0') {
+          console.log('here')
+          arr_date[1] = arr_date[1].substring(1);
+        }
+        const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+        return months[arr_date[1]] + ' ' + arr_date[2] + ', ' + arr_date[0];
       }
     }
 }
