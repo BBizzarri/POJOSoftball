@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopPageHeader />
-    <!-- <NavBar /> -->
+    <NavBar />
     <div>
       <div class="left-child">
         <h1 class="heading">Register For POJO Girls Softball League</h1>
@@ -101,7 +101,8 @@
 
 <script>
 import TopPageHeader from '../components/TopPageHeader.vue';
-// import NavBar from '../components/NavBar.vue';
+import NavBar from '../components/NavBar.vue';
+import { loginStore } from '../components/LoginModal'
 import BottomFooter from '../components/BottomFooter';
 import MoreInfo from '../components/MoreInfo.vue';
 import { 
@@ -113,7 +114,7 @@ import 'firebase/storage';
   export default {
     name: "RegistrationsPage",
     components: { 
-      // NavBar,
+      NavBar,
       TopPageHeader,
       BottomFooter,
       MoreInfo,
@@ -121,6 +122,7 @@ import 'firebase/storage';
   
     data () {
       return {
+        loginStore,
         showTournamentModal: false,
         showEventModal: false,
         tournament_add_edit: null,

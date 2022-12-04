@@ -18,6 +18,9 @@ const firebaseApp = firebase.initializeApp(config)
 const db = firebaseApp.firestore()
 const tournamentsCollection = db.collection('Tournaments')
 const eventsCollection = db.collection('Events')
+const homePageImages = db.collection('HomePageImages')
+const galleryImages = db.collection('GalleryImages')
+const galleryImageTags = db.collection('GalleryImageTags')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -69,4 +72,82 @@ export const useLoadEvents = () => {
     })
     onUnmounted(close)
     return events
+}
+
+export const createHomePageImage = image => {
+    return homePageImages.add(image)
+}
+
+export const getHomePageImage = async id => {
+    const image = await homePageImages.doc(id).get()
+    return image.exists? image.data() : null
+}
+
+export const updateHomePageImage = (id, image) => {
+    return homePageImages.doc(id).update(image)
+}
+
+export const deleteHomePageImage = name => {
+    return homePageImages.doc(name).delete()
+}
+
+export const useLoadHomePageImages = () => {
+    const images = ref([])
+    const close = homePageImages.onSnapshot(snapshot => {
+        images.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return images
+}
+
+export const createGalleryImage = image => {
+    return galleryImages.add(image)
+}
+
+export const getGalleryImage = async id => {
+    const image = await galleryImages.doc(id).get()
+    return image.exists? image.data() : null
+}
+
+export const updateGalleryImage = (id, image) => {
+    return galleryImages.doc(id).update(image)
+}
+
+export const deleteGalleryImage = name => {
+    return galleryImages.doc(name).delete()
+}
+
+export const useLoadGalleryImages = () => {
+    const images = ref([])
+    const close = galleryImages.onSnapshot(snapshot => {
+        images.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return images
+}
+
+export const createGalleryImageTag = tag => {
+    return galleryImageTags.add(tag)
+}
+
+export const getGalleryImageTag = async id => {
+    const tag = await galleryImageTags.doc(id).get()
+    return tag.exists? tag.data() : null
+}
+
+export const updateGalleryImageTag = (id, tag) => {
+    return galleryImageTags.doc(id).update(tag)
+}
+
+export const deleteGalleryImageTag = name => {
+    return galleryImageTags.doc(name).delete()
+}
+
+export const useLoadGalleryImageTags = () => {
+    const tags = ref([])
+    const close = galleryImageTags.onSnapshot(snapshot => {
+        tags.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return tags
 }

@@ -4,6 +4,9 @@ import AdminRegistrationsPage from "../views/AdminRegistrationsPage.vue"
 import UnderConstruction from "../views/UnderConstruction.vue"
 import LoginPage from "../views/LoginPage.vue"
 import MoreInfo from "../components/MoreInfo"
+import AdminSettings from "../views/AdminSettings.vue"
+import HomePage from "../views/HomePage.vue"
+import GalleryPage from "../views/GalleryPage.vue"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
@@ -13,7 +16,7 @@ const routes = [
         component: LoginPage
     },
     {
-        path: "/",
+        path: "/registrations",
         name: "Registration",
         component: RegistrationsPage
     },
@@ -31,7 +34,23 @@ const routes = [
         path: "/moreinfo",
         name: "MoreInfo",
         component: MoreInfo
+    },
+    {
+        path: "/settings",
+        name: "AdminSettings",
+        component: AdminSettings
+    },
+    {
+        path: "/",
+        name: "HomePage",
+        component: HomePage
+    },
+    {
+        path: "/gallery",
+        name: "GalleryPage",
+        component: GalleryPage
     }
+
 ]
 
 // Create Vue Router Object

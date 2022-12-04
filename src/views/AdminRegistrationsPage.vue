@@ -1,7 +1,7 @@
 <template>
     <div>
       <TopPageHeader />
-      <!-- <NavBar /> -->
+      <NavBar />
       <div>
         <div class="left-child">
           <h1 class="heading">Register For POJO Girls Softball League</h1>
@@ -26,7 +26,7 @@
             <h1>Register For POJO Travel Ball Tournaments</h1>
           </div>
           <div class="add-button-container">
-            <button class="add-tournament-button" id="show-modal" @click="openTournamentAddEditModal('add')">Add New Tournament</button>
+            <button v-if="this.loginStore.loggedIn" class="add-tournament-button" id="show-modal" @click="openTournamentAddEditModal('add')">Add New Tournament</button>
           </div>
         </div>
         <div 
@@ -39,9 +39,10 @@
               <th class="long-th">Dates</th>
               <th class="long-th">Age Group</th>
               <th class="short-th"></th>
-              <th class="short-th"></th>
-              <th class="short-th"></th>
-              <th class="short-th">Visible</th>
+              <th v-if="this.loginStore.loggedIn" class="short-th"></th>
+              <th v-if="this.loginStore.loggedIn" class="short-th"></th>
+              <th v-if="this.loginStore.loggedIn" class="short-th">Visible</th>
+              <th v-if="this.loginStore.loggedIn" class="short-th"></th>
             </tr>
             <tr 
               v-for="tournament in tournaments_to_show"
@@ -52,10 +53,10 @@
               <td>{{ getDate(tournament.StartDate, tournament.EndDate) }}</td>
               <td>{{ tournament.AgeGroup }}</td>
               <td><a class="register-link" @click="openMoreInfoTournament(tournament.id)">More Info</a></td>
-              <td><a class="register-link" @click="openTournamentAddEditModal('edit', tournament.id)">Edit</a></td>
-              <td><a class="register-link" @click="deleteTournament(tournament.id)">Delete</a></td>
-              <td class="checkbox"><input type="checkbox" name="tournamnet_visible" style="pointer-events: none;" :checked="tournament.ShowTournament"/></td>
-  
+              <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="openTournamentAddEditModal('edit', tournament.id)"><img title="Edit tournament" src="../Images/Pencil.png" Height="20px" Width="20px"></a></td>
+              <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="deleteTournament(tournament.id)"><img title="Delete tournament" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
+              <td v-if="this.loginStore.loggedIn" class="checkbox"><input type="checkbox" name="tournamnet_visible" style="pointer-events: none;" :checked="tournament.ShowTournament"/></td>
+              <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="openAddTeamModal(tournament.id)"><img title="Add team" src="../Images/Add.png" Height="20px" Width="20px"></a></td>
             </tr>
           </table>
           <ModalStencil
@@ -147,7 +148,7 @@
             <h1 class="heading">Register For POJO Events</h1>
           </div>
           <div class="add-button-container">
-            <button class="add-tournament-button" id="show-modal" @click="openEventAddEditModal('add')">Add New Event</button>
+            <button v-if="this.loginStore.loggedIn" class="add-tournament-button" id="show-modal" @click="openEventAddEditModal('add')">Add New Event</button>
           </div>
         </div>  
         <div 
@@ -160,9 +161,9 @@
               <th class="long-th">Time</th>
               <th class="long-th">Date</th>
               <th class="short-th"></th>
-              <th class="short-th"></th>
-              <th class="short-th"></th>
-              <th class="short-th">Visible</th>
+              <th v-if="this.loginStore.loggedIn" class="short-th"></th>
+              <th v-if="this.loginStore.loggedIn" class="short-th"></th>
+              <th v-if="this.loginStore.loggedIn" class="short-th">Visible</th>
             </tr>
             <tr 
                 v-for="event in events_to_show"
@@ -173,9 +174,9 @@
                 <td>{{ getTime(event.StartTime, event.EndTime) }}</td>
                 <td>{{ getDate(event.StartDate, event.EndDate) }}</td>
                 <td><a class="register-link" @click="openMoreInfoEvent(event.id)">More Info</a></td>
-                <td><a class="register-link" @click="openEventAddEditModal('edit', event.id)">Edit</a></td>
-                <td><a class="register-link" @click="deleteEvent(event.id)">Delete</a></td>
-                <td class="checkbox"><input type="checkbox" name="event_visible" style="pointer-events: none;" :checked="event.ShowEvent" /></td>
+                <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="openEventAddEditModal('edit', event.id)"><img title="Edit event" src="../Images/Pencil.png" Height="20px" Width="20px"></a></td>
+                <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="deleteEvent(event.id)"><img title="Delete event" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
+                <td v-if="this.loginStore.loggedIn" class="checkbox"><input type="checkbox" name="event_visible" style="pointer-events: none;" :checked="event.ShowEvent" /></td>
               </tr>
           </table>
           <ModalStencil
@@ -258,17 +259,26 @@
         :show="showMoreInfo"
         :tournament_or_event="showMoreInfoType === 'tournament' ? tournament_info : event_info"
         :type="showMoreInfoType"
+        :tournament_id="tournament_id_to_edit"
         @close="closeMoreInfoModal()"
+      />
+      <AddTeam
+        :show="showAddTeam"
+        :tournament_or_event="tournament_info"
+        :tournament_id="tournament_id_to_edit"
+        @close="closeAddTeamModal()"
       />
     </div>
   </template>
   
   <script>
   import TopPageHeader from '../components/TopPageHeader.vue';
-  // import NavBar from '../components/NavBar.vue';
+  import NavBar from '../components/NavBar.vue';
+  import { loginStore } from '../components/LoginModal';
   import BottomFooter from '../components/BottomFooter';
   import ModalStencil from "../components/ModalStencil";
   import MoreInfo from "../components/MoreInfo";
+  import AddTeam from "../components/AddTeam";
   import { 
     createTournament,
     updateTournament,
@@ -277,7 +287,7 @@
     createEvent, 
     updateEvent,
     useLoadEvents,
-    deleteEvent
+    deleteEvent,
   } from '../firebase.js';
   import 'firebase/storage';
   // import firebase from 'firebase/compat/app';
@@ -287,15 +297,17 @@
     export default {
       name: "RegistrationsPage",
       components: { 
-        // NavBar,
+        NavBar,
         TopPageHeader,
         BottomFooter,
         ModalStencil,
-        MoreInfo
+        MoreInfo,
+        AddTeam
       },
     
       data () {
         return {
+          loginStore,
           showTournamentModal: false,
           showEventModal: false,
           tournament_add_edit: null,
@@ -318,6 +330,8 @@
             contact_phone: "",
             cover_image: "",
             image: null,
+            registered_teams: [],
+            registered_teams_last_updated: '',
             show: false,
           },
           event_info: {
@@ -336,6 +350,7 @@
           },
           showMoreInfo: false,
           showMoreInfoType: null,
+          showAddTeam: false,
         }
       },
       async mounted () {
@@ -346,7 +361,11 @@
         tournaments_to_show () {
         if (this.current_tournaments) {
           const tournaments = this.current_tournaments.slice();
-          return tournaments.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          if (this.loginStore.loggedIn) {
+            return tournaments.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          } else {
+            return tournaments.filter(tournament => tournament.ShowTournament === true).sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          }
         } else {
           return [];
         }
@@ -354,7 +373,11 @@
       events_to_show () {
         if (this.current_events) {
           const events = this.current_events.slice();
-          return events.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          if (this.loginStore.loggedIn) {
+            return events.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          } else {
+            return events.filter(event => event.ShowEvent === true).slice().sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+          }
         } else {
           return [];
         }
@@ -391,6 +414,8 @@
                   ContactPhone: this.tournament_info.contact_phone,
                   CoverImage: this.tournament_info.cover_image,
                   ShowTournament: this.tournament_info.show,
+                  RegisteredTeams: this.tournament_info.registered_teams,
+                  RegisteredTeamsLastUpdated: this.tournament_info.registered_teams_last_updated,
                 });
               } catch(err) {
                 console.log(err);
@@ -411,6 +436,8 @@
                   ContactPhone: this.tournament_info.contact_phone,
                   CoverImage: this.tournament_info.cover_image,
                   ShowTournament: this.tournament_info.show,
+                  RegisteredTeams: this.tournament_info.registered_teams,
+                  RegisteredTeamsLastUpdated: this.tournament_info.registered_teams_last_updated,
                 });
                 this.tournament_id_to_edit = null;  
               } catch(err) {
@@ -430,6 +457,8 @@
             this.tournament_info.contact_phone = "";
             this.tournament_info.cover_image = "";
             this.tournament_info.show = "";
+            this.tournament_info.registered_teams = [];
+            this.tournament_info.registered_teams_last_updated = '';
             this.$router.push("/adminregistration");
             this.showTournamentModal = false;
           }  
@@ -474,6 +503,8 @@
             this.tournament_info.contact_phone = tournament_to_edit.ContactPhone;
             this.tournament_info.cover_image = tournament_to_edit.CoverImage;
             this.tournament_info.show = tournament_to_edit.ShowTournament;
+            this.tournament_info.registered_teams = tournament_to_edit.RegisteredTeams;
+            this.tournament_info.registered_teams_last_updated = tournament_to_edit.RegisteredTeamsLastUpdated;
           } else {
             this.tournament_add_edit = 'add';
           }
@@ -584,6 +615,8 @@
             this.tournament_info.contact_name = "";
             this.tournament_info.contact_phone = "";
             this.tournament_info.cover_image = "";
+            this.tournament_info.registered_teams = [];
+            this.tournament_info.registered_teams_last_updated = '';
             this.tournament_info.show = false;
           } else {
             this.showEventModal = false
@@ -631,10 +664,11 @@
             this.tournament_info.contact_name = tournament_to_show.ContactName;
             this.tournament_info.contact_phone = tournament_to_show.ContactPhone;
             this.tournament_info.cover_image = tournament_to_show.CoverImage;
+            this.tournament_info.registered_teams = tournament_to_show.RegisteredTeams;
+            this.tournament_info.registered_teams_last_updated = tournament_to_show.RegisteredTeamsLastUpdated;
             this.showMoreInfo = true;
         },
         openMoreInfoEvent (event_id) {
-            console.log('here');
             this.showMoreInfoType = 'event'
             this.event_id_to_edit = event_id;
             const event_to_show = this.current_events.find(event => event.id === event_id);
@@ -672,6 +706,41 @@
             this.event_info.contact_name = "";
             this.event_info.contact_phone = "";
             this.showMoreInfo = false;
+        },
+        openAddTeamModal (tournament_id) {
+          this.tournament_id_to_edit = tournament_id;
+          const tournament_to_show = this.current_tournaments.find(tournament => tournament.id === tournament_id);
+          this.tournament_info.tournament_name = tournament_to_show.TournamentName;
+          this.tournament_info.description = tournament_to_show.TournamentDescription;
+          this.tournament_info.age_group = tournament_to_show.AgeGroup;
+          this.tournament_info.start_date = tournament_to_show.StartDate;
+          this.tournament_info.end_date = tournament_to_show.EndDate;
+          this.tournament_info.location = tournament_to_show.Location;
+          this.tournament_info.game_guarentee = tournament_to_show.GameGuarentee;
+          this.tournament_info.cost = tournament_to_show.Cost;
+          this.tournament_info.team_max = tournament_to_show.TeamMax;
+          this.tournament_info.contact_name = tournament_to_show.ContactName;
+          this.tournament_info.contact_phone = tournament_to_show.ContactPhone;
+          this.tournament_info.cover_image = tournament_to_show.CoverImage;
+          this.tournament_info.registered_teams = tournament_to_show.RegisteredTeams;
+          this.tournament_info.registered_teams_last_updated = tournament_to_show.RegisteredTeamsLastUpdated;
+          this.tournament_info.show = tournament_to_show.ShowTournament,
+          this.tournament_id_to_edit = tournament_id;
+          this.showAddTeam = true;
+        },
+        closeAddTeamModal () {
+          this.tournament_info.tournament_name = "";
+            this.tournament_info.description = "";
+            this.tournament_info.age_group = "";
+            this.tournament_info.start_date = "";
+            this.tournament_info.end_date = "";
+            this.tournament_info.location = "";
+            this.tournament_info.game_guarentee = "";
+            this.tournament_info.cost = "";
+            this.tournament_info.team_max = "";
+            this.tournament_info.contact_name = "";
+            this.tournament_info.contact_phone = "";
+            this.showAddTeam = false;
         }
       }
   }

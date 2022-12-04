@@ -1,23 +1,40 @@
 <template>
-  <div class="nav">
-      <ul>
-        <li class="home"><a href="#">Home</a></li>
-        <li class="tutorials"><a href="#">Calander</a></li>
-        <li class="tutorials"><a href="#">Events</a></li>
-        <li class="about"><a href="#">Gallery</a></li>
-        <li class="news"><a href="#">Registrations</a></li>
-        <li class="contact"><a href="#">About us</a></li>
-      </ul>
-    </div>
+    <nav class="nav">
+        <li class="menu-item"><router-link to="/">Home</router-link></li>
+        <li class="menu-item"><router-link to="/calender">Calender</router-link></li>
+        <li class="menu-item"><router-link to="/gallery">Gallery</router-link></li>
+        <li class="menu-item"><router-link to="/adminregistration">Registrations</router-link></li>
+        <li class="menu-item"><router-link to="/about">About us</router-link></li>
+        <li v-if="loginStore.loggedIn" class="menu-item"><router-link to="/settings">Settings</router-link></li>
+        <li class="menu-item right"><a @click="loginLogout()"><router-link to="/login" replace>{{loginStore.loggedIn ? 'Logout' : 'Login'}}</router-link></a></li>
+    </nav>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+    import { loginStore } from '../components/LoginModal'
+  export default {
+    name: 'HelloWorld',
+    props: {
+      msg: String
+    },
+    data () {
+      return {
+        loginStore,
+        isOpen: false
+      }
+    },
+    methods: {
+        loginLogout () {
+          if (loginStore.loggedIn === true) {
+            this.loginStore.loggedIn = false;
+            this.$router.push('/');
+          } else {
+            this.$router.push('/login');
+            this.loginStore.loggedIn = true;
+          }
+        }
+      }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -28,12 +45,12 @@ body {
   background: #ccc;
 }
 
-.nav ul {
-  list-style: none;
+.nav {
   background-color: #444;
-  text-align: center;
-  padding: 0;
-  margin: 0;
+}
+
+.sub-menu {
+  background-color: #444;
 }
 
 .nav li {
@@ -59,7 +76,8 @@ body {
 }
 
 .nav li {
-  width: 180px;
+  margin-right: 40px;
+  margin-left: 10px;
   border-bottom: none;
   height: 50px;
   line-height: 50px;
@@ -74,5 +92,11 @@ body {
 .nav ul {
   overflow: auto;
 }
+
+.right {
+  float: right;
+  padding-right: 20px !important;
+}
+
 
 </style>

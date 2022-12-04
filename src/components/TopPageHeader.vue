@@ -1,15 +1,32 @@
 <template>
     <div class="header">
         <h1 class="header-text">Philipsburg Osceola Junior Olympic Softball</h1>
-          <button><router-link to="/login" replace>Login</router-link></button>
+          <!-- <button @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</button> -->
         <h3 class="active-dev">This POJO website is under active development, stay tuned for the full site in 2023</h3>
     </div>
 </template>
   
   <script>
-  export default {
-    name: 'TopPageHeader',
-  }
+    import { loginStore } from '../components/LoginModal'
+    export default {
+      name: 'TopPageHeader',
+      data () {
+        return {
+          loginStore
+        }
+      },
+      methods: {
+        loginLogout () {
+          if (loginStore.loggedIn === true) {
+            this.loginStore.loggedIn = false;
+            this.$router.push('/');
+          } else {
+            this.$router.push('/login');
+            this.loginStore.loggedIn = true;
+          }
+        }
+      }
+    }
   </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->

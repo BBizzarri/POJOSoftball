@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
+export const loginStore = reactive({
+  loggedIn: false,
+})
 export default {
     name: 'LoginModal',
     data() {
@@ -24,7 +28,7 @@ export default {
             if(this.input.username != "" && this.input.password != "") {
                 if(this.input.username == 'pojo_softball' && this.input.password == 'pojosoftballadmin') {
                     this.$emit("authenticated", true);
-                    this.$router.replace({ path:'/adminregistration' });
+                    this.$router.replace({ path:'/' });
                 } else {
                     console.log("The username and / or password is incorrect");
                 }

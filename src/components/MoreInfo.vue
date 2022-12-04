@@ -55,8 +55,27 @@
                 <img :src="tournament_or_event.cover_image" alt="cover photo" width="300" height="400">
               </div>  
             </div>
+          </div>
+          <div class="teams-container">
+            <h2 class="modal-title title">Registered Teams</h2>
+            <div
+              v-if="!tournament_or_event?.registered_teams?.length"
+            >
+              <h3>There are currently no registered teams</h3>
+            </div>
+            <table
+              v-else
+              v-for="(team, index) in tournament_or_event.registered_teams"
+              :key="team.name"
+              class="team-names"
+            > 
+              <tr>
+                <td>{{ index + 1 + '. ' + team.name }}</td>
+                <td><a v-if="loginStore.loggedIn" class="delete-team" @click="deleteTeam(index)"><img title="Delete team" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
+              </tr>
+            </table>
           </div>  
-          <div class="form-button-cont">
+          <div class="form-button-cont form-button-margin">
           <button type="submit" class="large close-button" @click="closeModal()">Close</button>
           </div>
       </template>
@@ -120,6 +139,8 @@
 
 <script>
 import ModalStencil from './ModalStencil.vue'
+import { loginStore } from '../components/LoginModal';
+import { updateTournament } from '@/firebase'
 export default {
     name: "MoreInfo",
     components: { 
@@ -137,6 +158,15 @@ export default {
       type: {
         type: String,
         default: ''
+      },
+      tournament_id: {
+        type: String, 
+        default: ''
+      }
+    },
+    data () {
+      return {
+        loginStore
       }
     },
     methods: {
@@ -151,6 +181,34 @@ export default {
         }
         const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
         return months[arr_date[1]] + ' ' + arr_date[2] + ', ' + arr_date[0];
+      },
+      async deleteTeam (index) {
+        const tournament_to_edit = this.tournament_or_event;       
+        tournament_to_edit.registered_teams.splice(index, 1);
+        try {
+          await updateTournament(this.tournament_id, { 
+            TournamentName: tournament_to_edit.tournament_name,
+            TournamentDescription: tournament_to_edit.description,
+            AgeGroup: tournament_to_edit.age_group,
+            StartDate: tournament_to_edit.start_date,
+            EndDate: tournament_to_edit.end_date,
+            Location: tournament_to_edit.location,
+            GameGuarentee: tournament_to_edit.game_guarentee,
+            Cost: tournament_to_edit.cost, 
+            TeamMax: tournament_to_edit.team_max,
+            ContactName: tournament_to_edit.contact_name,
+            ContactPhone: tournament_to_edit.contact_phone,
+            CoverImage: tournament_to_edit.cover_image,
+            ShowTournament: tournament_to_edit.show,
+            RegisteredTeams: tournament_to_edit.registered_teams,
+            RegisteredTeamsLastUpdated: tournament_to_edit.registered_teams_last_updated,
+          });
+          this.team_info.name = '';
+          this.team_info.age_group = '';
+        } catch(err) {
+          console.log(err);
+        }  
+
       }
     }
 }
@@ -189,8 +247,22 @@ label {
   padding-left: 200px;
 }
 
+.team-names {
+  color: white;
+  font-size: 20px;
+}
+
+.form-button-margin {
+  margin-bottom: 80px;
+}
+
+.teams-container {
+  margin-bottom: 40px;
+  width: 40%;
+}
+
 .top-section-image {
-  padding-bottom: 500px;
+  padding-bottom: 400px;
 }
 
 .top-section-no-image {
@@ -208,5 +280,17 @@ label {
   font-weight:500;
   opacity:1;
   transition:1s;
+}
+
+.delete-team {
+  vertical-align: middle;
+}
+
+td {
+  max-width: 350px;
+  min-width: 350px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
