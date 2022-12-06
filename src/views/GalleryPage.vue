@@ -35,16 +35,27 @@
         </div>
       </div>
       <div v-else class="filter-container">
-        <label class="tag-label">Filter By:</label>
-        <Multiselect
-          class="tag-dropdown"
-          v-model="filter_by"
-          :options="get_gallery_image_tags"
-          :searchable="true"
-        />
-      </div>
-      <div> 
-        <button @click="filterImages()">Filter</button>
+        <div class="filter-button-container"> 
+          <button class="upload-button" @click="filterImages()">Filter</button>
+          <button class="upload-button" @click="resetImages()">Reset</button>
+        </div>
+        <label class="filter-by-label">Filter By:</label>
+        <div
+          v-for="condition in conditions"
+          :key="condition.filter_by"
+          class="condition-container"
+        >
+          <Multiselect
+            class="tag-dropdown"
+            v-model="condition.filter_by"
+            :options="get_gallery_image_tags"
+            :searchable="true"
+          />
+          <a v-if="condition.id !== 1" class="remove-condition" @click="removeCondition(condition.id)"><img title="remove condition" src="../Images/TrashCan.png" Height="25px" Width="25px"></a>
+        </div>
+        <div class="add-condition">
+          <a @click="addFilterCondition()">Add condition</a>
+        </div> 
       </div>
       <div class="grid-container">
         <div
@@ -79,7 +90,14 @@
           image_to_upload: null,
           image_to_upload_name: null,
           image_to_upload_tags: [],
-          filter_by: []
+          // filter_by: [],
+          condition_id: 1,
+          conditions: [
+            {
+              id: 1,
+              filter_by: null
+            }
+          ]
         }
       },
       async mounted () {
@@ -124,9 +142,22 @@
           }  
         },
         filterImages() {
-          if (this.filter_by) {
-            this.gallery_images = this.gallery_images.filter(image.TagName === this.filter_by);
-          }
+          this.conditions.forEach(condition => {
+            this.gallery_images = this.gallery_images.filter(image=> image.Tags.includes(condition.filter_by));
+          })
+        },
+        resetImages() {
+          this.gallery_images = useLoadGalleryImages();
+          this.conditions = [{filter_by: null}];
+        },
+        addFilterCondition() {
+          const current_conditions = this.conditions;
+          this.condition_id++;
+          current_conditions.push({id: this.condition_id, filter_by: null});
+        },
+        removeCondition(condition_id) {
+          const new_conditions = this.conditions.filter(condition => condition.id !== condition_id);
+          this.conditions =  new_conditions;
         }
       }
     }  
@@ -154,6 +185,15 @@
     color: white;
     margin-top: 10px;
     margin-right: 30px;
+  }
+
+  .filter-by-label {
+    float: left;
+    font-size: 18px;
+    color: white;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
   }
 
   .tag-dropdown {
@@ -191,7 +231,8 @@
   }
 
   .grid-container {
-    width: 100%;
+    width: 78%;
+    float: right;
     display: grid;
     gap: 10px;
     grid-template-columns: auto auto auto;
@@ -215,7 +256,35 @@
 
 .filter-container {
   margin-top: 20px;
+  width: 20%;
+  float: left;
 }
-  
+
+.filter-button-container {
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.condition-container {
+  float: left;
+  width: 100%;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.remove-condition {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.add-condition {
+  width: 100%;
+  float: left;
+  margin-left: 10px;
+  margin-top: 20px;
+  text-decoration: underline;
+  color: blue;
+}
   </style>
   
