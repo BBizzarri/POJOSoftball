@@ -2,71 +2,79 @@
     <div>
       <TopPageHeader />
       <NavBar />
-      <div v-if="loginStore.loggedIn" class="image-upload-section">
-        <div
-          class="previewBlock"
-          @click="chooseFile"
-        >
+      <div class="left-panel">
+        <div v-if="loginStore.loggedIn" class="image-upload-section">
+          <div
+            class="previewBlock"
+            @click="chooseFile"
+          >
+          </div>
+          <div class="file-input-container">
+            <input
+                class="form-control form-control-lg"
+                ref="fileInput"
+                type="file"
+                accept="image/*"
+                id="formFileLg"
+                @change="selectImgFile()">
+          </div>
+          <div class="tag-container">
+            <label class="tag-label">Image Tags</label>
+            <Multiselect
+              class="tag-dropdown"
+              v-model="image_to_upload_tags"
+              :options="get_gallery_image_tags"
+              mode="tags"
+              :close-on-select="false"
+              :searchable="true"
+            />
+          </div>
+          <div class="upload-button-container">
+            <button class="upload-button" @click=uploadImage()>
+              Upload
+            </button>
+          </div>
         </div>
-        <div class="file-input-container">
-          <input
-              class="form-control form-control-lg"
-              ref="fileInput"
-              type="file"
-              accept="image/*"
-              id="formFileLg"
-              @change="selectImgFile()">
+        <div class="filter-container">
+          <div class="filter-button-container"> 
+            <button class="upload-button" @click="filterImages()">Filter</button>
+            <button class="upload-button" @click="resetImages()">Reset</button>
+          </div>
+          <label class="filter-by-label">Filter By:</label>
+          <div
+            v-for="condition in conditions"
+            :key="condition.filter_by"
+            class="condition-container"
+          >
+            <Multiselect
+              class="tag-dropdown"
+              v-model="condition.filter_by"
+              :options="get_gallery_image_tags"
+              :searchable="true"
+            />
+            <a v-if="condition.id !== 1" class="remove-condition" @click="removeCondition(condition.id)"><img title="remove condition" src="../Images/TrashCan.png" Height="25px" Width="25px"></a>
+          </div>
+          <div class="add-condition">
+            <a @click="addFilterCondition()">Add condition</a>
+          </div> 
         </div>
-        <div class="tag-container">
-          <label class="tag-label">Image Tags</label>
-          <Multiselect
-            class="tag-dropdown"
-            v-model="image_to_upload_tags"
-            :options="get_gallery_image_tags"
-            mode="tags"
-            :close-on-select="false"
-            :searchable="true"
-          />
-        </div>
-        <div class="upload-button-container">
-          <button class="upload-button" @click=uploadImage()>
-            Upload
-          </button>
-        </div>
-      </div>
-      <div v-else class="filter-container">
-        <div class="filter-button-container"> 
-          <button class="upload-button" @click="filterImages()">Filter</button>
-          <button class="upload-button" @click="resetImages()">Reset</button>
-        </div>
-        <label class="filter-by-label">Filter By:</label>
-        <div
-          v-for="condition in conditions"
-          :key="condition.filter_by"
-          class="condition-container"
-        >
-          <Multiselect
-            class="tag-dropdown"
-            v-model="condition.filter_by"
-            :options="get_gallery_image_tags"
-            :searchable="true"
-          />
-          <a v-if="condition.id !== 1" class="remove-condition" @click="removeCondition(condition.id)"><img title="remove condition" src="../Images/TrashCan.png" Height="25px" Width="25px"></a>
-        </div>
-        <div class="add-condition">
-          <a @click="addFilterCondition()">Add condition</a>
-        </div> 
       </div>
       <div class="grid-container">
         <div
           v-for="image in gallery_images"
           :key="image.ImageName" 
           class="grid-item"
+          @click="openImageViewer(image)"
         >
           <img :src="image.Image" Height="300px" Width="400px"/>
-          <a @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a>
+          <a v-if="loginStore.loggedIn" @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a>
         </div> 
       </div>
+      <ImageViewerModal
+        :showImageViewerModal="showImageViewerModal"
+        :current_image="image_to_edit"
+        @close="closeImageViewerModal"
+      />
     </div>
   </template>
   <script>
@@ -75,12 +83,14 @@
     import Multiselect from '@vueform/multiselect'
     import { createGalleryImage, useLoadGalleryImageTags, useLoadGalleryImages, deleteGalleryImage } from '../firebase.js';
     import { loginStore } from '../components/LoginModal';
+    import ImageViewerModal from '../components/ImageViewerModal.vue';
     export default {
       name: 'GalleryPage',
       components: {
         TopPageHeader,
         NavBar,
-        Multiselect
+        Multiselect,
+        ImageViewerModal
       },
       data () {
         return {
@@ -97,7 +107,10 @@
               id: 1,
               filter_by: null
             }
-          ]
+          ],
+          showImageViewerModal: false,
+          image_to_edit: null,
+          tag_left: '25px'
         }
       },
       async mounted () {
@@ -158,6 +171,15 @@
         removeCondition(condition_id) {
           const new_conditions = this.conditions.filter(condition => condition.id !== condition_id);
           this.conditions =  new_conditions;
+        },
+        openImageViewer (image) {
+          if (loginStore.loggedIn) {
+            this.image_to_edit = image;
+            this.showImageViewerModal = true
+          }
+        },
+        closeImageViewerModal () {
+          this.showImageViewerModal = false;
         }
       }
     }  
@@ -167,7 +189,7 @@
   <style scoped>
   .image-upload-section {
     margin-top: 20px;
-    margin-bottom: 150px;
+    margin-bottom: 50px;
   }
 
   .file-input-container {
@@ -192,7 +214,6 @@
     font-size: 18px;
     color: white;
     margin-top: 10px;
-    margin-left: 10px;
     margin-bottom: 10px;
   }
 
@@ -223,10 +244,10 @@
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+    margin-top: 20px;
   }
 
   .upload-button-container {
-    float: right;
     width: 30%;
   }
 
@@ -256,8 +277,6 @@
 
 .filter-container {
   margin-top: 20px;
-  width: 20%;
-  float: left;
 }
 
 .filter-button-container {
@@ -269,7 +288,6 @@
 .condition-container {
   float: left;
   width: 100%;
-  margin-left: 10px;
   margin-top: 20px;
 }
 
@@ -281,10 +299,30 @@
 .add-condition {
   width: 100%;
   float: left;
-  margin-left: 10px;
   margin-top: 20px;
   text-decoration: underline;
   color: blue;
+}
+
+.tag-on-image {
+  position: absolute;
+  background-color: white;
+  top: 290px;
+  /* left: 25px; */
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-image-tag {
+  position: absolute;
+  top: 285px;
+  left: 90px;
+}
+
+.left-panel {
+  float: left;
+  width: 20%;
 }
   </style>
   
