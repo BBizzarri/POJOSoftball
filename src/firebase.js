@@ -21,6 +21,7 @@ const eventsCollection = db.collection('Events')
 const homePageImages = db.collection('HomePageImages')
 const galleryImages = db.collection('GalleryImages')
 const galleryImageTags = db.collection('GalleryImageTags')
+const eventsForCountdown = db.collection('EventsForCountdown')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -150,4 +151,30 @@ export const useLoadGalleryImageTags = () => {
     })
     onUnmounted(close)
     return tags
+}
+
+export const createEventForCountdown = event => {
+    return galleryImageTags.add(event)
+}
+
+export const getEventForCountdown = async id => {
+    const event = await eventsForCountdown.doc(id).get()
+    return event.exists? event.data() : null
+}
+
+export const updateEventForCountdown= (id, event) => {
+    return eventsForCountdown.doc(id).update(event)
+}
+
+export const deleteEventForCountdown = name => {
+    return eventsForCountdown.doc(name).delete()
+}
+
+export const useLoadEventsForCountdown = () => {
+    const events = ref([])
+    const close = eventsForCountdown.onSnapshot(snapshot => {
+        events.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return events
 }

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-carousel": "^2.0.0",
+    "@chenfengyuan/vue-countdown": "^2.1.0",
     "@mdi/font": "^7.0.96",
     "@vue/compiler-sfc": "^3.2.45",
     "@vueform/multiselect": "^2.5.7",
@@ -16,6 +17,7 @@
     "boostrap": "^2.0.0",
     "clone-deep": "^4.0.1",
     "core-js": "^3.8.3",
+    "epic-spinners": "^2.0.0",
     "firebase": "^9.14.0",
     "laravel": "^0.0.1",
     "vue": "^3.2.45",

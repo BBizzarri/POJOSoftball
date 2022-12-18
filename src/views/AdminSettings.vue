@@ -46,7 +46,7 @@
       <h1 class="margin-left">Gallery Image Tags</h1>
       <h3 class="margin-left">Add tags for images that you upload to be utilized when filtering gallery images</h3>
       <div class="tag-creation-container margin-left"> 
-        <p>Tag Name</p>
+        <p>Add Tag</p>
         <input
           type="text"
           v-model="tag_name"
@@ -56,36 +56,57 @@
           <button @click="createTag()">Create</button>
         </div>
       </div>
+      <div> 
+        <p class="existing-tags-header">Existing Tags</p>
+        <li
+          v-for="tag in gallery_image_tags"
+          :key="tag.id"
+        >
+          <a @click="openEditTagModal(tag)">{{ tag.TagName }}</a>
+      </li>
+      </div>
     </div>
+    <EditTagModal
+      :showEditTagModal="show_edit_tag_modal"
+      :tag_to_edit="tag_to_edit"
+      @close="show_edit_tag_modal = false"
+    />
   </div>
 </template>
 
 <script>
   import TopPageHeader from '../components/TopPageHeader.vue';
   import NavBar from '../components/NavBar.vue';
+  import EditTagModal from '../components/EditTagModal.vue';
   import {
     useLoadHomePageImages,
     createHomePageImage,
     deleteHomePageImage,
-    createGalleryImageTag
+    createGalleryImageTag,
+    useLoadGalleryImageTags,
   } from '../firebase.js';
   export default {
     name: 'AdminSettings',
     components: {
       TopPageHeader,
-      NavBar
+      NavBar,
+      EditTagModal
     },
     data () {
       return {
         home_page_images: null,
+        gallery_image_tags: [],
         current_home_page_image: null,
         current_home_page_image_name: null,
         current_image_description: null,
-        tag_name: null
+        tag_name: null,
+        show_edit_tag_modal: false,
+        tag_to_edit: []
       }
     },
     async mounted () {
       this.home_page_images = useLoadHomePageImages();
+      this.gallery_image_tags = useLoadGalleryImageTags()
     },
     methods: {
       selectHomePageImage () {
@@ -131,6 +152,10 @@
           console.log(err);
         }  
         this.tag_name = null;
+      },
+      openEditTagModal (tag) {
+        this.tag_to_edit = tag
+        this.show_edit_tag_modal = true;
       }
     }
   }  
@@ -167,6 +192,7 @@ td {
 
 .tag-creation-container {
   width: 50%;
+  float: left;
 }
 
 .margin-left {
@@ -177,6 +203,11 @@ td {
   width: 100%;
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.existing-tags-header {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 </style>

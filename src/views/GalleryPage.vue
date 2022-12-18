@@ -66,7 +66,7 @@
           class="grid-item"
           @click="openImageViewer(image)"
         >
-          <img :src="image.Image" Height="300px" Width="400px"/>
+          <img :src="image.Image" class="scale-down" Height="300px" Width="400px"/>
           <a v-if="loginStore.loggedIn" @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a>
         </div> 
       </div>
@@ -74,6 +74,13 @@
         :showImageViewerModal="showImageViewerModal"
         :current_image="image_to_edit"
         @close="closeImageViewerModal"
+      />
+      <half-circle-spinner
+        v-if="loading"
+        class="loading-spinner"
+        :animation-duration="1000"
+        :size="90"
+        color="#ff1d5e"
       />
     </div>
   </template>
@@ -84,16 +91,19 @@
     import { createGalleryImage, useLoadGalleryImageTags, useLoadGalleryImages, deleteGalleryImage } from '../firebase.js';
     import { loginStore } from '../components/LoginModal';
     import ImageViewerModal from '../components/ImageViewerModal.vue';
+    import { HalfCircleSpinner } from 'epic-spinners'
     export default {
       name: 'GalleryPage',
       components: {
         TopPageHeader,
         NavBar,
         Multiselect,
-        ImageViewerModal
+        ImageViewerModal,
+        HalfCircleSpinner
       },
       data () {
         return {
+          loading: false,
           loginStore,
           gallery_images: [],
           gallery_image_tags: [],
@@ -114,8 +124,14 @@
         }
       },
       async mounted () {
-        this.gallery_image_tags = useLoadGalleryImageTags();
-        this.gallery_images = useLoadGalleryImages();
+        this.loading = true;
+        try {
+          this.gallery_image_tags = useLoadGalleryImageTags();
+          this.gallery_images = useLoadGalleryImages();
+        } catch(err) {
+          console.log(err);
+        }
+        this.loading = false;
       },
       computed: {
         get_gallery_image_tags () {
@@ -135,11 +151,13 @@
 
         async uploadImage () {
           try {
+            this.loading = true;
             await createGalleryImage({
               ImageName: this.image_to_upload_name,
               Image: this.image_to_upload,
               Tags: this.image_to_upload_tags
             });
+            this.loading = false;
           } catch(err) {
             console.log(err);
           }  
@@ -149,19 +167,25 @@
         },
         async deleteImage(image_id) {
           try {
+            this.loading = true;
             await deleteGalleryImage(image_id);
+            this.loading = false;
           } catch(err) {
             console.log(err);
           }  
         },
         filterImages() {
+          this.loading = true;
           this.conditions.forEach(condition => {
             this.gallery_images = this.gallery_images.filter(image=> image.Tags.includes(condition.filter_by));
           })
+          this.loading = false;
         },
         resetImages() {
+          this.loading = true;
           this.gallery_images = useLoadGalleryImages();
           this.conditions = [{filter_by: null}];
+          this.loading = false;
         },
         addFilterCondition() {
           const current_conditions = this.conditions;
@@ -188,7 +212,7 @@
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
   .image-upload-section {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 50px;
   }
 
@@ -199,6 +223,7 @@
 
   .tag-container {
     float: left;
+    margin-left: 70px;
   }
 
   .tag-label {
@@ -215,6 +240,7 @@
     color: white;
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-left: 70px;
   }
 
   .tag-dropdown {
@@ -229,8 +255,14 @@
     margin-right: 20px;
   }
 
+  .scale-down {
+    object-fit: scale-down;
+  }
+
   input[type="file"] {
     font-size: 18px;
+    margin-left: 70px;
+    margin-bottom: 30px;
   }
 
   .upload-button {
@@ -249,6 +281,7 @@
 
   .upload-button-container {
     width: 30%;
+    margin-left: 120px;
   }
 
   .grid-container {
@@ -289,6 +322,7 @@
   float: left;
   width: 100%;
   margin-top: 20px;
+  margin-left: 70px;
 }
 
 .remove-condition {
@@ -302,6 +336,7 @@
   margin-top: 20px;
   text-decoration: underline;
   color: blue;
+  margin-left: 70px;
 }
 
 .tag-on-image {
@@ -323,6 +358,12 @@
 .left-panel {
   float: left;
   width: 20%;
+}
+
+.loading-spinner {
+  margin: auto;
+  top: 300px;
+  left: 200px;
 }
   </style>
   

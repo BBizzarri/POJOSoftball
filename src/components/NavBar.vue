@@ -1,17 +1,18 @@
 <template>
     <nav class="nav">
-        <li class="menu-item"><router-link to="/">Home</router-link></li>
-        <li class="menu-item"><router-link to="/calender">Calender</router-link></li>
-        <li class="menu-item"><router-link to="/gallery">Gallery</router-link></li>
-        <li class="menu-item"><router-link to="/adminregistration">Registrations</router-link></li>
-        <li class="menu-item"><router-link to="/about">About us</router-link></li>
-        <li v-if="loginStore.loggedIn" class="menu-item"><router-link to="/settings">Settings</router-link></li>
-        <li class="menu-item right"><a @click="loginLogout()"><router-link to="/login" replace>{{loginStore.loggedIn ? 'Logout' : 'Login'}}</router-link></a></li>
+        <router-link to="/"><li class="menu-item">Home</li></router-link>
+        <router-link to="/calender"><li class="menu-item">Calender</li></router-link>
+        <router-link to="/gallery"><li class="menu-item">Gallery</li></router-link>
+        <router-link to="/adminregistration"><li class="menu-item">Registrations</li></router-link>
+        <router-link to="/about"><li class="menu-item">About us</li></router-link>
+        <router-link to="/settings"><li v-if="loginStore.loggedIn" class="menu-item">Settings</li></router-link>
+        <router-link to="/login" replace><li class="menu-item right"><a @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</a></li></router-link>
     </nav>
 </template>
 
 <script>
-    import { loginStore } from '../components/LoginModal'
+    import { loginStore } from '../components/LoginModal';
+    import firebase from 'firebase/compat/app';
   export default {
     name: 'HelloWorld',
     props: {
@@ -27,6 +28,7 @@
         loginLogout () {
           if (loginStore.loggedIn === true) {
             this.loginStore.loggedIn = false;
+            firebase.auth().signOut();
             this.$router.push('/');
           } else {
             this.$router.push('/login');
@@ -66,7 +68,7 @@ body {
   color: #fff;
 }
 
-.nav li:hover {
+.menu-item:hover {
   background-color: black;
 }
 
@@ -95,7 +97,6 @@ body {
 
 .right {
   float: right;
-  padding-right: 20px !important;
 }
 
 
