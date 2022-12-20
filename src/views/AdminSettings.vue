@@ -202,7 +202,7 @@ td {
 .create-button-container {
   width: 100%;
   margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 300px;
 }
 
 .existing-tags-header {

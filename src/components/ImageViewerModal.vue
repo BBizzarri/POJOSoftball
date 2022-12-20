@@ -9,7 +9,7 @@
     <template v-slot:body>
       <div class="image-viewer-container">
         <div class="image-container">
-          <img :src="current_image.Image" Height="300px" Width="400px"/>
+          <img :src="current_image.Image" class="scale-down" Height="300px" Width="400px"/>
         </div>
         <div class="current-tags-container">
           <div
@@ -38,6 +38,7 @@
     <template v-slot:footer>
       <div class="form-button-cont">
         <button type="submit" class="form-cancel-button" @click="closeImageViewerModal()">Cancel</button>
+        <button type="submit" class="form-cancel-button" @click="deleteImage()">Delete Image</button>
         <button type="submit" class="form-submit-button" @click="addTag()">Submit</button>
       </div>
     </template>
@@ -47,7 +48,7 @@
 <script>
 import ModalStencil from './ModalStencil.vue'
 import { loginStore } from '../components/LoginModal';
-import { useLoadGalleryImageTags, updateGalleryImage } from '@/firebase';
+import { useLoadGalleryImageTags, updateGalleryImage, deleteGalleryImage } from '@/firebase';
 import Multiselect from '@vueform/multiselect'
 
 export default {
@@ -111,7 +112,17 @@ export default {
       },
       closeImageViewerModal () {
         this.$emit('close')
-      }
+      },
+      async deleteImage() {
+        try {
+          this.loading = true;
+          await deleteGalleryImage(this.current_image.id);
+          this.loading = false;
+        } catch(err) {
+          console.log(err);
+        }  
+        this.closeImageViewerModal();
+        },
     }
 }
 </script>
@@ -191,4 +202,8 @@ export default {
   cursor: pointer;
   margin-right: 15px;
 }
+
+.scale-down {
+    object-fit: scale-down;
+  }
 </style>

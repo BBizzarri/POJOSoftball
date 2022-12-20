@@ -18,33 +18,23 @@
        <button type="button" @click="displayNextImage()">Next</button> -->
       <div class="container"> 
         <div class="left-right-img-container"> 
-          <h1 class="underline">POJO Minis</h1>
-          <h1>For students in Grades K-2 that are insterested in Softabll</h1>
+          <h2 class="underline">POJO Minis</h2>
+          <h2>For students in Grades K-2 that are insterested in Softabll</h2>
         </div>
         <div class="logo-container"> 
-          <img src="../Images/pojoLogo.png" />
+          <img src="../Images/pojoLogo.png" Height="400px" />
         </div>
         <div class="left-right-img-container"> 
-          <h1 class="underline">POJO Leauge</h1>
-          <h1>For students in Grades 3-6 that are interested in softball</h1>
+          <h2 class="underline">POJO Leauge</h2>
+          <h2>For students in Grades 3-6 that are interested in softball</h2>
         </div>
       </div>
-
-      
-
-
-
-
-
-      <!-- <vue-flux
-        :options="options"
-        :images="images"
-        :transitions="transitions">
-
-        <template v-slot:controls>
-            <flux-controls />
-        </template>
-      </vue-flux> -->
+      <div class="news-announcemnets-cont">
+        <h1 class="news-announcements">News and Announcements</h1>
+        <div class="single-news-annoucement-container">
+          <h2>POJO 2023 Draft Results: <a href="https://docs.google.com/document/d/1gnrJC-TvvM1OJ0kKvEtzZmfKbwyFjSWVUSvql_6ckAU/edit?usp=sharing">Click Here!</a></h2>
+        </div>
+      </div>
     </div>
   </template>
   <script>
@@ -103,20 +93,20 @@
             if (this.x === this.home_page_images.length - 1) {
               this.x = 0
             } else {
-              this.x++;
+              this.x = this.x + 1;
             }
+            // console.log(this.home_page_images.length)
+            // this.x = this.x + 1;
             document.getElementById("img").src = this.home_page_images[this.x]?.Image;
             document.getElementById('img-description').innerText = this.home_page_images[this.x]?.Description;
         },
-        displayPreviousImage() {
-            this.x = (this.x <= 0) ? this.home_page_images.length - 1 : this.x - 1;
-            document.getElementById("img").src = this.home_page_images[this.x]?.Image;
-            document.getElementById('img-description').innerText = this.home_page_images[this.x]?.Description;
-
-
-        },
+        // displayPreviousImage() {
+        //     this.x = (this.x <= 0) ? this.home_page_images.length - 1 : this.x - 1;
+        //     document.getElementById("img").src = this.home_page_images[this.x]?.Image;
+        //     document.getElementById('img-description').innerText = this.home_page_images[this.x]?.Description;
+        // },
         startTimer() {
-            setInterval(this.displayNextImage, 20000);
+            setInterval(this.displayNextImage, 10000);
         },
       }
     }  
@@ -129,7 +119,6 @@
     display: flex;
   }
   .logo-container  {
-    width: 25%;
     margin: auto;
   }
 
@@ -140,7 +129,7 @@
 
   .underline {
     text-decoration: underline;
-    margin-top: 200px;
+    margin-top: 100px;
   }
 
   .image-container {
@@ -157,6 +146,20 @@
     text-align: center;
     font-size: 25px;
     color: white;
+  }
+
+  .news-announcements {
+    text-align: center;
+  }
+
+  .news-announcemnets-cont {
+    margin-top: 100px;
+    color: white;
+  }
+
+  .single-news-annoucement-container {
+    margin-top: 30px;
+    margin-bottom: 30p
   }
   
   </style>

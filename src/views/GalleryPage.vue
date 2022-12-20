@@ -67,7 +67,7 @@
           @click="openImageViewer(image)"
         >
           <img :src="image.Image" class="scale-down" Height="300px" Width="400px"/>
-          <a v-if="loginStore.loggedIn" @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a>
+          <!-- <a v-if="loginStore.loggedIn" @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a> -->
         </div> 
       </div>
       <ImageViewerModal
@@ -223,7 +223,7 @@
 
   .tag-container {
     float: left;
-    margin-left: 70px;
+    margin-left: 30px;
   }
 
   .tag-label {
@@ -240,7 +240,7 @@
     color: white;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 70px;
+    margin-left: 30px;
   }
 
   .tag-dropdown {
@@ -261,7 +261,7 @@
 
   input[type="file"] {
     font-size: 18px;
-    margin-left: 70px;
+    margin-left: 30px;
     margin-bottom: 30px;
   }
 
@@ -281,16 +281,16 @@
 
   .upload-button-container {
     width: 30%;
-    margin-left: 120px;
+    margin-left: 80px;
   }
 
   .grid-container {
-    width: 78%;
+    width: 70%;
     float: right;
     display: grid;
     gap: 10px;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
+    grid-template-columns: auto auto;
+    padding-left: 10px;
 }
 
 .grid-item {
@@ -322,7 +322,7 @@
   float: left;
   width: 100%;
   margin-top: 20px;
-  margin-left: 70px;
+  margin-left: 30px;
 }
 
 .remove-condition {
@@ -336,7 +336,7 @@
   margin-top: 20px;
   text-decoration: underline;
   color: blue;
-  margin-left: 70px;
+  margin-left: 30px;
 }
 
 .tag-on-image {
