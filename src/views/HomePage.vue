@@ -3,7 +3,7 @@
       <TopPageHeader />
       <div class="image-container">
         <figure>
-          <img id="img" :src="home_page_images.length ? home_page_images[this.x]?.Image : null" Height="700px" Width="1080px"/>
+          <img id="img" class="home-page-image" :src="home_page_images.length ? home_page_images[this.x]?.Image : null" Height="700px" Width="1080px"/>
           <figcaption id="img-description" class="caption">{{ home_page_images.length ? home_page_images[this.x]?.Description : null }}</figcaption>
         </figure>
       </div>
@@ -22,7 +22,7 @@
           <h2>For students in Grades K-2 that are insterested in Softabll</h2>
         </div>
         <div class="logo-container"> 
-          <img src="../Images/pojoLogo.png" Height="400px" />
+          <img class="home-page-image" src="../Images/pojoLogo.png" Height="400px" />
         </div>
         <div class="left-right-img-container"> 
           <h2 class="underline">POJO Leauge</h2>
@@ -32,19 +32,18 @@
       <div class="news-announcemnets-cont">
         <h1 class="news-announcements">News and Announcements</h1>
         <div class="single-news-annoucement-container">
-          <h2>POJO 2023 Draft Results: <a href="https://docs.google.com/document/d/1gnrJC-TvvM1OJ0kKvEtzZmfKbwyFjSWVUSvql_6ckAU/edit?usp=sharing">Click Here!</a></h2>
+          <h2>POJO 2023 Draft Results: <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button></h2>
         </div>
       </div>
+      <!-- <SponsorsSection /> -->
     </div>
   </template>
   <script>
     import TopPageHeader from '../components/TopPageHeader.vue';
     import NavBar from '../components/NavBar.vue';
     import VueCountdown from '@chenfengyuan/vue-countdown';
-//     import {
-//       VueFlux,
-//       FluxControls
-// } from 'vue-flux';
+    // import SponsorsSection from '../components/SponsorsSection.vue'
+
     import {
         useLoadHomePageImages,
         useLoadEventsForCountdown,
@@ -54,9 +53,8 @@
       components: {
         TopPageHeader,
         NavBar,
-        VueCountdown
-        // VueFlux,
-        // FluxControls,
+        VueCountdown,
+        // SponsorsSection
       },
       data () {
         return {
@@ -162,5 +160,41 @@
     margin-bottom: 30p
   }
   
+  .view-results-button {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 15px 40px 15px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 16.2px;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    margin-right: 15px;
+    margin-left: 30px;
+  }
+
+  .no-anchor-styling {
+    color: white; 
+    text-decoration: none;
+  }
+
+  .home-page-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .default-slider .swiper-slide {
+    display: flex;
+    height: 300px !important;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
   </style>
   

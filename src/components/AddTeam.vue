@@ -1,7 +1,7 @@
 <template>
   <ModalStencil
     v-if="this.show"
-    modal_type="event_modal"
+    modal_type="add_team_modal"
   >
     <template v-slot:header>
       <h2 class="modal-title">{{ this.tournament_or_event.tournament_name }}</h2>

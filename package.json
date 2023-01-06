@@ -20,10 +20,12 @@
     "epic-spinners": "^2.0.0",
     "firebase": "^9.14.0",
     "laravel": "^0.0.1",
+    "swiper": "^8.4.5",
     "vue": "^3.2.45",
     "vue-flux": "^5.1.9",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^4.1.6",
+    "vue-slick-carousel": "^1.0.6",
     "vue-uuid": "^3.0.0"
   },
   "devDependencies": {

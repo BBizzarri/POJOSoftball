@@ -41,6 +41,8 @@ export default {
           return 'more-info-container-image';
         } else if (this.modal_type === 'more_info_modal_no_image') {
           return 'more-info-container-no-image';
+        } else if (this.modal_type === 'add_team_modal') {
+          return 'add-team-modal';
         } else {
           return null;
         }
@@ -69,8 +71,9 @@ export default {
 
 .tournament-modal-container {
   width: 400px;
-  height: auto;
+  height: 80%;
   margin: 0px auto;
+  overflow: auto;
   padding: 20px 30px;
   padding-bottom: 40px;
   background-color: #808080;
@@ -81,8 +84,9 @@ export default {
 
 .event-modal-container {
   width: 400px;
-  height: auto;
+  height: 85%;
   margin: 0px auto;
+  overflow: auto;
   padding: 20px 30px;
   padding-bottom: 40px;
   background-color: #808080;
@@ -93,8 +97,9 @@ export default {
 
 .more-info-container-image {
   width: 1000px;
-  height: auto;
+  height: 85%;
   margin: 0px auto;
+  overflow: auto;
   padding: 20px 30px;
   padding-bottom: 40px;
   background-color: #808080;
@@ -106,6 +111,18 @@ export default {
 .more-info-container-no-image {
   width: 400px;
   height: auto;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.add-team-modal {
+  width: 400px;
+  height: 30%;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;

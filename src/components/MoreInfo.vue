@@ -70,7 +70,7 @@
               class="team-names"
             > 
               <tr>
-                <td>{{ index + 1 + '. ' + team.name }}</td>
+                <td>{{ index + 1 + '. ' + team.name + ' (' + team.age_group + ')' }}</td>
                 <td><a v-if="loginStore.loggedIn" class="delete-team" @click="deleteTeam(index)"><img title="Delete team" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
               </tr>
             </table>
