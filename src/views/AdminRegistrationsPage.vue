@@ -29,7 +29,8 @@
             <button v-if="this.loginStore.loggedIn" class="add-tournament-button" id="show-modal" @click="openTournamentAddEditModal('add')">Add New Tournament</button>
           </div>
         </div>
-        <div 
+        <div
+          v-if="tournaments_to_show.length" 
           class="table-cont"
         >
           <table>
@@ -59,88 +60,10 @@
               <td v-if="this.loginStore.loggedIn"><a class="register-link" @click="openAddTeamModal(tournament.id)"><img title="Add team" src="../Images/Add.png" Height="20px" Width="20px"></a></td>
             </tr>
           </table>
-          <ModalStencil
-            v-if="showTournamentModal"
-            modal_type="tournament_modal"
-          >
-            <template v-slot:header>
-              <h2 class="modal-title">{{ this.tournament_info.tournament_name || 'New Tournament' }}</h2>
-            </template>
-            <template v-slot:body>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="tournamentName">Tournament Name</label>
-                <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2" id="tournament-name" v-model="tournament_info.tournament_name" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="description">Description</label>
-                <input type="text" name="description" class="form-control mb-2 mr-sm-2" id="description" v-model="tournament_info.description">
-              </div>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="ageGroup">AgeGroup</label>
-                <input type="text" name="ageGroup" class="form-control mb-2 mr-sm-2" id="age-group" v-model="tournament_info.age_group" required>
-              </div>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="startDate">Start Date</label>
-                <input type="date" name="startDate" class="form-control mb-2 mr-sm-2" id="start-date" v-model="tournament_info.start_date" required>
-              </div>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="endDate">End Date</label>
-                <input type="date" name="endDate" class="form-control mb-2 mr-sm-2" id="end-date" v-model="tournament_info.end_date" required>
-              </div>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="location">Location</label>
-                <input type="text" name="location" class="form-control mb-2 mr-sm-2" id="location" v-model="tournament_info.location" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="gameGuarantee">Game Guarantee</label>
-                <input type="number" name="gameGuarantee" class="form-control mb-2 mr-sm-2" id="game-guarantee" v-model="tournament_info.game_guarentee" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="cost">Cost</label>
-                <input type="number" name="cost" class="form-control mb-2 mr-sm-2" id="cost" v-model="tournament_info.cost" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="teamMax">Team Max</label>
-                <input type="number" name="teamMax" class="form-control mb-2 mr-sm-2" id="team-max" v-model="tournament_info.team_max" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="contactName">Contact Name</label>
-                <input type="text" name="contactName" class="form-control mb-2 mr-sm-2" id="contact-name"  v-model="tournament_info.contact_name" required>
-              </div>  
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
-                <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2" id="contact-phone"  v-model="tournament_info.contact_phone" required>
-              </div>  
-              <div class="form-input-cont">
-                <div
-                  class="previewBlock"
-                  @click="chooseFile"
-                  :style="{ 'background-image': `url(${filePreview})` }">
-                </div>
-                <div>
-                  <input
-                      class="form-control form-control-lg"
-                      ref="fileInput"
-                      type="file"
-                      accept="image/*"
-                      id="formFileLg"
-                      @change="selectImgFile('tournament')">
-                </div>
-              </div>
-              <div class="form-input-cont">
-                <label class="sr-only form-label" for="coverImage">Show Tournament</label>
-                <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="tournament_info.show">
-              </div>
-            </template>
-            <template v-slot:footer>
-              <div class="form-button-cont">
-                <button type="submit" class="form-cancel-button" @click="closeModal('tournament')">Cancel</button>
-                <button type="submit" class="form-submit-button" @click="addEditNewTournament">Submit</button>
-              </div>
-            </template>
-          </ModalStencil>
         </div>
-        <!-- <h2 v-else class="no-events-tournaments">Stay tuned for 2023 tournaments</h2> -->
+        <div v-else> 
+          <h2 class="no-events-tournaments">Stay tuned for 2023 tournaments</h2>
+        </div>
       </div>
       <div>
         <div>
@@ -152,6 +75,7 @@
           </div>
         </div>  
         <div 
+          v-if="events_to_show.legnth"
           class="table-cont"
         >
           <table>
@@ -179,82 +103,164 @@
                 <td v-if="this.loginStore.loggedIn" class="checkbox"><input type="checkbox" name="event_visible" style="pointer-events: none;" :checked="event.ShowEvent" /></td>
               </tr>
           </table>
-          <ModalStencil
-            v-if="showEventModal"
-            modal_type="event_modal"
-          >
-              <template v-slot:header>
-                <h2 class="modal-title">{{ this.event_info.event_name || 'New Event' }}</h2>
-              </template>
-              <template v-slot:body>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="eventName">Event Name</label>
-                  <input type="text" name="eventName" class="form-control mb-2 mr-sm-2" id="event-name" v-model="event_info.event_name" required>
-                </div>  
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="description">Description</label>
-                  <input type="text" name="description" class="form-control mb-2 mr-sm-2" id="description" v-model="event_info.description">
-                </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="startTime">Start Time</label>
-                  <input type="text" name="startTime" class="form-control mb-2 mr-sm-2" id="start-time" v-model="event_info.start_time" required>
-                </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="endTime">End Time</label>
-                  <input type="text" name="endTime" class="form-control mb-2 mr-sm-2" id="end-time" v-model="event_info.end_time" required>
-                </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="startDate">Start Date</label>
-                  <input type="date" name="startDate" class="form-control mb-2 mr-sm-2" id="start-date" v-model="event_info.start_date" required>
-                </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="endDate">End Date</label>
-                  <input type="date" name="endDate" class="form-control mb-2 mr-sm-2" id="end-date" v-model="event_info.end_date" required>
-                </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="location">Location</label>
-                  <input type="text" name="location" class="form-control mb-2 mr-sm-2" id="location" v-model="event_info.location" required>
-                </div>  
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="contactName">Contact Name</label>
-                  <input type="text" name="contactName" class="form-control mb-2 mr-sm-2" id="contact-name"  v-model="event_info.contact_name" required>
-                </div>  
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
-                  <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2" id="contact-phone"  v-model="event_info.contact_phone" required>
-                </div>  
-                <div class="form-input-cont">
-                <div
-                  class="previewBlock"
-                  @click="chooseFile"
-                  :style="{ 'background-image': `url(${filePreview})` }">
-                </div>
-                <div>
-                  <input
-                      class="form-control form-control-lg"
-                      ref="fileInput"
-                      type="file"
-                      accept="image/*"
-                      id="formFileLg"
-                      @change="selectImgFile('event')">
-                </div>
-              </div>
-                <div class="form-input-cont">
-                  <label class="sr-only form-label" for="coverImage">Show Event</label>
-                  <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="event_info.show">
-                </div>
-              </template>
-              <template v-slot:footer>
-                <div class="form-button-cont">
-                  <button type="submit" class="form-cancel-button" @click="closeModal('event')">Cancel</button>
-                  <button type="submit" class="form-submit-button" @click="addEditNewEvent">Submit</button>
-                </div>
-              </template>
-            </ModalStencil>
         </div>
-        <!-- <h2 v-else class="no-events-tournaments">Stay tuned for 2023 events</h2> -->
+        <div v-else> 
+          <h2 class="no-events-tournaments">Stay tuned for 2023 events</h2>
+        </div>
       </div>
-      <BottomFooter />
+      <SponsorsSection />
+      <ModalStencil
+        v-if="showTournamentModal"
+        modal_type="tournament_modal"
+      >
+        <template v-slot:header>
+          <h2 class="modal-title">{{ this.tournament_info.tournament_name || 'New Tournament' }}</h2>
+        </template>
+        <template v-slot:body>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="tournamentName">Tournament Name</label>
+            <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2 form-input" id="tournament-name" v-model="tournament_info.tournament_name" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="description">Description</label>
+            <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="tournament_info.description">
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="ageGroup">AgeGroup</label>
+            <input type="text" name="ageGroup" class="form-control mb-2 mr-sm-2 form-input" id="age-group" v-model="tournament_info.age_group" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="startDate">Start Date</label>
+            <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="tournament_info.start_date" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="endDate">End Date</label>
+            <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="tournament_info.end_date" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="location">Location</label>
+            <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="tournament_info.location" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="gameGuarantee">Game Guarantee</label>
+            <input type="number" name="gameGuarantee" class="form-control mb-2 mr-sm-2 form-input" id="game-guarantee" v-model="tournament_info.game_guarentee" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="cost">Cost</label>
+            <input type="number" name="cost" class="form-control mb-2 mr-sm-2 form-input" id="cost" v-model="tournament_info.cost" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="teamMax">Team Max</label>
+            <input type="number" name="teamMax" class="form-control mb-2 mr-sm-2 form-input" id="team-max" v-model="tournament_info.team_max" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="contactName">Contact Name</label>
+            <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="tournament_info.contact_name" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
+            <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="tournament_info.contact_phone" required>
+          </div>  
+          <div class="form-input-cont">
+            <div
+              class="previewBlock"
+              @click="chooseFile"
+              :style="{ 'background-image': `url(${filePreview})` }">
+            </div>
+            <div>
+              <input
+                  class="form-control form-control-lg"
+                  ref="fileInput"
+                  type="file"
+                  accept="image/*"
+                  id="formFileLg"
+                  @change="selectImgFile('tournament')">
+            </div>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="coverImage">Show Tournament</label>
+            <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="tournament_info.show">
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="form-button-cont-tournament">
+            <button type="submit" class="form-cancel-button" @click="closeModal('tournament')">Cancel</button>
+            <button type="submit" class="form-submit-button" @click="addEditNewTournament">Submit</button>
+          </div>
+        </template>
+      </ModalStencil>
+      <ModalStencil
+        v-if="showEventModal"
+        modal_type="event_modal"
+      >
+        <template v-slot:header>
+          <h2 class="modal-title">{{ this.event_info.event_name || 'New Event' }}</h2>
+        </template>
+        <template v-slot:body>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="eventName">Event Name</label>
+            <input type="text" name="eventName" class="form-control mb-2 mr-sm-2 form-input" id="event-name" v-model="event_info.event_name" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="description">Description</label>
+            <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="event_info.description">
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="startTime">Start Time</label>
+            <input type="text" name="startTime" class="form-control mb-2 mr-sm-2 form-input" id="start-time" v-model="event_info.start_time" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="endTime">End Time</label>
+            <input type="text" name="endTime" class="form-control mb-2 mr-sm-2 form-input" id="end-time" v-model="event_info.end_time" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="startDate">Start Date</label>
+            <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="endDate">End Date</label>
+            <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="event_info.end_date" required>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="location">Location</label>
+            <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="event_info.location" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="contactName">Contact Name</label>
+            <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="event_info.contact_name" required>
+          </div>  
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
+            <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="event_info.contact_phone" required>
+          </div>  
+          <div class="form-input-cont">
+            <div
+              class="previewBlock"
+              @click="chooseFile"
+              :style="{ 'background-image': `url(${filePreview})` }">
+            </div>
+            <div>
+              <input
+                  class="form-control form-control-lg"
+                  ref="fileInput"
+                  type="file"
+                  accept="image/*"
+                  id="formFileLg"
+                  @change="selectImgFile('event')">
+            </div>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="coverImage">Show Event</label>
+            <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="event_info.show">
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="form-button-cont-event">
+            <button type="submit" class="form-cancel-button" @click="closeModal('event')">Cancel</button>
+            <button type="submit" class="form-submit-button" @click="addEditNewEvent">Submit</button>
+          </div>
+        </template>
+      </ModalStencil>
       <MoreInfo
         :show="showMoreInfo"
         :tournament_or_event="showMoreInfoType === 'tournament' ? tournament_info : event_info"
@@ -275,10 +281,10 @@
   import TopPageHeader from '../components/TopPageHeader.vue';
   import NavBar from '../components/NavBar.vue';
   import { loginStore } from '../components/LoginModal';
-  import BottomFooter from '../components/BottomFooter';
   import ModalStencil from "../components/ModalStencil";
   import MoreInfo from "../components/MoreInfo";
   import AddTeam from "../components/AddTeam";
+  import SponsorsSection from '../components/SponsorsSection';
   import { 
     createTournament,
     updateTournament,
@@ -299,7 +305,7 @@
       components: { 
         NavBar,
         TopPageHeader,
-        BottomFooter,
+        SponsorsSection,
         ModalStencil,
         MoreInfo,
         AddTeam
@@ -468,7 +474,6 @@
           const arr_end_date = end_date.split('-');
 
           if (arr_start_date[1].charAt( 0 ) === '0') {
-            console.log('here')
             arr_start_date[1] = arr_start_date[1].substring(1);
           }
           if (arr_end_date[1].charAt( 0 ) === '0') {
@@ -573,6 +578,7 @@
           }  
         },
         openEventAddEditModal (mode, event_id) {
+          console.log('here')
           if (mode === 'edit') {
             this.event_add_edit = 'edit';
             this.event_id_to_edit = event_id;
@@ -589,8 +595,10 @@
             this.event_info.cover_image = event_to_edit.CoverImage;
             this.event_info.show = event_to_edit.ShowEvent;
           } else {
+            console.log('in else')
             this.event_add_edit = 'add';
           }
+          console.log('settig show event modal true')
           this.showEventModal = true;
         },
         async deleteEvent (event_id) {
@@ -772,7 +780,7 @@
     }
 
     .add-button-container {
-      width: 20%;
+      width: 35%;
       float: left;
     }
   
@@ -861,44 +869,85 @@
     text-align: left;
     color: white;
     padding-right: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Segoe UI,sans-serif!important;
+  }
+
+  .form-input {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 275px;
   }
   
-  .form-button-cont {
+  .form-button-cont-event {
+    float: right;
+    margin-top: 50px;
+  }
+
+  .form-button-cont-tournament {
     float: right;
   }
   
   .form-submit-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding:15px 40px 15px 40px;
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
     text-align: center;
     text-decoration: none;
-    border-radius:16.2px;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
   }
   
   .form-cancel-button {
-    background-color: red; 
-    border: none;
-    color: white;
-    padding:15px 40px 15px 40px;
-    text-align: center;
-    border-radius:16.2px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
     cursor: pointer;
-    margin-right: 15px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: #333;
+    height: 40px;
+    min-width: 125px;
+    border: 1px solid transparent;
+    border-radius: 4px;
   }
   
   .add-tournament-button {
     float: right;
     margin-top: 20px;
+    margin-right: 150px;
     padding: 10px;
     margin-bottom: 50px;
   }
@@ -912,6 +961,10 @@
 
   .checkbox {
     text-align: center;
+  }
+
+  .extra-space {
+    width: 35%;
   }
   
     </style>

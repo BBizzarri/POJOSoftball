@@ -2,7 +2,7 @@
     <div>
       <TopPageHeader />
       <NavBar />
-      <div class="left-panel">
+      <!-- <div class="left-panel">
         <div v-if="loginStore.loggedIn" class="image-upload-section">
           <div
             class="previewBlock"
@@ -58,7 +58,7 @@
             <a @click="addFilterCondition()">Add condition</a>
           </div> 
         </div>
-      </div>
+      </div> -->
       <div class="grid-container">
         <div
           v-for="image in gallery_images"
@@ -82,24 +82,25 @@
         :size="90"
         color="#ff1d5e"
       />
+      <SponsorsSection />
     </div>
   </template>
   <script>
     import TopPageHeader from '../components/TopPageHeader.vue';
     import NavBar from '../components/NavBar.vue';
-    import Multiselect from '@vueform/multiselect'
     import { createGalleryImage, useLoadGalleryImageTags, useLoadGalleryImages, deleteGalleryImage } from '../firebase.js';
     import { loginStore } from '../components/LoginModal';
     import ImageViewerModal from '../components/ImageViewerModal.vue';
     import { HalfCircleSpinner } from 'epic-spinners'
+    import SponsorsSection from '@/components/SponsorsSection';
     export default {
       name: 'GalleryPage',
       components: {
         TopPageHeader,
         NavBar,
-        Multiselect,
         ImageViewerModal,
-        HalfCircleSpinner
+        HalfCircleSpinner,
+        SponsorsSection
       },
       data () {
         return {
@@ -285,11 +286,11 @@
   }
 
   .grid-container {
-    width: 70%;
+    width: 100%;
     float: right;
     display: grid;
     gap: 10px;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     padding-left: 10px;
 }
 

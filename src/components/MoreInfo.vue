@@ -63,17 +63,23 @@
             >
               <h3>There are currently no registered teams</h3>
             </div>
-            <table
+            <div 
               v-else
-              v-for="(team, index) in tournament_or_event.registered_teams"
-              :key="team.name"
-              class="team-names"
-            > 
-              <tr>
-                <td>{{ index + 1 + '. ' + team.name + ' (' + team.age_group + ')' }}</td>
-                <td><a v-if="loginStore.loggedIn" class="delete-team" @click="deleteTeam(index)"><img title="Delete team" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
-              </tr>
-            </table>
+              v-for="age in age_groups"
+              :key="age"
+            >
+              <p class="team-names">{{ age }}</p>
+              <table
+                v-for="(team, index) in tournament_or_event.registered_teams"
+                :key="team.name"
+                class="team-names"
+              > 
+                <tr v-if="team.age_group === age">
+                  <td>{{ index + 1 + '. ' + team.name + ' (' + team.age_group + ')' }}</td>
+                  <td><a v-if="loginStore.loggedIn" class="delete-team" @click="deleteTeam(index)"><img title="Delete team" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
+                </tr>
+              </table>
+            </div>
           </div>  
           <div class="form-button-cont form-button-margin">
           <button type="submit" class="large close-button" @click="closeModal()">Close</button>
@@ -169,6 +175,20 @@ export default {
         loginStore
       }
     },
+    computed: {
+      age_groups () {
+        console.log(this.tournament_or_event?.registered_teams)
+        const age_groups = []
+        this.tournament_or_event?.registered_teams.forEach(team => {
+          if (!age_groups.includes(team.age_group)) {
+            age_groups.push(team.age_group)
+          }
+        })
+        console.log('age groups')
+        console.log(age_groups)
+        return age_groups
+      }
+    },
     methods: {
       closeModal () {
         this.$emit('close')
@@ -176,7 +196,6 @@ export default {
       getDate (date) {
         const arr_date = date.split('-');
         if (arr_date[1].charAt( 0 ) === '0') {
-          console.log('here')
           arr_date[1] = arr_date[1].substring(1);
         }
         const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -254,6 +273,7 @@ label {
 
 .form-button-margin {
   margin-bottom: 80px;
+  float: right;
 }
 
 .teams-container {
@@ -270,16 +290,28 @@ label {
 }
 
 .close-button {
-  float: right;
-  border:5.4px solid red;
-  border-radius:16.2px;
-  padding:15px 40px 15px 40px;
-  margin:0;
-  background-color:red;
-  color: white;
-  font-weight:500;
-  opacity:1;
-  transition:1s;
+  background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
 }
 
 .delete-team {

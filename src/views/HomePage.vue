@@ -35,14 +35,14 @@
           <h2>POJO 2023 Draft Results: <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button></h2>
         </div>
       </div>
-      <!-- <SponsorsSection /> -->
+      <SponsorsSection />
     </div>
   </template>
   <script>
     import TopPageHeader from '../components/TopPageHeader.vue';
     import NavBar from '../components/NavBar.vue';
     import VueCountdown from '@chenfengyuan/vue-countdown';
-    // import SponsorsSection from '../components/SponsorsSection.vue'
+    import SponsorsSection from '../components/SponsorsSection.vue'
 
     import {
         useLoadHomePageImages,
@@ -54,7 +54,7 @@
         TopPageHeader,
         NavBar,
         VueCountdown,
-        // SponsorsSection
+        SponsorsSection
       },
       data () {
         return {
@@ -161,19 +161,28 @@
   }
   
   .view-results-button {
-    background-color: green;
-    border: none;
-    color: white;
-    padding: 15px 40px 15px 40px;
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    border-radius: 16.2px;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    margin-right: 15px;
-    margin-left: 30px;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
   }
 
   .no-anchor-styling {

@@ -7,6 +7,8 @@ import MoreInfo from "../components/MoreInfo"
 import AdminSettings from "../views/AdminSettings.vue"
 import HomePage from "../views/HomePage.vue"
 import GalleryPage from "../views/GalleryPage.vue"
+import CalendarPage from "../views/CalendarPage.vue"
+import AboutUs from "../views/AboutUs.vue"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
@@ -49,6 +51,16 @@ const routes = [
         path: "/gallery",
         name: "GalleryPage",
         component: GalleryPage
+    },
+    {
+        path: "/calendar",
+        name: "CalendarPage",
+        component: CalendarPage
+    },
+    {
+        path: "/aboutus",
+        name: "AboutUs",
+        component: AboutUs
     }
 
 ]

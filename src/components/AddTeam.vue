@@ -9,11 +9,11 @@
     <template v-slot:body>
       <div class="form-input-cont">
         <label class="sr-only form-label" for="tournamentName">Team Name</label>
-        <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2" id="tournament-name" v-model="team_info.name" required>
+        <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2 form-input" id="tournament-name" v-model="team_info.name" required>
       </div>  
       <div class="form-input-cont">
         <label class="sr-only form-label" for="description">Age Group</label>
-        <input type="text" name="description" class="form-control mb-2 mr-sm-2" id="description" v-model="team_info.age_group">
+        <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="team_info.age_group">
       </div>
     </template>
     <template v-slot:footer>
@@ -109,6 +109,16 @@ export default {
   margin-bottom: 20px;
   font-size: 20px;
 }
+
+.form-input {
+  border: 1px solid #ced4da;
+  border-radius: 2px;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+  height: 35px;
+  outline: none;
+  padding: 0 10px;
+  width: 210px;
+}
 .title {
   color: white;
 }
@@ -145,6 +155,20 @@ label {
   padding-bottom: 450px;
 }
 
+.modal-title {
+  color: white;
+}
+
+.form-label {
+  padding-right: 30px;
+  display: inline-block;
+  width: 100px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: Segoe UI,sans-serif!important;
+}
+
 .close-button {
   float: right;
   border:5.4px solid red;
@@ -157,4 +181,60 @@ label {
   opacity:1;
   transition:1s;
 }
+
+.form-button-cont {
+  float: right;
+  margin-top: 20px;
+}
+
+.form-submit-button {
+  background: #293b51;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-family: Segoe UI,sans-serif!important;
+  font-size: 13px;
+  font-weight: 600;
+  height: 40px;
+  letter-spacing: .5px;
+  margin: 0 8px;
+  min-width: 125px;
+  opacity: 1;
+  outline: 0;
+  padding: 0 8px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  transition: opacity .3s ease-out;
+  vertical-align: middle;
+  width: auto;
+}
+  
+  .form-cancel-button {
+    cursor: pointer;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: #333;
+    height: 40px;
+    min-width: 125px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
 </style>

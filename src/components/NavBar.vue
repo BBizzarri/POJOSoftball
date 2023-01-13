@@ -1,10 +1,10 @@
 <template>
     <nav class="nav">
         <router-link to="/"><li class="menu-item">Home</li></router-link>
-        <router-link v-if="!this.loginStore.hide" to="/calender"><li class="menu-item">Calender</li></router-link>
+        <router-link v-if="!this.loginStore.hide" to="/calendar"><li class="menu-item">Calender</li></router-link>
         <router-link v-if="!this.loginStore.hide" to="/gallery"><li class="menu-item">Gallery</li></router-link>
         <router-link to="/adminregistration"><li class="menu-item">Registrations</li></router-link>
-        <router-link v-if="!this.loginStore.hide" to="/about"><li class="menu-item">About us</li></router-link>
+        <router-link v-if="!this.loginStore.hide" to="/aboutus"><li class="menu-item">About us</li></router-link>
         <router-link to="/settings"><li v-if="loginStore.loggedIn" class="menu-item">Settings</li></router-link>
         <router-link to="/login" replace><li class="menu-item right"><a @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</a></li></router-link>
     </nav>

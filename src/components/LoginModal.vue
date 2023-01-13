@@ -21,7 +21,7 @@ import firebase from 'firebase/compat/app';
 import { HalfCircleSpinner } from 'epic-spinners'
 export const loginStore = reactive({
   loggedIn: false,
-  hide: true
+  hide: false
 })
 export default {
     name: 'LoginModal',

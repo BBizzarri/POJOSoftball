@@ -26,7 +26,7 @@
             <textarea @input="updateImageDescription($event.target.value)" rows="4" cols="50" />
           </div>
           <div class="margin-all-around"> 
-              <button @click="uploadHomePageImage()">Upload</button>
+              <button class="form-submit-button" @click="uploadHomePageImage()">Upload</button>
           </div>
         </div>
         <div class="image-list"> 
@@ -53,7 +53,7 @@
           @input="updateImageTag($event.target.value)"
         />
         <div class="create-button-container"> 
-          <button @click="createTag()">Create</button>
+          <button class="form-submit-button" @click="createTag()">Create</button>
         </div>
       </div>
       <div> 
@@ -201,7 +201,7 @@ td {
 
 .create-button-container {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-bottom: 300px;
 }
 
@@ -209,5 +209,30 @@ td {
   font-weight: bold;
   text-decoration: underline;
 }
+
+.form-submit-button {
+  background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+  }
 
 </style>

@@ -88,32 +88,54 @@
     }
   
     .form-submit-button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding:15px 40px 15px 40px;
+      background: #293b51;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      font-family: Segoe UI,sans-serif!important;
+      font-size: 13px;
+      font-weight: 600;
+      height: 40px;
+      letter-spacing: .5px;
+      margin: 0 8px;
+      min-width: 125px;
+      opacity: 1;
+      outline: 0;
+      padding: 0 8px;
+      position: relative;
       text-align: center;
       text-decoration: none;
-      border-radius:16.2px;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
+      text-overflow: ellipsis;
+      transition: opacity .3s ease-out;
+      vertical-align: middle;
+      width: auto;
     }
     
-    .form-cancel-button {
-    background-color: red; 
-    border: none;
-    color: white;
-    padding:15px 40px 15px 40px;
+  .form-cancel-button {
+    cursor: pointer;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    border-radius:16.2px;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    margin-right: 15px;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: #333;
+    height: 40px;
+    min-width: 125px;
+    border: 1px solid transparent;
+    border-radius: 4px;
   }
 
   .edit_tag-container {

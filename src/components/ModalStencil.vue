@@ -70,7 +70,7 @@ export default {
 }
 
 .tournament-modal-container {
-  width: 400px;
+  width: 500px;
   height: 80%;
   margin: 0px auto;
   overflow: auto;
@@ -83,7 +83,7 @@ export default {
 }
 
 .event-modal-container {
-  width: 400px;
+  width: 500px;
   height: 85%;
   margin: 0px auto;
   overflow: auto;
