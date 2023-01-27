@@ -8,7 +8,7 @@
           <p class="description">The POJO League runs from the beginning of the year through the middle of June. Games take place from the end of April through the middle of June. The leauge is open to girls from 3rd-6th grade. Each girl that registers will be put through the draft in order to be placed on one of our teams.</p>
         </div>
         <div class="right-child">  
-          <button id="btn-league-register" class="button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
+          <button id="btn-league-register" class="form-submit-button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
         </div>
       </div>  
       <div>
@@ -17,12 +17,12 @@
           <p class="description">The POJO Mini's League runs from the beginning of May through the middle of June. Practices are held every Wednesday and games are held on Saturday's. The leauge is open to girls from K-2nd grade. Each girl that registers will be put through the draft in order to be placed on one of our teams.</p>
         </div>
         <div class="right-child">  
-          <button id="btn-minis-register" class="button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
+          <button id="btn-minis-register" class="form-submit-button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
         </div>
       </div>  
       <div>
         <div>
-          <div class="heading-container-tournament">
+          <div :class="this.loginStore.loggedIn ? 'heading-container-admin' : 'heading-container'">
             <h1>Register For POJO Travel Ball Tournaments</h1>
           </div>
           <div class="add-button-container">
@@ -67,7 +67,7 @@
       </div>
       <div>
         <div>
-          <div class="heading-container-event">
+          <div :class="this.loginStore.loggedIn ? 'heading-container-admin' : 'heading-container'">
             <h1 class="heading">Register For POJO Events</h1>
           </div>
           <div class="add-button-container">
@@ -117,69 +117,73 @@
           <h2 class="modal-title">{{ this.tournament_info.tournament_name || 'New Tournament' }}</h2>
         </template>
         <template v-slot:body>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="tournamentName">Tournament Name</label>
-            <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2 form-input" id="tournament-name" v-model="tournament_info.tournament_name" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="description">Description</label>
-            <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="tournament_info.description">
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="ageGroup">AgeGroup</label>
-            <input type="text" name="ageGroup" class="form-control mb-2 mr-sm-2 form-input" id="age-group" v-model="tournament_info.age_group" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="startDate">Start Date</label>
-            <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="tournament_info.start_date" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="endDate">End Date</label>
-            <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="tournament_info.end_date" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="location">Location</label>
-            <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="tournament_info.location" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="gameGuarantee">Game Guarantee</label>
-            <input type="number" name="gameGuarantee" class="form-control mb-2 mr-sm-2 form-input" id="game-guarantee" v-model="tournament_info.game_guarentee" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="cost">Cost</label>
-            <input type="number" name="cost" class="form-control mb-2 mr-sm-2 form-input" id="cost" v-model="tournament_info.cost" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="teamMax">Team Max</label>
-            <input type="number" name="teamMax" class="form-control mb-2 mr-sm-2 form-input" id="team-max" v-model="tournament_info.team_max" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="contactName">Contact Name</label>
-            <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="tournament_info.contact_name" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
-            <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="tournament_info.contact_phone" required>
-          </div>  
-          <div class="form-input-cont">
-            <div
-              class="previewBlock"
-              @click="chooseFile"
-              :style="{ 'background-image': `url(${filePreview})` }">
+          <div class="add-tournament-modal-left-side">
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="tournamentName">Tournament Name</label>
+              <input type="text" name="tournamentName" class="form-control mb-2 mr-sm-2 form-input" id="tournament-name" v-model="tournament_info.tournament_name" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="description">Description</label>
+              <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="tournament_info.description">
             </div>
-            <div>
-              <input
-                  class="form-control form-control-lg"
-                  ref="fileInput"
-                  type="file"
-                  accept="image/*"
-                  id="formFileLg"
-                  @change="selectImgFile('tournament')">
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="ageGroup">AgeGroup</label>
+              <input type="text" name="ageGroup" class="form-control mb-2 mr-sm-2 form-input" id="age-group" v-model="tournament_info.age_group" required>
             </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="startDate">Start Date</label>
+              <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="tournament_info.start_date" required>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="endDate">End Date</label>
+              <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="tournament_info.end_date" required>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="location">Location</label>
+              <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="tournament_info.location" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="gameGuarantee">Game Guarantee</label>
+              <input type="number" name="gameGuarantee" class="form-control mb-2 mr-sm-2 form-input" id="game-guarantee" v-model="tournament_info.game_guarentee" required>
+            </div>  
           </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="coverImage">Show Tournament</label>
-            <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="tournament_info.show">
+          <div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="cost">Cost</label>
+              <input type="number" name="cost" class="form-control mb-2 mr-sm-2 form-input" id="cost" v-model="tournament_info.cost" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="teamMax">Team Max</label>
+              <input type="number" name="teamMax" class="form-control mb-2 mr-sm-2 form-input" id="team-max" v-model="tournament_info.team_max" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="contactName">Contact Name</label>
+              <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="tournament_info.contact_name" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
+              <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="tournament_info.contact_phone" required>
+            </div>  
+            <div class="form-input-cont">
+              <div
+                class="previewBlock"
+                @click="chooseFile"
+                :style="{ 'background-image': `url(${filePreview})` }">
+              </div>
+              <div>
+                <input
+                    class="form-control form-control-lg"
+                    ref="fileInput"
+                    type="file"
+                    accept="image/*"
+                    id="formFileLg"
+                    @change="selectImgFile('tournament')">
+              </div>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="coverImage">Show Tournament</label>
+              <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="tournament_info.show">
+            </div>
           </div>
         </template>
         <template v-slot:footer>
@@ -197,61 +201,65 @@
           <h2 class="modal-title">{{ this.event_info.event_name || 'New Event' }}</h2>
         </template>
         <template v-slot:body>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="eventName">Event Name</label>
-            <input type="text" name="eventName" class="form-control mb-2 mr-sm-2 form-input" id="event-name" v-model="event_info.event_name" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="description">Description</label>
-            <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="event_info.description">
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="startTime">Start Time</label>
-            <input type="text" name="startTime" class="form-control mb-2 mr-sm-2 form-input" id="start-time" v-model="event_info.start_time" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="endTime">End Time</label>
-            <input type="text" name="endTime" class="form-control mb-2 mr-sm-2 form-input" id="end-time" v-model="event_info.end_time" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="startDate">Start Date</label>
-            <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="endDate">End Date</label>
-            <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="event_info.end_date" required>
-          </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="location">Location</label>
-            <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="event_info.location" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="contactName">Contact Name</label>
-            <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="event_info.contact_name" required>
-          </div>  
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
-            <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="event_info.contact_phone" required>
-          </div>  
-          <div class="form-input-cont">
-            <div
-              class="previewBlock"
-              @click="chooseFile"
-              :style="{ 'background-image': `url(${filePreview})` }">
+          <div class="add-tournament-modal-left-side">
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="eventName">Event Name</label>
+              <input type="text" name="eventName" class="form-control mb-2 mr-sm-2 form-input" id="event-name" v-model="event_info.event_name" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="description">Description</label>
+              <input type="text" name="description" class="form-control mb-2 mr-sm-2 form-input" id="description" v-model="event_info.description">
             </div>
-            <div>
-              <input
-                  class="form-control form-control-lg"
-                  ref="fileInput"
-                  type="file"
-                  accept="image/*"
-                  id="formFileLg"
-                  @change="selectImgFile('event')">
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="startTime">Start Time</label>
+              <input type="text" name="startTime" class="form-control mb-2 mr-sm-2 form-input" id="start-time" v-model="event_info.start_time" required>
             </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="endTime">End Time</label>
+              <input type="text" name="endTime" class="form-control mb-2 mr-sm-2 form-input" id="end-time" v-model="event_info.end_time" required>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="startDate">Start Date</label>
+              <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="endDate">End Date</label>
+              <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="event_info.end_date" required>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="location">Location</label>
+              <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="event_info.location" required>
+            </div>  
           </div>
-          <div class="form-input-cont">
-            <label class="sr-only form-label" for="coverImage">Show Event</label>
-            <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="event_info.show">
+          <div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="contactName">Contact Name</label>
+              <input type="text" name="contactName" class="form-control mb-2 mr-sm-2 form-input" id="contact-name"  v-model="event_info.contact_name" required>
+            </div>  
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="contactPhone">Contact Phone</label>
+              <input type="text" name="contactPhone" class="form-control mb-2 mr-sm-2 form-input" id="contact-phone"  v-model="event_info.contact_phone" required>
+            </div>  
+            <div class="form-input-cont">
+              <div
+                class="previewBlock"
+                @click="chooseFile"
+                :style="{ 'background-image': `url(${filePreview})` }">
+              </div>
+              <div>
+                <input
+                    class="form-control form-control-lg"
+                    ref="fileInput"
+                    type="file"
+                    accept="image/*"
+                    id="formFileLg"
+                    @change="selectImgFile('event')">
+              </div>
+            </div>
+            <div class="form-input-cont">
+              <label class="sr-only form-label" for="coverImage">Show Event</label>
+              <input type="checkbox" name="showTournament" class="form-control mb-2 mr-sm-2" id="show-tournament" v-model="event_info.show">
+            </div>
           </div>
         </template>
         <template v-slot:footer>
@@ -769,12 +777,12 @@
     </style>
     <style scoped>
   
-    .heading-container-tournament {
-      width: 65%;
+    .heading-container {
+      width: 100%;
       float: left;
     }
 
-    .heading-container-event {
+    .heading-container-admin {
       width: 65%;
       float: left;
     }
@@ -886,11 +894,12 @@
   
   .form-button-cont-event {
     float: right;
-    margin-top: 50px;
+    margin-top: 260px;
   }
 
   .form-button-cont-tournament {
     float: right;
+    margin-top: 180px;
   }
   
   .form-submit-button {
@@ -950,6 +959,27 @@
     margin-right: 150px;
     padding: 10px;
     margin-bottom: 50px;
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
   }
   
   .no-events-tournaments {
@@ -965,6 +995,11 @@
 
   .extra-space {
     width: 35%;
+  }
+
+  .add-tournament-modal-left-side {
+    float: left;
+    margin-right: 50px;
   }
   
     </style>

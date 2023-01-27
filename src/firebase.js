@@ -22,6 +22,8 @@ const homePageImages = db.collection('HomePageImages')
 const galleryImages = db.collection('GalleryImages')
 const galleryImageTags = db.collection('GalleryImageTags')
 const eventsForCountdown = db.collection('EventsForCountdown')
+const pojoLeaugeSchedule = db.collection('POJOLeagueSchedule')
+const pojoMinisSchedule = db.collection('POJOMinisSchedule')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -173,6 +175,58 @@ export const deleteEventForCountdown = name => {
 export const useLoadEventsForCountdown = () => {
     const events = ref([])
     const close = eventsForCountdown.onSnapshot(snapshot => {
+        events.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return events
+}
+
+export const createEventForLeagueSchedule = event => {
+    return pojoLeaugeSchedule.add(event)
+}
+
+export const getLeagueEvent = async id => {
+    const event = await pojoLeaugeSchedule.doc(id).get()
+    return event.exists? event.data() : null
+}
+
+export const updateEventForLeague= (id, event) => {
+    return pojoLeaugeSchedule.doc(id).update(event)
+}
+
+export const deleteEventForLeague = name => {
+    return pojoLeaugeSchedule.doc(name).delete()
+}
+
+export const useLoadEventsForLeague = () => {
+    const events = ref([])
+    const close = pojoLeaugeSchedule.onSnapshot(snapshot => {
+        events.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return events
+}
+
+export const createEventForMinisSchedule = event => {
+    return pojoMinisSchedule.add(event)
+}
+
+export const getMinisEvent = async id => {
+    const event = await pojoMinisSchedule.doc(id).get()
+    return event.exists? event.data() : null
+}
+
+export const updateEventForMinis= (id, event) => {
+    return pojoMinisSchedule.doc(id).update(event)
+}
+
+export const deleteEventForMinis = name => {
+    return pojoMinisSchedule.doc(name).delete()
+}
+
+export const useLoadEventsForMinis = () => {
+    const events = ref([])
+    const close = pojoMinisSchedule.onSnapshot(snapshot => {
         events.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
     })
     onUnmounted(close)

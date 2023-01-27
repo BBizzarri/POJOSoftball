@@ -59,30 +59,7 @@
           </div> 
         </div>
       </div> -->
-      <div class="grid-container">
-        <div
-          v-for="image in gallery_images"
-          :key="image.ImageName" 
-          class="grid-item"
-          @click="openImageViewer(image)"
-        >
-          <img :src="image.Image" class="scale-down" Height="300px" Width="400px"/>
-          <!-- <a v-if="loginStore.loggedIn" @click="deleteImage(image.id)"><img class="delete-image" title="Delete Image" src="../Images/TrashCan.png" Height="20px" Width="20px" /></a> -->
-        </div> 
-      </div>
-      <ImageViewerModal
-        :showImageViewerModal="showImageViewerModal"
-        :current_image="image_to_edit"
-        @close="closeImageViewerModal"
-      />
-      <half-circle-spinner
-        v-if="loading"
-        class="loading-spinner"
-        :animation-duration="1000"
-        :size="90"
-        color="#ff1d5e"
-      />
-      <SponsorsSection />
+      <iframe src='https://widgets.sociablekit.com/facebook-photo-album-single/iframe/112229' frameborder='0' width='100%' height='1000'></iframe>      <SponsorsSection />
     </div>
   </template>
   <script>
@@ -90,16 +67,12 @@
     import NavBar from '../components/NavBar.vue';
     import { createGalleryImage, useLoadGalleryImageTags, useLoadGalleryImages, deleteGalleryImage } from '../firebase.js';
     import { loginStore } from '../components/LoginModal';
-    import ImageViewerModal from '../components/ImageViewerModal.vue';
-    import { HalfCircleSpinner } from 'epic-spinners'
     import SponsorsSection from '@/components/SponsorsSection';
     export default {
       name: 'GalleryPage',
       components: {
         TopPageHeader,
         NavBar,
-        ImageViewerModal,
-        HalfCircleSpinner,
         SponsorsSection
       },
       data () {

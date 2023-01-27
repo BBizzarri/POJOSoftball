@@ -3,8 +3,8 @@
       <h1>Login</h1>
       <input class="login-input" type="text" name="username" v-model="input.username" placeholder="Username" />
       <input class="login-input" type="password" name="password" v-model="input.password" placeholder="Password" />
-      <button class="cancel-button" type="button"><router-link class="router-link" to="/" replace>Cancel</router-link></button>
-      <button type="button" v-on:click="login()">Login</button>
+      <button class="cancel-button form-cancel-button" type="button"><router-link class="router-link" to="/" replace>Cancel</router-link></button>
+      <button class="form-submit-button" type="button" v-on:click="login()">Login</button>
       <half-circle-spinner
         v-if="loading"
         class="loading-spinner"
@@ -88,5 +88,56 @@ export default {
 .router-link {
     text-decoration: none;
 }
+
+.form-submit-button {
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+  }
+    
+    .form-cancel-button {
+      cursor: pointer;
+      letter-spacing: .5px;
+      margin: 0 8px;
+      opacity: 1;
+      outline: 0;
+      padding: 0 8px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition: opacity .3s ease-out;
+      vertical-align: middle;
+      width: auto;
+      font-family: Segoe UI,sans-serif!important;
+      font-size: 13px;
+      font-weight: 600;
+      background-color: white;
+      border: 1px solid #ced4da;
+      color: #333;
+      height: 40px;
+      min-width: 125px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+    }
 
 </style>
