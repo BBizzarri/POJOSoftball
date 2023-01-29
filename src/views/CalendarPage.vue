@@ -17,7 +17,7 @@
         :show-date="showDate"
         :items="pojo_league_events"
         class="theme-default holiday-us-traditional holiday-us-official calender"
-        @click-item="(calendarItem) => clickDate(calendarItem)">
+        @click-item="(calendarItem) => clickDate(calendarItem, 'league')">
         <template #header="{ headerProps }">
           <calendar-view-header
             :header-props="headerProps"
@@ -40,7 +40,7 @@
         :show-date="showDate"
         :items="pojo_minis_events"
         class="theme-default holiday-us-traditional holiday-us-official calender"
-        @click-item="(calendarItem) => clickDate(calendarItem)">
+        @click-item="(calendarItem) => clickDate(calendarItem, 'minis')">
         <template #header="{ headerProps }">
           <calendar-view-header
             :header-props="headerProps"
@@ -76,28 +76,42 @@
             class="form-input-cont"
           >
               <label class="sr-only form-label" for="startDate">Start Date</label>
-              <input type="date" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
+              <input type="datetime-local" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
           </div>
           <div
             v-else
             class="form-input-cont"
           >
               <label class="sr-only form-label" for="startDate">Start Date</label>
-              <label class="sr-only form-label-input" for="startDate">{{ event_info.start_date }}</label>
+              <label class="sr-only form-label-input" for="startDate">{{ getDate(event_info.start_date) }}</label>
           </div>
           <div
             v-if="loginStore.loggedIn"
             class="form-input-cont"
           >
               <label class="sr-only form-label" for="endDate">End Date</label>
-              <input type="date" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="event_info.end_date" required>
+              <input type="datetime-local" name="endDate" class="form-control mb-2 mr-sm-2 form-input" id="end-date" v-model="event_info.end_date" required>
           </div>
           <div
             v-else
             class="form-input-cont"
           >
               <label class="sr-only form-label" for="endDate">End Date</label>
-              <label class="sr-only form-label-input" for="endDate">{{ event_info.end_date }}</label>
+              <label class="sr-only form-label-input" for="endDate">{{ getDate(event_info.end_date) }}</label>
+          </div>
+          <div
+            v-if="!loginStore.loggedIn"
+            class="form-input-cont"
+          >
+              <label class="sr-only form-label" for="startTime">Start Time</label>
+              <label class="sr-only form-label-input" for="startTime">{{ event_info.start_time }}</label>
+          </div>
+          <div
+            v-if="!loginStore.loggedIn"
+            class="form-input-cont"
+          >
+              <label class="sr-only form-label" for="endTIme">End Time</label>
+              <label class="sr-only form-label-input" for="endTime">{{ event_info.end_time }}</label>
           </div>
         </template>
         <template v-slot:footer>
@@ -146,12 +160,6 @@
         return {
             loginStore,
             showDate: new Date(),
-            data: [
-                { startDate : "2023-01-12 16:00", endDate : "2023-01-12 18:20", title : "DT VS Vaux", id : 12 },
-                { startDate : "2023-01-13 19:30", endDate : "2023-01-13 22:35", title : "Diamondback VS AES", id : 13 },
-                { startDate : "2023-01-14 20:10", endDate : "2023-01-14 23:50", title : "Amvets VS Lee", id : 14 },
-                { startDate : "2023-03-14 20:10", endDate : "2023-03-14 23:50", title : "Elks VS DT", id : 14 },
-            ],
             showAddEventModal: false,
             pojo_league_events: [],
             pojo_minis_events: [],
@@ -159,7 +167,9 @@
               id: null,
               name: null, 
               start_date: null,
-              end_date: null
+              end_date: null,
+              start_time: null,
+              end_time: null
             },
             event_type: null,
             mode: null
@@ -178,6 +188,8 @@
         },
         async addEvent() {
           if (this.event_type === 'league') {    
+            // eslint-disable-next-line no-debugger
+            debugger
             try {
               await createEventForLeagueSchedule({ 
                 title: this.event_info.name,
@@ -188,6 +200,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
               this.showAddEventModal = false
             } catch(err) {
               console.log(err);
@@ -203,6 +217,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
               this.showAddEventModal = false
             } catch(err) {
               console.log(err);
@@ -221,6 +237,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
               this.showAddEventModal = false
             } catch(err) {
               console.log(err);
@@ -236,6 +254,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
               this.showAddEventModal = false
             } catch(err) {
               console.log(err);
@@ -251,6 +271,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
             } catch(err) {
               console.log(err);
             }  
@@ -262,6 +284,8 @@
               this.event_info.name = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
+              this.event_info.start_time = null;
+              this.event_info.end_time = null;
             } catch(err) {
               console.log(err);
             }  
@@ -283,24 +307,87 @@
           this.event_info.name = null;
           this.event_info.start_date = null;
           this.event_info.end_date = null;
+          this.event_info.start_time = null;
+          this.event_info.end_time = null;
         },
-        clickDate (calendarItem) {
-          this.mode = 'edit'
-          const start = this.dateConverter(calendarItem.startDate)
-          const end = this.dateConverter(calendarItem.endDate)
-          this.event_info.id = calendarItem.id
-          this.event_info.name = calendarItem.title
-          this.event_info.start_date = start
-          this.event_info.end_date = end
-          this.showAddEventModal = true
+        clickDate (calendarItem, type) {
+          if (loginStore.loggedIn) {
+            this.mode = 'edit'
+            this.event_type = type;
+            const start = new Date(calendarItem.startDate);
+            const end = new Date(calendarItem.endDate);
+            const start_date = this.toISOLocal(start);
+            const end_date = this.toISOLocal(end);
+            this.event_info.id = calendarItem.id
+            this.event_info.name = calendarItem.title
+            this.event_info.start_date = start_date.split('.')[0]
+            this.event_info.end_date = end_date.split('.')[0]
+            this.showAddEventModal = true
+          } else {
+            this.mode = 'edit'
+            this.event_type = type;
+            const start = new Date(calendarItem.startDate);
+            const end = new Date(calendarItem.endDate);
+            const start_date = this.toISOLocal(start);
+            const end_date = this.toISOLocal(end);
+            const start_time = start_date.split('T')[1].split('.')[0]
+            const converted_start_time = this.militaryToNormalTime(start_time)
+            const end_time = end_date.split('T')[1].split('.')[0]
+            const converted_end_time = this.militaryToNormalTime(end_time)
+            this.event_info.id = calendarItem.id
+            this.event_info.name = calendarItem.title
+            this.event_info.start_date = start_date.split('T')[0]
+            this.event_info.end_date = end_date.split('T')[0]
+            this.event_info.start_time = converted_start_time
+            this.event_info.end_time = converted_end_time
+            this.showAddEventModal = true
+          }
         },
-        dateConverter(str){
-          var date = new Date(str)
-          const mnth = ("0" + (date.getMonth()+1)).slice(-2)
-          const day  = ("0" + date.getDate()).slice(-2);
-          const year = date.getFullYear();
-          return `${year}-${mnth}-${day}`
-}
+
+        militaryToNormalTime (time) {
+          time = time.split(':'); // convert to array
+          // fetch
+          var hours = Number(time[0]);
+          var minutes = Number(time[1]);
+          // calculate
+          var timeValue;
+          if (hours > 0 && hours <= 12) {
+            timeValue= "" + hours;
+          } else if (hours > 12) {
+            timeValue= "" + (hours - 12);
+          } else if (hours == 0) {
+            timeValue= "12";
+          }
+          timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+          return timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+        },
+
+        toISOLocal(d) {
+          var z  = n =>  ('0' + n).slice(-2);
+          var zz = n => ('00' + n).slice(-3);
+          var off = d.getTimezoneOffset();
+          var sign = off > 0? '-' : '+';
+          off = Math.abs(off);
+
+          return d.getFullYear() + '-'
+                + z(d.getMonth()+1) + '-' +
+                z(d.getDate()) + 'T' +
+                z(d.getHours()) + ':'  + 
+                z(d.getMinutes()) + ':' +
+                z(d.getSeconds()) + '.' +
+                zz(d.getMilliseconds()) +
+                sign + z(off/60|0) + ':' + z(off%60); 
+        },
+        getDate (date) {
+          const arr_start_date = date.split('-');
+
+          if (arr_start_date[1].charAt( 0 ) === '0') {
+            arr_start_date[1] = arr_start_date[1].substring(1);
+          }
+          const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+          return months[arr_start_date[1]] + ' ' + arr_start_date[2] + ', ' + arr_start_date[0];
+        },
       }
     }  
   </script>

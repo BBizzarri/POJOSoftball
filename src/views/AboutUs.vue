@@ -2,9 +2,9 @@
   <div>
     <TopPageHeader />
     <NavBar />
-    <h1 class="heading">POJO Board</h1>
-    <div class="board-container"> 
-      <div class="container"> 
+    <div>
+      <h1 class="heading">POJO Board</h1>
+      <div class="board-container"> 
         <div class="left-right-img-container border-right"> 
           <h3>Preisdent</h3>
           <h3>Prestyn Showers</h3>
@@ -47,9 +47,9 @@
         </div>
       </div>
     </div>
-    <h1 class="heading">POJO Leauge Coaches</h1>
-    <div class="board-container"> 
-      <div class="container"> 
+    <div>
+      <h1 class="heading">POJO Leauge Coaches</h1>
+      <div class="board-container"> 
         <div class="left-right-img-container border-right"> 
           <h3>AES Drilling (10U)</h3>
           <h3>Derek Weitosh</h3>
@@ -87,9 +87,9 @@
         </div>
       </div>
     </div>
-    <h1 class="heading">POJO Minis Coaches</h1>
-    <div class="board-container"> 
-      <div class="container"> 
+    <div>
+      <h1 class="heading">POJO Minis Coaches</h1>
+      <div class="board-container-last"> 
         <div class="left-right-img-container-3 border-right"> 
           <h3>Expressions Counseling</h3>
           <h3>Preisdent</h3>
@@ -145,6 +145,12 @@
   <style scoped>
   .board-container {
     color: white;
+    margin-bottom: 400px;
+  }
+
+  .board-container-last {
+    color: white;
+    margin-bottom: 150px;
   }
 
   .heading {

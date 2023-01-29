@@ -75,7 +75,7 @@
           </div>
         </div>  
         <div 
-          v-if="events_to_show.legnth"
+          v-if="events_to_show.length"
           class="table-cont"
         >
           <table>
@@ -586,7 +586,6 @@
           }  
         },
         openEventAddEditModal (mode, event_id) {
-          console.log('here')
           if (mode === 'edit') {
             this.event_add_edit = 'edit';
             this.event_id_to_edit = event_id;
@@ -603,10 +602,8 @@
             this.event_info.cover_image = event_to_edit.CoverImage;
             this.event_info.show = event_to_edit.ShowEvent;
           } else {
-            console.log('in else')
             this.event_add_edit = 'add';
           }
-          console.log('settig show event modal true')
           this.showEventModal = true;
         },
         async deleteEvent (event_id) {

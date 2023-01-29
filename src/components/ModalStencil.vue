@@ -150,7 +150,7 @@ export default {
 
 .add-event-modal {
   width: 700px;
-  height: 35%;
+  height: 50%;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;

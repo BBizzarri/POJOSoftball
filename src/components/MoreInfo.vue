@@ -81,7 +81,7 @@
               </table>
             </div>
           </div>  
-          <div class="form-button-cont form-button-margin">
+          <div class="form-button-cont form-button-margin-tournament">
           <button type="submit" class="large close-button" @click="closeModal()">Close</button>
           </div>
       </template>
@@ -136,8 +136,8 @@
               </div>  
             </div>
           </div>  
-          <div class="form-button-cont">
-          <button type="submit" class="large close-button" @click="closeModal()">Close</button>
+          <div class="form-button-cont form-button-margin-event">
+          <button type="submit" class="large close-button right" @click="closeModal()">Close</button>
           </div>
       </template>
     </ModalStencil>
@@ -271,8 +271,16 @@ label {
   font-size: 20px;
 }
 
-.form-button-margin {
+.form-button-margin-tournament {
   margin-bottom: 80px;
+  float: right;
+}
+.form-button-margin-event {
+  width: 100%;
+  margin-top: 120px;
+}
+
+.right {
   float: right;
 }
 

@@ -2,7 +2,12 @@
   <div>
     <div>
       <h1 v-if="about_us_page" class="sponsors-heading">Thank you to our sponsors</h1>
-      <h3 v-if="!about_us_page" class="sponsors-heading">pojosoftball@gmail.com</h3>
+      <div>
+        <h3 v-if="!about_us_page" class="sponsors-heading mail-address" onclick="window.open('mailto:pojosoftball@gmail.com');">pojosoftball@gmail.com</h3>
+      </div>
+      <div class="facebook-logo">
+        <a v-if="!about_us_page" onclick="window.open('https://www.facebook.com/groups/POJOSOFTBALL/')"><img title="Like us on facebook" src="../Images/LikeUsOnFacebook.png" Height="50px" Width="230px"></a>
+      </div>
     </div>
     <div :class="about_us_page ? 'grid-container-about-us' : 'grid-container'"> 
       <div class="grid-item"> 
@@ -91,6 +96,19 @@
     color: white;
     text-align: center;
     padding-top: 200px;
+  }
+
+  .facebook-logo {
+    text-align: center;
+    padding-bottom: 20px;
+  }
+
+  .mail-address {
+    cursor: pointer;
+  }
+
+  .mail-address:hover {
+    text-decoration: underline;
   }
 
 
