@@ -54,7 +54,19 @@
       <div class="news-announcemnets-cont">
         <h1 class="news-announcements">News and Announcements</h1>
         <div class="single-news-annoucement-container">
-          <h2>POJO 2023 Draft Results: <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button></h2>
+          <h2 class="announcements-text">POJO 2023 Draft Results Are In </h2>
+          <p class="announcements-paragraph">Click below to view the 2023 POJO league draft results. There are 4 10U and 3 12U teams.</p>
+          <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button>
+        </div>
+        <div class="single-news-annoucement-container">
+          <h2 class="announcements-text">POJO League Pitching Lessons Have Begun</h2>
+          <p class="announcements-paragraph">We will be rotating between 10U and 12U every Thursday from 6-7 PM. Click below to see the rotation calnedar to know which Thrusday we are on.</p>
+          <router-link to="/calendar"><button class="view-results-button" style="width: 90%">View Calendar</button></router-link>
+        </div>
+        <div class="single-news-annoucement-container">
+          <h2 class="announcements-text">Next POJO Board Meeting Announced</h2>
+          <p class="announcements-paragraph">The next POJO Board meeting will be held on Sunday February 14th at 7:15 PM at Diamonback.</p>
+          <p class="announcements-paragraph">Address: 354 Enterprise Dr, Philipsburg, PA 16866</p>
         </div>
       </div>
       <SponsorsSection />
@@ -576,11 +588,24 @@
   .news-announcemnets-cont {
     margin-top: 100px;
     color: white;
+    height: auto;
+    padding-left: 50px;
+    width: 100%;
+    padding-bottom: 250px;
   }
 
   .single-news-annoucement-container {
+    text-align: center;
     margin-top: 30px;
-    margin-bottom: 30p
+    background-color: white;
+    height: 300px;
+    min-width: 490px;
+    max-width: 490px;
+    border-radius: 5px;
+    align-items: center;
+    display: grid;
+    float: left;
+    margin-right: 180px
   }
   
   .view-results-button {
@@ -783,6 +808,18 @@
 .game-info-table {
   margin-bottom: 50px;
   color: white;
+}
+
+.announcements-text {
+  padding-top: 20px;
+  color: black;
+}
+
+.announcements-paragraph {
+  width: 80%;
+  margin: auto;
+  padding-bottom: 20px;
+  color: black;
 }
   </style>
   
