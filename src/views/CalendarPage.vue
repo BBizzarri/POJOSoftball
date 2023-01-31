@@ -188,8 +188,6 @@
         },
         async addEvent() {
           if (this.event_type === 'league') {    
-            // eslint-disable-next-line no-debugger
-            debugger
             try {
               await createEventForLeagueSchedule({ 
                 title: this.event_info.name,

@@ -177,15 +177,12 @@ export default {
     },
     computed: {
       age_groups () {
-        console.log(this.tournament_or_event?.registered_teams)
         const age_groups = []
         this.tournament_or_event?.registered_teams.forEach(team => {
           if (!age_groups.includes(team.age_group)) {
             age_groups.push(team.age_group)
           }
         })
-        console.log('age groups')
-        console.log(age_groups)
         return age_groups
       }
     },

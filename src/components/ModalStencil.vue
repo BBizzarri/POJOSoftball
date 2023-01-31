@@ -47,8 +47,12 @@ export default {
           return 'add-event-modal-admin'
         } else if (this.modal_type === 'add_event_modal') {
           return 'add-event-modal'
-        }else {
-          return null;
+        } else if(this.modal_type === 'team_standing_modal') {
+          return 'team-standing-modal'
+        } else if (this.modal_type === 'game_info_modal') { 
+          return 'game-info-modal'
+        } else {
+          return null; 
         }
       }
     }
@@ -154,6 +158,30 @@ export default {
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.team-standing-modal {
+  width: 700px;
+  height: 45%;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.game-info-modal {
+  width: 700px;
+  height: auto;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 70px;
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);

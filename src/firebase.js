@@ -24,6 +24,13 @@ const galleryImageTags = db.collection('GalleryImageTags')
 const eventsForCountdown = db.collection('EventsForCountdown')
 const pojoLeaugeSchedule = db.collection('POJOLeagueSchedule')
 const pojoMinisSchedule = db.collection('POJOMinisSchedule')
+const pojoTeamStandings = db.collection('POJOLeagueTeamStandings')
+const dtGameInfo = db.collection('DTGameInfo')
+const vauxGameInfo = db.collection('VauxGameInfo')
+const amvetsGameInfo = db.collection('AmvetsGameInfo')
+const elksGameInfo = db.collection('ElksGameInfo')
+const diamondbackGameInfo = db.collection('DiamondbackGameInfo')
+const leeGameInfo = db.collection('LeeGameInfo')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -231,4 +238,212 @@ export const useLoadEventsForMinis = () => {
     })
     onUnmounted(close)
     return events
+}
+
+export const createTeamStanding = teamStanding => {
+    return pojoTeamStandings.add(teamStanding)
+}
+
+export const getTeamStanding = async id => {
+    const teamStanding = await pojoTeamStandings.doc(id).get()
+    return teamStanding.exists? teamStanding.data() : null
+}
+
+export const updateTeamStanding= (id, teamStanding) => {
+    return pojoTeamStandings.doc(id).update(teamStanding)
+}
+
+export const deleteTeamStanding = teamStanding => {
+    return pojoTeamStandings.doc(teamStanding).delete()
+}
+
+export const useLoadTeamStandings = () => {
+    const teamStandings = ref([])
+    const close = pojoTeamStandings.onSnapshot(snapshot => {
+        teamStandings.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return teamStandings
+}
+
+export const createDTGameInfo = gameInfo => {
+    return dtGameInfo.add(gameInfo)
+}
+
+export const getDTGameInfo = async id => {
+    const gameInfo = await dtGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateDTGameInfo= (id, gameInfo) => {
+    return dtGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteDTGameInfo = gameInfo => {
+    return dtGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadDTGameInfo = () => {
+    const gameInfo = ref([])
+    const close = dtGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createVauxGameInfo = gameInfo => {
+    return vauxGameInfo.add(gameInfo)
+}
+
+export const getVauxGameInfo = async id => {
+    const gameInfo = await vauxGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateVauxGameInfo= (id, gameInfo) => {
+    return vauxGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteVauxGameInfo = gameInfo => {
+    return vauxGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadVauxGameInfo = () => {
+    const gameInfo = ref([])
+    const close = vauxGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createAmvetsGameInfo = gameInfo => {
+    return amvetsGameInfo.add(gameInfo)
+}
+
+export const getAmvetsGameInfo = async id => {
+    const gameInfo = await amvetsGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateAmvetsGameInfo= (id, gameInfo) => {
+    return amvetsGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteAmvetsGameInfo = gameInfo => {
+    return amvetsGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadAmvetsGameInfo = () => {
+    const gameInfo = ref([])
+    const close = amvetsGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createElksGameInfo = gameInfo => {
+    return elksGameInfo.add(gameInfo)
+}
+
+export const getElksGameInfo = async id => {
+    const gameInfo = await elksGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateElksGameInfo= (id, gameInfo) => {
+    return elksGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteElksGameInfo = gameInfo => {
+    return elksGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadElksGameInfo = () => {
+    const gameInfo = ref([])
+    const close = elksGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createDiamondbackGameInfo = gameInfo => {
+    return diamondbackGameInfo.add(gameInfo)
+}
+
+export const getDiamondbackGameInfo = async id => {
+    const gameInfo = await diamondbackGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateDiamondbackGameInfo= (id, gameInfo) => {
+    return diamondbackGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteDiamondbackGameInfo = gameInfo => {
+    return diamondbackGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadDiamondbackGameInfo = () => {
+    const gameInfo = ref([])
+    const close = diamondbackGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createLeeGameInfo = gameInfo => {
+    return leeGameInfo.add(gameInfo)
+}
+
+export const getLeeGameInfo = async id => {
+    const gameInfo = await leeGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateLeeGameInfo= (id, gameInfo) => {
+    return leeGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteLeeGameInfo = gameInfo => {
+    return leeGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadLeeGameInfo = () => {
+    const gameInfo = ref([])
+    const close = leeGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
+}
+
+export const createAESGameInfo = gameInfo => {
+    return leeGameInfo.add(gameInfo)
+}
+
+export const getAESGameInfo = async id => {
+    const gameInfo = await leeGameInfo.doc(id).get()
+    return gameInfo.exists? gameInfo.data() : null
+}
+
+export const updateAESGameInfo= (id, gameInfo) => {
+    return leeGameInfo.doc(id).update(gameInfo)
+}
+
+export const deleteAESGameInfo = gameInfo => {
+    return leeGameInfo.doc(gameInfo).delete()
+}
+
+export const useLoadAESGameInfo = () => {
+    const gameInfo = ref([])
+    const close = leeGameInfo.onSnapshot(snapshot => {
+        gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return gameInfo
 }
