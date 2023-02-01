@@ -3,7 +3,7 @@
       <TopPageHeader />
       <div class="image-container">
         <figure>
-          <img id="img" class="home-page-image" :src="home_page_images.length ? home_page_images[this.x]?.Image : null" Height="700px" Width="1080px"/>
+          <img id="img" class="home-page-image" :src="home_page_images.length ? home_page_images[this.x]?.Image : null" Height="auto" Width="1080px"/>
           <figcaption id="img-description" class="caption">{{ home_page_images.length ? home_page_images[this.x]?.Description : null }}</figcaption>
         </figure>
       </div>
@@ -22,7 +22,7 @@
           <h2>For students in Grades K-2 that are insterested in Softabll</h2>
         </div>
         <div class="logo-container"> 
-          <img class="home-page-image" src="../Images/pojoLogo.png" Height="400px" />
+          <img class="home-page-image" src="../Images/pojoLogo.png" Height="auto" Width="350px" />
         </div>
         <div class="left-right-img-container"> 
           <h2 class="underline">POJO Leauge</h2>
@@ -562,7 +562,7 @@
 
   .underline {
     text-decoration: underline;
-    margin-top: 100px;
+    margin-top: 150px;
   }
 
   .image-container {
@@ -599,13 +599,13 @@
     margin-top: 30px;
     background-color: white;
     height: 300px;
-    min-width: 490px;
-    max-width: 490px;
+    min-width: 430px;
+    max-width: 430px;
     border-radius: 5px;
     align-items: center;
     display: grid;
     float: left;
-    margin-right: 180px
+    margin-right: 50px
   }
   
   .view-results-button {

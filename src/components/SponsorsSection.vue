@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div style="width: 100%">
       <h1 v-if="about_us_page" class="sponsors-heading">Thank you to our sponsors</h1>
       <div>
         <h3 v-if="!about_us_page" class="sponsors-heading mail-address" onclick="window.open('mailto:pojosoftball@gmail.com');">pojosoftball@gmail.com</h3>
@@ -95,7 +95,7 @@
   .sponsors-heading {
     color: white;
     text-align: center;
-    padding-top: 200px;
+    margin-top: 200px;
   }
 
   .facebook-logo {
