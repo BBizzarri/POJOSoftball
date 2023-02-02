@@ -2,7 +2,7 @@
     <div class="header">
         <h1 class="header-text">Philipsburg Osceola Junior Olympic Softball</h1>
           <!-- <button @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</button> -->
-        <h3 class="active-dev">This POJO website is under active development, stay tuned for the full site in 2023</h3>
+        <!-- <h3 class="active-dev">This POJO website is under active development, stay tuned for the full site in 2023</h3> -->
     </div>
 </template>
   
@@ -40,6 +40,7 @@
       padding-top: 30px;
       font-size: 40px;
       text-align: center;
+      padding-bottom: 30px;
     }
 
     .active-dev {

@@ -51,6 +51,10 @@ export default {
           return 'team-standing-modal'
         } else if (this.modal_type === 'game_info_modal') { 
           return 'game-info-modal'
+        } else if(this.modal_type === 'game_info_modal_no_games') { 
+          return 'game-info-modal-no-game'
+        } else if (this.modal_type === 'game_notice_modal') {
+          return 'game-notice-modal'
         } else {
           return null; 
         }
@@ -78,8 +82,9 @@ export default {
 }
 
 .tournament-modal-container {
-  width: 1000px;
+  width: auto;
   height: 80%;
+  max-width: 1000px;
   margin: 0px auto;
   overflow: auto;
   padding: 20px 30px;
@@ -91,7 +96,8 @@ export default {
 }
 
 .event-modal-container {
-  width: 1000px;
+  width: auto;
+  max-width: 1000px;
   height: 75%;
   margin: 0px auto;
   overflow: auto;
@@ -104,7 +110,8 @@ export default {
 }
 
 .more-info-container-image {
-  width: 1000px;
+  width: auto;
+  max-width: 1000px;
   height: 85%;
   margin: 0px auto;
   overflow: auto;
@@ -117,7 +124,8 @@ export default {
 }
 
 .more-info-container-no-image {
-  width: 400px;
+  width: auto;
+  max-width: 400px;
   height: auto;
   margin: 0px auto;
   padding: 20px 30px;
@@ -129,7 +137,8 @@ export default {
 }
 
 .add-team-modal {
-  width: 700px;
+  width: auto;
+  max-width: 700px;
   height: 30%;
   margin: 0px auto;
   padding: 20px 30px;
@@ -141,7 +150,8 @@ export default {
 }
 
 .add-event-modal-admin {
-  width: 700px;
+  width: auto;
+  max-width: 700px;
   height: 40%;
   margin: 0px auto;
   padding: 20px 30px;
@@ -153,7 +163,8 @@ export default {
 }
 
 .add-event-modal {
-  width: 700px;
+  width: auto;
+  max-width: 700px;
   height: 50%;
   margin: 0px auto;
   padding: 20px 30px;
@@ -165,7 +176,8 @@ export default {
 }
 
 .team-standing-modal {
-  width: 700px;
+  width: auto;
+  max-width: 700px;
   height: 45%;
   margin: 0px auto;
   padding: 20px 30px;
@@ -177,8 +189,35 @@ export default {
 }
 
 .game-info-modal {
-  width: 700px;
+  width: auto;
+  max-width: 700px;
   height: auto;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 70px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.game-info-modal-no-game {
+  width: auto;
+  max-width: 700px;
+  height: 20%;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 70px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.game-notice-modal {
+  width: auto;
+  max-width: 700px;
+  height: 30%;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 70px;

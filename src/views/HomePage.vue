@@ -7,6 +7,12 @@
           <figcaption id="img-description" class="caption">{{ home_page_images.length ? home_page_images[this.x]?.Description : null }}</figcaption>
         </figure>
       </div>
+      <div
+        v-if="game_notice_message[0]?.Message !== '' || this.loginStore.loggedIn"
+        class="game-cancellation-info"> 
+        <a v-if="this.loginStore.loggedIn" style="float: right" @click="editGameNoticeMessage()"><img title="Edit game notice message" src="../Images/Pencil.png" Height="20px" Width="20px"></a>
+        <h3 class="game-cancellation-text">{{ game_notice_message[0]?.Message }}</h3>
+      </div>
       <div class="countdown-container">
         <h3>Next Event: {{ sorted_events_for_countdown[0]?.Name }} </h3>
         <vue-countdown :time="time" v-slot="{ days, hours, minutes, seconds }">
@@ -104,18 +110,22 @@
       </ModalStencil>
       <ModalStencil
         v-if="showGameScores"
-        modal_type="game_info_modal"
+        :modal_type="team_game_info.length ? 'game_info_modal' : 'game_info_modal_no_games'"
       >
         <template v-slot:header>
-          <div> 
-            <h2 class="modal-title game-info-heading">{{ selected_team_scores_to_view }} Game Info</h2>
-          </div>
-          <div class="add-game-button"> 
-            <a @click="addGame()"><img title="Add game" src="../Images/Add.png" Height="20px" Width="20px"></a>
+          <div>
+            <div> 
+              <h2 class="modal-title game-info-heading">{{ selected_team_scores_to_view }} Game Info</h2>
+            </div>
+            <div class="add-game-button"> 
+              <a v-if="this.loginStore.loggedIn" @click="addGame()"><img title="Add game" src="../Images/Add.png" Height="20px" Width="20px"></a>
+            </div>
           </div>
         </template>
         <template v-slot:body>
-          <table class="game-info-table"> 
+          <table
+            v-if="team_game_info.length"
+            class="game-info-table"> 
             <tr>
               <th class="table-header">Date</th>
               <th class="table-header">Matchup</th>
@@ -136,9 +146,15 @@
               <td v-if="this.loginStore.loggedIn"><a  @click="deleteGame(game)"><img title="Delete game" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
             </tr>
           </table>
+          <div
+            v-else
+            class="no-games-heading"
+          > 
+            <h3>No Games Currently Scheduled, check back for updates</h3>
+          </div>
         </template>
         <template v-slot:footer>
-          <div class="form-button-cont">
+          <div class="form-button-cont-game-info">
             <button type="submit" class="form-submit-button" @click="closeGameScoresModal">Close</button>
           </div>
         </template>
@@ -175,6 +191,28 @@
           </div>
         </template>
       </ModalStencil>
+      <ModalStencil
+        v-if="showEditGameNotice"
+        modal_type="game_notice_modal"
+      >
+        <template v-slot:header>
+          <h2 class="modal-title color-white">Edit Game Notice Message</h2>
+        </template>
+        <template v-slot:body>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="message">Message</label>
+            <textarea type="text" name="message" class="form-control mb-2 mr-sm-2 form-input-text-area" id="message" v-model="game_notice_message_edit[0].Message" required />
+          </div>  
+        </template>
+        <template v-slot:footer>
+          <div class="form-button-cont">
+            <button type="submit" class="form-cancel-button" @click="closeGameNoticeModal">Cancel</button>
+            <button type="submit" class="form-submit-button" @click="updageGameNoticeMessage">Submit</button>
+          </div>
+        </template>
+      </ModalStencil>
+
+
     </div>
   </template>
   <script>
@@ -217,7 +255,9 @@
         createElksGameInfo,
         createAmvetsGameInfo,
         createVauxGameInfo,
-        createDTGameInfo
+        createDTGameInfo,
+        useLoadGameNoticeMessage,
+        updateGameNoticeMessage
     } from '../firebase.js'
     export default {
       name: 'HomePage',
@@ -261,7 +301,10 @@
             outcome: null, 
             score: null
           },
-          add_edit_game: null
+          add_edit_game: null,
+          game_notice_message: '',
+          showEditGameNotice: false,
+          game_notice_message_edit: null
         }
       },
       async mounted () {
@@ -275,6 +318,7 @@
         this.diamondback_game_info = useLoadDiamondbackGameInfo();
         this.lee_game_info = useLoadLeeGameInfo();
         this.aes_game_info = useLoadAESGameInfo();
+        this.game_notice_message = useLoadGameNoticeMessage();
         this.startTimer();
       },
       computed: {
@@ -302,21 +346,49 @@
           })
           return standing_age_groups
         },
+        sorted_dt_game_info () {
+          const games = this.dt_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_vaux_game_info () {
+          const games = this.vaux_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_amvets_game_info () {
+          const games = this.amvets_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_elks_game_info () {
+          const games = this.elks_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_diamondback_game_info () {
+          const games = this.diamondback_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_lee_game_info () {
+          const games = this.lee_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
+        sorted_aes_game_info () {
+          const games = this.aes_game_info.slice();
+          return games.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+        },
         team_game_info () {
           if (this.selected_team_scores_to_view === 'DT') {
-            return this.dt_game_info
+            return this.sorted_dt_game_info
           } else if (this.selected_team_scores_to_view === 'Vaux') {
-            return this.vaux_game_info
+            return this.sorted_vaux_game_info
           } else if (this.selected_team_scores_to_view === 'Amvets') {
-            return this.amvets_game_info
+            return this.sorted_amvets_game_info
           } else if (this.selected_team_scores_to_view === 'Philipsburg Elks') {
-            return this.elks_game_info
+            return this.sorted_elks_game_info
           } else if (this.selected_team_scores_to_view === 'Diamondback') {
-            return this.diamondback_game_info
+            return this.sorted_diamondback_game_info
           } else if (this.selected_team_scores_to_view === 'Lee Industries') {
-            return this.lee_game_info
+            return this.sorted_lee_game_info
           } else if (this.selected_team_scores_to_view === 'AES Drilling') {
-            return this.aes_game_info
+            return this.sorted_aes_game_info
           } else {
            return null
           }
@@ -540,6 +612,24 @@
         addGame () {
           this.showEditGameModal = true
           this.add_edit_game = 'add'
+        },
+        editGameNoticeMessage () {
+          this.showEditGameNotice = true
+          this.game_notice_message_edit = this.game_notice_message
+        },
+        closeGameNoticeModal () {
+          this.showEditGameNotice = false
+          this.game_notice_message_edit = null
+        },
+        updageGameNoticeMessage () {
+          try {
+            updateGameNoticeMessage(this.game_notice_message_edit[0].id, {
+              Message: this.game_notice_message_edit[0].Message
+            });
+            this.closeGameNoticeModal()
+          } catch(err) {
+            console.log(err);
+          }  
         }
       }
     }  
@@ -737,6 +827,18 @@
   width: 210px;
   }
 
+  .form-input-text-area {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 60px;
+    outline: none;
+    padding: 0 10px;
+    width: 600px;
+    margin-top: 10px;
+  }
+  
+
 .form-label {
   padding-right: 30px;
   display: inline-block;
@@ -749,6 +851,11 @@
 
 .form-button-cont {
   float: right;
+}
+
+.form-button-cont-game-info {
+  float: right;
+  margin-bottom: 50px;
 }
 
 .td-standing {
@@ -766,7 +873,7 @@
 
 .game-info-heading {
   color: white;
-  width: 40%;
+  width: 95%;
   float: left;
 }
 
@@ -808,6 +915,7 @@
 .game-info-table {
   margin-bottom: 50px;
   color: white;
+  border-spacing: 0px 15px;
 }
 
 .announcements-text {
@@ -820,6 +928,26 @@
   margin: auto;
   padding-bottom: 20px;
   color: black;
+}
+
+.no-games-heading {
+  width: 100%;
+  float: left;
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.game-cancellation-info {
+  background-color: #FFFF00;
+  text-align: center;
+  font-size: 25px;
+  color: red;
+}
+
+.game-cancellation-text {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
   </style>
   

@@ -31,6 +31,7 @@ const amvetsGameInfo = db.collection('AmvetsGameInfo')
 const elksGameInfo = db.collection('ElksGameInfo')
 const diamondbackGameInfo = db.collection('DiamondbackGameInfo')
 const leeGameInfo = db.collection('LeeGameInfo')
+const gameNoticeMessage = db.collection('GameCancellationMessage')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -446,4 +447,35 @@ export const useLoadAESGameInfo = () => {
     })
     onUnmounted(close)
     return gameInfo
+}
+
+
+
+
+
+
+export const createGameNoticeMessage = message => {
+    return gameNoticeMessage.add(message)
+}
+
+export const getGameNoticeMessage = async id => {
+    const message = await gameNoticeMessage.doc(id).get()
+    return message.exists? message.data() : null
+}
+
+export const updateGameNoticeMessage = (id, message) => {
+    return gameNoticeMessage.doc(id).update(message)
+}
+
+export const deleteGameNoticeMessage = message => {
+    return gameNoticeMessage.doc(message).delete()
+}
+
+export const useLoadGameNoticeMessage = () => {
+    const message = ref([])
+    const close = gameNoticeMessage.onSnapshot(snapshot => {
+        message.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return message
 }
