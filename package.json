@@ -23,11 +23,13 @@
     "swiper": "^8.4.5",
     "vue": "^3.2.45",
     "vue-flux": "^5.1.9",
+    "vue-loading-spinner": "^1.0.11",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^4.1.6",
     "vue-simple-calendar": "^6.2.1",
     "vue-slick-carousel": "^1.0.6",
-    "vue-uuid": "^3.0.0"
+    "vue-uuid": "^3.0.0",
+    "vue3-toggle-button": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

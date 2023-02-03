@@ -77,7 +77,6 @@
       },
       data () {
         return {
-          loading: false,
           loginStore,
           gallery_images: [],
           gallery_image_tags: [],
@@ -98,14 +97,12 @@
         }
       },
       async mounted () {
-        this.loading = true;
         try {
           this.gallery_image_tags = useLoadGalleryImageTags();
           this.gallery_images = useLoadGalleryImages();
         } catch(err) {
           console.log(err);
         }
-        this.loading = false;
       },
       computed: {
         get_gallery_image_tags () {
@@ -125,13 +122,11 @@
 
         async uploadImage () {
           try {
-            this.loading = true;
             await createGalleryImage({
               ImageName: this.image_to_upload_name,
               Image: this.image_to_upload,
               Tags: this.image_to_upload_tags
             });
-            this.loading = false;
           } catch(err) {
             console.log(err);
           }  
@@ -141,25 +136,19 @@
         },
         async deleteImage(image_id) {
           try {
-            this.loading = true;
             await deleteGalleryImage(image_id);
-            this.loading = false;
           } catch(err) {
             console.log(err);
           }  
         },
         filterImages() {
-          this.loading = true;
           this.conditions.forEach(condition => {
             this.gallery_images = this.gallery_images.filter(image=> image.Tags.includes(condition.filter_by));
           })
-          this.loading = false;
         },
         resetImages() {
-          this.loading = true;
           this.gallery_images = useLoadGalleryImages();
           this.conditions = [{filter_by: null}];
-          this.loading = false;
         },
         addFilterCondition() {
           const current_conditions = this.conditions;
@@ -334,10 +323,5 @@
   width: 20%;
 }
 
-.loading-spinner {
-  margin: auto;
-  top: 300px;
-  left: 200px;
-}
   </style>
   

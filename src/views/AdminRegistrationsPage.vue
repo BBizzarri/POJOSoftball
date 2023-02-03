@@ -8,7 +8,7 @@
           <p class="description">The POJO League runs from the beginning of the year through the middle of June. Games take place from the end of April through the middle of June. The leauge is open to girls from 3rd-6th grade. Each girl that registers will be put through the draft in order to be placed on one of our teams.</p>
         </div>
         <div class="right-child">  
-          <button id="btn-league-register" class="form-submit-button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
+          <button id="btn-league-register" :class="isLeagueRegistrationClosed ? 'form-submit-button-disabled' : 'form-submit-button button1'" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')" :disabled="isLeagueRegistrationClosed">Register</button>
         </div>
       </div>  
       <div>
@@ -17,7 +17,7 @@
           <p class="description">The POJO Mini's League runs from the beginning of May through the middle of June. Practices are held every Wednesday and games are held on Saturday's. The leauge is open to girls from K-2nd grade. Each girl that registers will be put through the draft in order to be placed on one of our teams.</p>
         </div>
         <div class="right-child">  
-          <button id="btn-minis-register" class="form-submit-button button1" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')">Register</button>
+          <button id="btn-minis-register" :class="isMinisRegistrationClosed ? 'form-submit-button-disabled' : 'form-submit-button button1'" onclick=" window.open('https://forms.gle/oCqm2jiKp5sGVvQJ6')" :disabled="isMinisRegistrationClosed">Register</button>
         </div>
       </div>  
       <div>
@@ -302,6 +302,7 @@
     updateEvent,
     useLoadEvents,
     deleteEvent,
+    useLoadRegistrationDeadlines
   } from '../firebase.js';
   import 'firebase/storage';
   // import firebase from 'firebase/compat/app';
@@ -316,7 +317,7 @@
         SponsorsSection,
         ModalStencil,
         MoreInfo,
-        AddTeam
+        AddTeam      
       },
     
       data () {
@@ -365,11 +366,13 @@
           showMoreInfo: false,
           showMoreInfoType: null,
           showAddTeam: false,
+          registration_deadlines: []
         }
       },
       async mounted () {
         this.current_tournaments = useLoadTournaments()
         this.current_events = useLoadEvents()
+        this.registration_deadlines = useLoadRegistrationDeadlines()
       },
       computed : {
         tournaments_to_show () {
@@ -380,22 +383,40 @@
           } else {
             return tournaments.filter(tournament => tournament.ShowTournament === true).sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
           }
-        } else {
-          return [];
-        }
-      },
-      events_to_show () {
-        if (this.current_events) {
-          const events = this.current_events.slice();
-          if (this.loginStore.loggedIn) {
-            return events.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
           } else {
-            return events.filter(event => event.ShowEvent === true).slice().sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+            return [];
           }
-        } else {
-          return [];
+        },
+        events_to_show () {
+          if (this.current_events) {
+            const events = this.current_events.slice();
+            if (this.loginStore.loggedIn) {
+              return events.sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+            } else {
+              return events.filter(event => event.ShowEvent === true).slice().sort((a, b) => new Date(a.StartDate) - new Date(b.StartDate));
+            }
+          } else {
+            return [];
+          }
+        },
+        isLeagueRegistrationClosed () {
+          const last_day = this.registration_deadlines?.find(deadline => deadline.Name === 'POJO League')?.Date
+          const date = new Date().toISOString().split('T')[0]
+          if (last_day < date) {
+            return true
+          } else {
+            return false
+          }
+        },
+        isMinisRegistrationClosed () {
+          const last_day = this.registration_deadlines?.find(deadline => deadline.Name === 'POJO Minis')?.Date
+          const date = new Date().toISOString().split('T')[0]
+          if (last_day < date) {
+            return true
+          } else {
+            return false
+          }
         }
-      }
       },
       methods: {
         selectImgFile (type) {
@@ -433,7 +454,8 @@
                 });
               } catch(err) {
                 console.log(err);
-              }  
+              } 
+              // this.loading = false 
             } else {
               try {
                 await updateTournament(this.tournament_id_to_edit, {
@@ -754,7 +776,7 @@
             this.tournament_info.contact_name = "";
             this.tournament_info.contact_phone = "";
             this.showAddTeam = false;
-        }
+        },
       }
   }
     </script>
@@ -769,8 +791,8 @@
       } */
   
       body {
-      overflow-x: hidden;
       background-color: #808080;
+      overflow-x: hidden;
     }
     </style>
     <style scoped>
@@ -924,6 +946,32 @@
     vertical-align: middle;
     width: auto;
   }
+
+  .form-submit-button-disabled {
+    opacity: 0.5 !important;
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 40px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 125px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+  }
   
   .form-cancel-button {
     cursor: pointer;
@@ -999,5 +1047,4 @@
     float: left;
     margin-right: 50px;
   }
-  
     </style>

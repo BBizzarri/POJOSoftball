@@ -115,9 +115,7 @@ export default {
       },
       async deleteImage() {
         try {
-          this.loading = true;
           await deleteGalleryImage(this.current_image.id);
-          this.loading = false;
         } catch(err) {
           console.log(err);
         }  

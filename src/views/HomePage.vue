@@ -50,9 +50,9 @@
           >
             <td v-if="team.AgeGroup === age" class="team-name">{{ team.Team }}</td>
             <td v-if="team.AgeGroup === age" class="td-standing">{{ team.Wins }} - {{ team.Loses }} - {{ team.Ties }}</td>
-            <td v-if="team.AgeGroup === age" class="pencil"><a @click="openGameScores(team)"><img title="View Game Scores" src="../Images/info.png" Height="20px" Width="30px"></a></td>
             <td v-if="this.loginStore.loggedIn && team.AgeGroup === age" class="pencil"><a @click="editTeamStanding(team)"><img title="Edit team standing" src="../Images/Pencil.png" Height="20px" Width="20px"></a></td>
-            <td v-if="this.loginStore.loggedIn && team.AgeGroup === age"><a  @click="deleteTeamStanding"><img title="Delete team standing" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td>
+            <td v-if="team.AgeGroup === age" class="pencil"><a @click="openGameScores(team)"><img title="View Game Scores" src="../Images/info.png" Height="20px" Width="30px"></a></td>
+            <!-- <td v-if="this.loginStore.loggedIn && team.AgeGroup === age"><a  @click="deleteTeamStanding"><img title="Delete team standing" src="../Images/TrashCan.png" Height="20px" Width="20px"></a></td> -->
           </tr>
         </table>
         </div>

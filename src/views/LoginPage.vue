@@ -1,7 +1,7 @@
 <template>
     <body class="LoginPage">
         <main class="main">    
-            <LoginModal />
+            <LoginModal/>
         </main>
     </body>
 </template>
@@ -9,10 +9,18 @@
   <script>
   
   import LoginModal from '../components/LoginModal';
+  import { loginStore } from '../components/LoginModal';
   export default {
     name: 'LoginPage',
     components: {
         LoginModal
+    },
+    data() {
+      return {
+        loginStore
+      }
+    },
+    methods: {
     }
   }
   </script>

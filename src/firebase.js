@@ -32,6 +32,7 @@ const elksGameInfo = db.collection('ElksGameInfo')
 const diamondbackGameInfo = db.collection('DiamondbackGameInfo')
 const leeGameInfo = db.collection('LeeGameInfo')
 const gameNoticeMessage = db.collection('GameCancellationMessage')
+const registrationDeadlines = db.collection('RegistrationDeadlines')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -449,11 +450,6 @@ export const useLoadAESGameInfo = () => {
     return gameInfo
 }
 
-
-
-
-
-
 export const createGameNoticeMessage = message => {
     return gameNoticeMessage.add(message)
 }
@@ -478,4 +474,17 @@ export const useLoadGameNoticeMessage = () => {
     })
     onUnmounted(close)
     return message
+}
+
+export const updateRegistrationDeadline = (id, date) => {
+    return registrationDeadlines.doc(id).update(date)
+}
+
+export const useLoadRegistrationDeadlines = () => {
+    const date = ref([])
+    const close = registrationDeadlines.onSnapshot(snapshot => {
+        date.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return date
 }
