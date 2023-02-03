@@ -8,42 +8,34 @@
         <div class="left-right-img-container border-right"> 
           <h3>Preisdent</h3>
           <h3>Prestyn Showers</h3>
-          <h3>570-660-5904</h3>
         </div>
         <div class="left-right-img-container border-right"> 
           <h3>Vice President</h3>
-          <h3>Chelsea Showers</h3>
-          <h3>814-553-4715</h3>
+          <h3>Matt Cover</h3>
         </div>
         <div class="left-right-img-container border-right"> 
           <h3>Treasurer</h3>
           <h3>Kim Thorp</h3>
-          <h3>123-456-7893</h3>
         </div>
         <div class="left-right-img-container"> 
-          <h3>Head Of Facilities</h3>
-          <h3>Brady Bizarri</h3>
-          <h3>814-553-4715</h3>
+          <h3>Secratary</h3>
+          <h3>Becky Briggs</h3>
         </div>
         <div class="left-right-img-container border-right"> 
-          <h3>Prestyn Showers</h3>
-          <h3>Preisdent</h3>
-          <h3>570-660-5904</h3>
+          <h3>Brady Bizarri</h3>
+          <h3>Secratary</h3>
         </div>
         <div class="left-right-img-container border-right"> 
           <h3>Chelsea Showers</h3>
-          <h3>Vice President</h3>
-          <h3>814-553-4715</h3>
+          <h3>Concessions Coordinator</h3>
         </div>
         <div class="left-right-img-container border-right"> 
-          <h3>Kim Thorp</h3>
-          <h3>Treasurer</h3>
-          <h3>123-456-7893</h3>
+          <h3>Angie Glessner</h3>
+          <h3>General Member</h3>
         </div>
         <div class="left-right-img-container"> 
-          <h3>Brady Bizarri</h3>
-          <h3>Head Of Facilities</h3>
-          <h3>814-553-4715</h3>
+          <h3>Christie Bush</h3>
+          <h3>General Member</h3>
         </div>
       </div>
     </div>
