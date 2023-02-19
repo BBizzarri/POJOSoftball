@@ -1,12 +1,12 @@
 <template>
     <nav class="nav">
         <router-link to="/"><li class="menu-item">Home</li></router-link>
-        <router-link v-if="!this.loginStore.hide" to="/calendar"><li class="menu-item">Calender</li></router-link>
+        <router-link to="/calendar"><li class="menu-item">Calender</li></router-link>
         <router-link v-if="!this.loginStore.hide" to="/gallery"><li class="menu-item">Gallery</li></router-link>
         <router-link to="/adminregistration"><li class="menu-item">Registrations</li></router-link>
-        <router-link v-if="!this.loginStore.hide" to="/aboutus"><li class="menu-item">About us</li></router-link>
+        <router-link to="/aboutus"><li class="menu-item">About us</li></router-link>
         <router-link to="/settings"><li v-if="loginStore.loggedIn" class="menu-item">Settings</li></router-link>
-        <router-link to="/login" replace><li class="menu-item right"><a @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</a></li></router-link>
+        <router-link to="/login" replace><li :class="this.windowWidth <= 654 ? 'menu-item' : 'menu-item right'"><a @click="loginLogout()">{{loginStore.loggedIn ? 'Logout' : 'Login'}}</a></li></router-link>
     </nav>
 </template>
 
@@ -21,21 +21,31 @@
     data () {
       return {
         loginStore,
-        isOpen: false
+        isOpen: false,
+        windowWidth: null
       }
     },
+    async mounted () {
+      this.winWidth()
+    },
+    computed: {
+    },
     methods: {
-        loginLogout () {
-          if (loginStore.loggedIn === true) {
-            this.loginStore.loggedIn = false;
-            firebase.auth().signOut();
-            this.$router.push('/');
-          } else {
-            this.$router.push('/login');
-            this.loginStore.loggedIn = true;
-          }
+      winWidth () {
+        setInterval(() => {
+            this.windowWidth = window.innerWidth;
+        }, 100);
+      },
+      loginLogout () {
+        if (loginStore.loggedIn === true) {
+          this.loginStore.loggedIn = false;
+          firebase.auth().signOut();
+          this.$router.push('/');
+        } else {
+          this.$router.push('/login');
         }
       }
+    }
   }
 </script>
 

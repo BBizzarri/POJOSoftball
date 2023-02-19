@@ -31,8 +31,11 @@ const amvetsGameInfo = db.collection('AmvetsGameInfo')
 const elksGameInfo = db.collection('ElksGameInfo')
 const diamondbackGameInfo = db.collection('DiamondbackGameInfo')
 const leeGameInfo = db.collection('LeeGameInfo')
+const aesGameInfo = db.collection('AESGameInfo')
 const gameNoticeMessage = db.collection('GameCancellationMessage')
 const registrationDeadlines = db.collection('RegistrationDeadlines')
+const standingsLastUpdatedTime = db.collection('StandingsLastUpdatedTime')
+const announcements = db.collection('Announcements')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -425,25 +428,25 @@ export const useLoadLeeGameInfo = () => {
 }
 
 export const createAESGameInfo = gameInfo => {
-    return leeGameInfo.add(gameInfo)
+    return aesGameInfo.add(gameInfo)
 }
 
 export const getAESGameInfo = async id => {
-    const gameInfo = await leeGameInfo.doc(id).get()
+    const gameInfo = await aesGameInfo.doc(id).get()
     return gameInfo.exists? gameInfo.data() : null
 }
 
 export const updateAESGameInfo= (id, gameInfo) => {
-    return leeGameInfo.doc(id).update(gameInfo)
+    return aesGameInfo.doc(id).update(gameInfo)
 }
 
 export const deleteAESGameInfo = gameInfo => {
-    return leeGameInfo.doc(gameInfo).delete()
+    return aesGameInfo.doc(gameInfo).delete()
 }
 
 export const useLoadAESGameInfo = () => {
     const gameInfo = ref([])
-    const close = leeGameInfo.onSnapshot(snapshot => {
+    const close = aesGameInfo.onSnapshot(snapshot => {
         gameInfo.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
     })
     onUnmounted(close)
@@ -487,4 +490,42 @@ export const useLoadRegistrationDeadlines = () => {
     })
     onUnmounted(close)
     return date
+}
+
+export const updateLastUpdatedTime = (id, date) => {
+    return standingsLastUpdatedTime.doc(id).update(date)
+}
+
+export const useLoadStandingsLastUpdatedTime = () => {
+    const date = ref([])
+    const close = standingsLastUpdatedTime.onSnapshot(snapshot => {
+        date.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return date
+}
+export const createAnnouncement = announcement => {
+    return announcements.add(announcement)
+}
+
+export const getAnnouncement = async id => {
+    const announcement = await announcements.doc(id).get()
+    return announcement.exists? announcement.data() : null
+}
+
+export const updateAnnouncement = (id, announcement) => {
+    return announcements.doc(id).update(announcement)
+}
+
+export const deleteAnnouncement = announcement => {
+    return announcements.doc(announcement).delete()
+}
+
+export const useLoadAnnouncements = () => {
+    const announcements_list = ref([])
+    const close = announcements.onSnapshot(snapshot => {
+        announcements_list.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return announcements_list
 }

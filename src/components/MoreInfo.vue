@@ -7,7 +7,7 @@
           <h2 class="modal-title title">{{ tournament_or_event.tournament_name }}</h2>
       </template>
       <template v-slot:body> 
-          <div :class="tournament_or_event?.cover_image ? 'top-section-image' : 'top-section-no-image'">
+          <div :class="tournament_or_event?.cover_image ? (this.windowWidth <= 654 ? 'top-section-image-small': 'top-section-image') : 'top-section-no-image'">
             <div :class="tournament_or_event?.cover_image ? 'info-container-image' : 'info-container-no-image'">
               <div v-if="tournament_or_event.description" class="form-input-cont">
                 <label class="sr-only form-label" for="description">Description:</label>
@@ -50,7 +50,7 @@
                 <label class="sr-only form-label info">{{ tournament_or_event.contact_phone }}</label>
               </div>  
             </div>
-            <div class="image-container">
+            <div :class="this.windowWidth <= 654 ? 'image-container-small' : 'image-container'">
               <div v-if="tournament_or_event.cover_image" class="form-input-cont">
                 <img :src="tournament_or_event.cover_image" alt="cover photo" width="300" height="400">
               </div>  
@@ -81,7 +81,7 @@
               </table>
             </div>
           </div>  
-          <div class="form-button-cont form-button-margin-tournament">
+          <div :class="this.windowWidth <= 654 ? 'form-button-cont form-button-margin-tournament-small' : 'form-button-cont form-button-margin-tournament'">
           <button type="submit" class="large close-button" @click="closeModal()">Close</button>
           </div>
       </template>
@@ -95,7 +95,7 @@
           <h2 class="modal-title title">{{ tournament_or_event.event_name }}</h2>
       </template>
       <template v-slot:body> 
-          <div :class="tournament_or_event?.cover_image ? 'top-section-image' : 'top-section-no-image'">
+          <div :class="tournament_or_event?.cover_image ? (scrren_width <= 654 ? 'top-section-image-small': 'top-section-image') : 'top-section-no-image'">
             <div :class="tournament_or_event?.cover_image ? 'info-container-image' : 'info-container-no-image'">
               <div v-if="tournament_or_event.description" class="form-input-cont">
                 <label class="sr-only form-label" for="description">Description:</label>
@@ -130,7 +130,7 @@
                 <label class="sr-only form-label info">{{ tournament_or_event.contact_phone }}</label>
               </div>  
             </div>
-            <div class="image-container">
+            <div :class="this.windowWidth <= 654 ? 'image-container-small' : 'image-container'">
               <div v-if="tournament_or_event.cover_image" class="form-input-cont">
                 <img :src="tournament_or_event.cover_image" alt="cover photo" width="300" height="400">
               </div>  
@@ -172,8 +172,12 @@ export default {
     },
     data () {
       return {
-        loginStore
+        loginStore,
+        windowWidth: null
       }
+    },
+    async mounted () {
+      this.winWidth()
     },
     computed: {
       age_groups () {
@@ -187,6 +191,11 @@ export default {
       }
     },
     methods: {
+      winWidth () {
+        setInterval(() => {
+            this.windowWidth = window.innerWidth;
+        }, 100);
+      },
       closeModal () {
         this.$emit('close')
       },
@@ -263,6 +272,10 @@ label {
   padding-left: 200px;
 }
 
+.image-container-small {
+  width: 40%;
+}
+
 .team-names {
   color: white;
   font-size: 20px;
@@ -272,6 +285,11 @@ label {
   margin-bottom: 80px;
   float: right;
 }
+
+.form-button-margin-tournament-small {
+  margin-bottom: 80px;
+}
+
 .form-button-margin-event {
   width: 100%;
   margin-top: 120px;
@@ -288,6 +306,11 @@ label {
 
 .top-section-image {
   padding-bottom: 400px;
+}
+
+.top-section-image-small {
+  display: flex;
+  flex-direction: column;
 }
 
 .top-section-no-image {

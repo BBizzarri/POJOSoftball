@@ -39,6 +39,9 @@
         <div class="standings-container"> 
           <h1 class="standings-header">2023 Team Standings</h1>
         </div>
+        <div> 
+          <h3 class="standings-header">Last Updated: {{ getDate(last_updated_time[0]?.Date) }}</h3>
+        </div>
         <div
           v-for="age in standing_age_groups" 
           :key="age"> 
@@ -57,23 +60,43 @@
         </table>
         </div>
       </div>
-      <div class="news-announcemnets-cont">
-        <h1 class="news-announcements">News and Announcements</h1>
-        <div class="single-news-annoucement-container">
+      <h1 class="news-announcements">News and Announcements</h1>
+      <div v-if="loginStore.loggedIn" style="text-align: center;"> 
+        <button class="view-results-button" @click="openAnnouncementModalAdd()">Add Announcement</button>
+      </div>
+      <div class="grid-container news-announcemnets-cont">
+        <div
+          v-for="announcement in announcement_list"
+          :key="announcement.id"
+          class="grid-item single-news-annoucement-container"
+        >
+        <div> 
+          <a v-if="loginStore.loggedIn" class="trash-announcements" @click="deleteAnnouncement(announcement)"><img title="Delete announcement" src="../Images/TrashCan.png" Height="20px" Width="20px"></a>
+          <a v-if="loginStore.loggedIn" class="pencil-announcements" @click="EditAnnouncement(announcement)"><img title="Edit announcement" src="../Images/Pencil.png" Height="20px" Width="20px"></a>
+          <h2 class="announcements-text">{{ announcement.Title }}</h2>
+        </div>
+          <p v-if="announcement.CenterTypeSelection === 'text'" class="announcements-paragraph">{{ announcement.CenterText }}</p>
+          <button v-else-if="announcement.CenterTypeSelection === 'button' && announcement.CenterSelectedButtonDestination === 'externalLink'" class="view-results-button"><a class="no-anchor-styling" :href="announcement.CenterExternalLink"  target="_blank">{{ announcement.CenterButtonName }}</a></button>
+          <router-link v-else-if="announcement.CenterTypeSelection === 'button'" :to="`/${announcement.CenterSelectedButtonDestination}`"><button class="view-results-button" style="width: 90%">{{ announcement.CenterButtonName }}</button></router-link>
+          <p v-if="announcement.BottomTypeSelection === 'text'" class="announcements-paragraph">{{ announcement.BottomText }}</p>
+          <button v-else-if="announcement.BottomTypeSelection === 'button' && announcement.BottomSelectedButtonDestination === 'externalLink'" class="view-results-button"><a class="no-anchor-styling" :href="announcement.BottomExternalLink"  target="_blank">{{ announcement.BottomButtonName }}</a></button>
+          <router-link v-else-if="announcement.BottomTypeSelection === 'button'" :to="`/${announcement.BottomSelectedButtonDestination}`"><button class="view-results-button" style="width: 90%">{{ announcement.BottomButtonName }}</button></router-link> 
+        </div>
+        <!-- <div class="grid-item single-news-annoucement-container"> 
           <h2 class="announcements-text">POJO 2023 Draft Results Are In </h2>
           <p class="announcements-paragraph">Click below to view the 2023 POJO league draft results. There are 4 10U and 3 12U teams.</p>
           <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button>
         </div>
-        <div class="single-news-annoucement-container">
+        <div class="grid-item single-news-annoucement-container"> 
           <h2 class="announcements-text">POJO League Pitching Lessons Have Begun</h2>
           <p class="announcements-paragraph">We will be rotating between 10U and 12U every Thursday from 6-7 PM. Click below to see the rotation calnedar to know which Thrusday we are on.</p>
           <router-link to="/calendar"><button class="view-results-button" style="width: 90%">View Calendar</button></router-link>
         </div>
-        <div class="single-news-annoucement-container">
+        <div class="grid-item single-news-annoucement-container"> 
           <h2 class="announcements-text">Next POJO Board Meeting Announced</h2>
-          <p class="announcements-paragraph">The next POJO Board meeting will be held on Sunday February 14th at 7:15 PM at Diamonback.</p>
+          <p class="announcements-paragraph">The next POJO Board meeting will be held on Sunday March 12th at 7:15 PM at Diamonback.</p>
           <p class="announcements-paragraph">Address: 354 Enterprise Dr, Philipsburg, PA 16866</p>
-        </div>
+        </div> -->
       </div>
       <SponsorsSection />
       <ModalStencil
@@ -211,8 +234,91 @@
           </div>
         </template>
       </ModalStencil>
-
-
+      <ModalStencil
+        v-if="showAddAnnouncementModal"
+        modal_type="team_standing_modal"
+      >
+        <template v-slot:header>
+          <h2 class="modal-title color-white">New Annoucement</h2>
+        </template>
+        <template v-slot:body>
+          <div> 
+            <h3>Top Section</h3>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="title">Title</label>
+            <input type="text" name="title" class="form-control mb-2 mr-sm-2 form-input" id="title" v-model="current_annoucement.title">
+          </div> 
+          <div> 
+            <h3>Center Section</h3>
+          </div> 
+          <div class="form-input-cont">
+            <label class="sr-only form-label">Center Content Type</label>
+            <select id="centerContentType" class="form-input" v-model="current_annoucement.center_type_selection">
+              <option value="text">Text</option>
+              <option value="button">Button</option>
+            </select>
+          </div>
+          <div v-if="centerTextTypeSelected" id="text" class="form-input-cont">
+            <label class="sr-only form-label" for="text">Text</label>
+            <input type="text" name="text" class="form-control mb-2 mr-sm-2 form-input" id="text" v-model="current_annoucement.center_text">
+          </div>
+          <div v-if="centerButtonTypeSelected" id="button-name" class="form-input-cont">
+            <label class="sr-only form-label" for="buttonName">Button Name</label>
+            <input type="text" name="buttonName" class="form-control mb-2 mr-sm-2 form-input" id="buttonName" v-model="current_annoucement.center_button_name">
+          </div>
+          <div v-if="centerButtonTypeSelected" id="button-destination" class="form-input-cont">
+            <label class="sr-only form-label" for="buttonLocation">Button Location</label>
+            <select id="buttonLocation" class="form-input" v-model="current_annoucement.center_selected_button_destination">
+              <option value="calendar">Calendar Page</option>
+              <option value="adminregistration">Regitrations Page</option>
+              <option value="aboutus">About Us Page</option>
+              <option value="externalLink">External Link</option>
+            </select>
+          </div>
+          <div v-if="centerExternalLinkSelected" id="external-link-input" class="form-input-cont">
+            <label class="sr-only form-label" for="externalLink">External Link</label>
+            <input type="text" name="externalLink" class="form-control mb-2 mr-sm-2 form-input" id="externalLink" v-model="current_annoucement.center_external_link">
+          </div>
+          <div> 
+            <h3>Center Section</h3>
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label">Bottom Content Type</label>
+            <select id="bottomContentType" class="form-input" v-model="current_annoucement.bottom_type_selection">
+              <option value="text">Text</option>
+              <option value="button">Button</option>
+            </select>
+          </div>
+          <div v-if="bottomTextTypeSelected" id="text" class="form-input-cont">
+            <label class="sr-only form-label" for="text">Text</label>
+            <input type="text" name="text" class="form-control mb-2 mr-sm-2 form-input" id="text" v-model="current_annoucement.bottom_text">
+          </div>
+          <div v-if="bottomButtonTypeSelected" id="button-name" class="form-input-cont">
+            <label class="sr-only form-label" for="buttonName">Button Name</label>
+            <input type="text" name="buttonName" class="form-control mb-2 mr-sm-2 form-input" id="buttonName" v-model="current_annoucement.bottom_button_name">
+          </div>
+          <div v-if="bottomButtonTypeSelected" id="button-destination" class="form-input-cont">
+            <label class="sr-only form-label" for="buttonLocation">Button Location</label>
+            <select id="buttonLocation" class="form-input" v-model="current_annoucement.bottom_selected_button_destination">
+              <option value="calendar">Calendar Page</option>
+              <option value="adminregistration">Regitrations Page</option>
+              <option value="aboutus">About Us Page</option>
+              <option value="externalLink">External Link</option>
+            </select>
+          </div>
+          <div v-if="bottomExternalLinkSelected" id="external-link-input" class="form-input-cont">
+            <label class="sr-only form-label" for="externalLink">External Link</label>
+            <input type="text" name="externalLink" class="form-control mb-2 mr-sm-2 form-input" id="externalLink" v-model="current_annoucement.bottom_external_link">
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="form-button-cont">
+            <button type="submit" class="form-cancel-button" @click="closeAnnoucementModal">Cancel</button>
+            <button type="submit" class="form-submit-button" @click="submitAnnouncement">Submit</button>
+          </div>
+        </template>
+      </ModalStencil>
     </div>
   </template>
   <script>
@@ -257,7 +363,13 @@
         createVauxGameInfo,
         createDTGameInfo,
         useLoadGameNoticeMessage,
-        updateGameNoticeMessage
+        updateGameNoticeMessage,
+        useLoadStandingsLastUpdatedTime,
+        updateLastUpdatedTime,
+        createAnnouncement,
+        useLoadAnnouncements,
+        updateAnnouncement,
+        deleteAnnouncement
     } from '../firebase.js'
     export default {
       name: 'HomePage',
@@ -304,7 +416,25 @@
           add_edit_game: null,
           game_notice_message: '',
           showEditGameNotice: false,
-          game_notice_message_edit: null
+          game_notice_message_edit: null,
+          last_updated_time: [],
+          showAddAnnouncementModal: false,
+          current_annoucement: {
+            id: null,
+            title: null,
+            center_type_selection: null,
+            center_text: null, 
+            center_button_name: null, 
+            center_selected_button_destination: null,
+            center_external_link: null,
+            bottom_type_selection: null,
+            bottom_text: null, 
+            bottom_button_name: null,
+            bottom_selected_button_destination: null,
+            bottom_external_link: null
+          },
+          announcement_list: [],
+          announcement_action: null
         }
       },
       async mounted () {
@@ -319,6 +449,8 @@
         this.lee_game_info = useLoadLeeGameInfo();
         this.aes_game_info = useLoadAESGameInfo();
         this.game_notice_message = useLoadGameNoticeMessage();
+        this.last_updated_time = useLoadStandingsLastUpdatedTime();
+        this.announcement_list = useLoadAnnouncements();
         this.startTimer();
       },
       computed: {
@@ -392,6 +524,48 @@
           } else {
            return null
           }
+        },
+        centerButtonTypeSelected() {
+          if (this.current_annoucement.center_type_selection === 'button') {
+            return true
+          } else {
+            return false
+          }
+        },
+        centerTextTypeSelected () {
+          if (this.current_annoucement.center_type_selection === 'text') {
+            return true
+          } else {
+            return false
+          }
+        },  
+        centerExternalLinkSelected () {
+          if (this.current_annoucement.center_selected_button_destination === 'externalLink') {
+            return true
+          } else {
+            return false
+          }
+        },
+        bottomButtonTypeSelected() {
+          if (this.current_annoucement.bottom_type_selection === 'button') {
+            return true
+          } else {
+            return false
+          }
+        },
+        bottomTextTypeSelected () {
+          if (this.current_annoucement.bottom_type_selection === 'text') {
+            return true
+          } else {
+            return false
+          }
+        },  
+        bottomExternalLinkSelected () {
+          if (this.current_annoucement.bottom_selected_button_destination === 'externalLink') {
+            return true
+          } else {
+            return false
+          }
         }
       },
       methods: {
@@ -441,6 +615,12 @@
             this.selected_team_standing.loses = null
             this.selected_team_standing.ties = null
             this.showEditTeamStanding = false
+            let today = new Date()
+            const offset = today.getTimezoneOffset()
+            today = new Date(today.getTime() - (offset*60*1000))
+            updateLastUpdatedTime(this.last_updated_time[0].id, {
+              Date: today.toISOString().split('T')[0]
+            })
           } catch(err) {
             console.log(err);
           }  
@@ -578,6 +758,12 @@
               console.log(err);
             }  
           }
+          let today = new Date()
+          const offset = today.getTimezoneOffset()
+          today = new Date(today.getTime() - (offset*60*1000))
+          updateLastUpdatedTime(this.last_updated_time[0].id, {
+            Date: today.toISOString().split('T')[0]
+          })
         },
         deleteGame (game) {
           try {
@@ -596,6 +782,12 @@
               } else if (this.selected_team_scores_to_view === 'AES Drilling') {
                 deleteAESGameInfo(game.id);  
               }
+              let today = new Date()
+              const offset = today.getTimezoneOffset()
+              today = new Date(today.getTime() - (offset*60*1000))
+              updateLastUpdatedTime(this.last_updated_time[0].id, {
+                Date: today.toISOString().split('T')[0]
+              })
             } catch(err) {
               console.log(err);
             }  
@@ -630,6 +822,98 @@
           } catch(err) {
             console.log(err);
           }  
+        },
+        getDate (date) {
+          if (date) {
+            const arr_date = date.split('-');
+            if (arr_date[1].charAt( 0 ) === '0') {
+              arr_date[1] = arr_date[1].substring(1);
+            }
+            const months   = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+            return months[arr_date[1]] + ' ' + arr_date[2] + ', ' + arr_date[0];
+          } else {
+            return null
+          }
+        },
+        submitAnnouncement () {
+          if (this.announcement_action === 'add') {
+            createAnnouncement({ 
+              Title: this.current_annoucement.title,
+              CenterTypeSelection: this.current_annoucement.center_type_selection,
+              CenterText: this.current_annoucement.center_text, 
+              CenterButtonName: this.current_annoucement.center_button_name, 
+              CenterSelectedButtonDestination: this.current_annoucement.center_selected_button_destination,
+              CenterExternalLink: this.current_annoucement.center_external_link,
+              BottomTypeSelection: this.current_annoucement.bottom_type_selection,
+              BottomText: this.current_annoucement.bottom_text, 
+              BottomButtonName: this.current_annoucement.bottom_button_name,
+              BottomSelectedButtonDestination: this.current_annoucement.bottom_selected_button_destination,
+              BottomExternalLink: this.current_annoucement.bottom_external_link
+            });
+          } else {
+            updateAnnouncement(this.current_annoucement.id, {
+              Title: this.current_annoucement.title,
+              CenterTypeSelection: this.current_annoucement.center_type_selection,
+              CenterText: this.current_annoucement.center_text, 
+              CenterButtonName: this.current_annoucement.center_button_name, 
+              CenterSelectedButtonDestination: this.current_annoucement.center_selected_button_destination,
+              CenterExternalLink: this.current_annoucement.center_external_link,
+              BottomTypeSelection: this.current_annoucement.bottom_type_selection,
+              BottomText: this.current_annoucement.bottom_text, 
+              BottomButtonName: this.current_annoucement.bottom_button_name,
+              BottomSelectedButtonDestination: this.current_annoucement.bottom_selected_button_destination,
+              BottomExternalLink: this.current_annoucement.bottom_external_link
+            });
+          }
+          this.closeAnnoucementModal()
+          this.current_annoucement.title = null
+          this.current_annoucement.center_type_selection = null
+          this.current_annoucement.center_text = null
+          this.current_annoucement.center_button_name = null
+          this.current_annoucement.center_selected_button_destination = null
+          this.current_annoucement.center_external_link = null
+          this.current_annoucement.bottom_type_selection = null
+          this.current_annoucement.bottom_text = null
+          this.current_annoucement.bottom_button_name = null
+          this.current_annoucement.bottom_selected_button_destination = null
+          this.current_annoucement.bottom_external_link = null
+        },
+        closeAnnoucementModal () {
+          this.showAddAnnouncementModal = false
+          this.current_annoucement.title = null
+          this.current_annoucement.center_type_selection = null
+          this.current_annoucement.center_text = null
+          this.current_annoucement.center_button_name = null
+          this.current_annoucement.center_selected_button_destination = null
+          this.current_annoucement.center_external_link = null
+          this.current_annoucement.bottom_type_selection = null
+          this.current_annoucement.bottom_text = null
+          this.current_annoucement.bottom_button_name = null
+          this.current_annoucement.bottom_selected_button_destination = null
+          this.current_annoucement.bottom_external_link = null
+        },
+        openAnnouncementModalAdd () {
+          this.showAddAnnouncementModal = true
+          this.announcement_action = 'add'
+        },
+        EditAnnouncement (announcement) {
+          this.showAddAnnouncementModal = true
+          this.announcement_action = 'edit'
+          this.current_annoucement.id = announcement.id
+          this.current_annoucement.title = announcement.Title
+          this.current_annoucement.center_type_selection = announcement.CenterTypeSelection
+          this.current_annoucement.center_text = announcement.CenterText
+          this.current_annoucement.center_button_name = announcement.CenterButtonName
+          this.current_annoucement.center_selected_button_destination = announcement.CenterSelectedButtonDestination
+          this.current_annoucement.center_external_link = announcement.CenterExternalLink
+          this.current_annoucement.bottom_type_selection = announcement.BottomTypeSelection
+          this.current_annoucement.bottom_text = announcement.BottomText
+          this.current_annoucement.bottom_button_name = announcement.BottomButtonName
+          this.current_annoucement.bottom_selected_button_destination = announcement.BottomSelectedButtonDestination
+          this.current_annoucement.bottom_external_link = announcement.BottomExternalLink
+        },
+        deleteAnnouncement (announcement) {
+          deleteAnnouncement(announcement.id);  
         }
       }
     }  
@@ -640,19 +924,20 @@
 
   .container {
     display: flex;
+    flex-direction: column;
   }
   .logo-container  {
     margin: auto;
   }
 
   .left-right-img-container {
-    width: 20%;
+    width: 100%;
     text-align: center;
+    margin: auto;
   }
 
   .underline {
     text-decoration: underline;
-    margin-top: 150px;
   }
 
   .image-container {
@@ -673,15 +958,17 @@
 
   .news-announcements {
     text-align: center;
+    margin-top: 100px;
+    color: white;
   }
 
   .news-announcemnets-cont {
-    margin-top: 100px;
     color: white;
     height: auto;
     padding-left: 50px;
     width: 100%;
-    padding-bottom: 250px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 486px);
   }
 
   .single-news-annoucement-container {
@@ -695,7 +982,9 @@
     align-items: center;
     display: grid;
     float: left;
-    margin-right: 50px
+    margin-right: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    text-align: center;
   }
   
   .view-results-button {
@@ -948,6 +1237,16 @@
 .game-cancellation-text {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.pencil-announcements {
+  float: right;
+  padding-right: 10px;
+}
+
+.trash-announcements {
+  float: right;
+  padding-right: 10px;
 }
   </style>
   

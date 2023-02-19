@@ -14,7 +14,7 @@ import { reactive } from 'vue';
 import firebase from 'firebase/compat/app';
 export const loginStore = reactive({
   loggedIn: false,
-  hide: false
+  hide: true
 })
 export default {
     name: 'LoginModal',
@@ -36,6 +36,7 @@ export default {
             .auth()
             .signInWithEmailAndPassword(this.input.username, this.input.password) // THIS LINE CHANGED
             .then(() => {
+              this.loginStore.loggedIn = true
               this.$emit("authenticated", true);
               this.$router.replace({ path:'/' });
             })

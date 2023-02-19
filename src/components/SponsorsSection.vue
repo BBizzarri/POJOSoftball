@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="width: 100%">
+    <div class="sponsors-section">
       <h1 v-if="about_us_page" class="sponsors-heading">Thank you to our sponsors</h1>
       <div>
         <h3 v-if="!about_us_page" class="sponsors-heading mail-address" onclick="window.open('mailto:pojosoftball@gmail.com');">pojosoftball@gmail.com</h3>
@@ -109,6 +109,11 @@
 
   .mail-address:hover {
     text-decoration: underline;
+  }
+
+  .sponsors-section {
+    width: 100%;
+    float: left
   }
 
 

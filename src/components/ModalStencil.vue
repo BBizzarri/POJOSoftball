@@ -83,7 +83,8 @@ export default {
 
 .tournament-modal-container {
   width: auto;
-  height: 80%;
+  min-height: 80%;
+  height: auto;
   max-width: 1000px;
   margin: 0px auto;
   overflow: auto;
@@ -98,7 +99,8 @@ export default {
 .event-modal-container {
   width: auto;
   max-width: 1000px;
-  height: 75%;
+  min-height: 75%;
+  height: auto;
   margin: 0px auto;
   overflow: auto;
   padding: 20px 30px;
@@ -112,7 +114,8 @@ export default {
 .more-info-container-image {
   width: auto;
   max-width: 1000px;
-  height: 85%;
+  /* height: 85%; */
+  max-height: calc(100vh - 200px);
   margin: 0px auto;
   overflow: auto;
   padding: 20px 30px;
@@ -139,7 +142,8 @@ export default {
 .add-team-modal {
   width: auto;
   max-width: 700px;
-  height: 30%;
+  min-height: 30%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -152,7 +156,8 @@ export default {
 .add-event-modal-admin {
   width: auto;
   max-width: 700px;
-  height: 40%;
+  min-height: 40%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -165,7 +170,8 @@ export default {
 .add-event-modal {
   width: auto;
   max-width: 700px;
-  height: 50%;
+  min-height: 50%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -178,7 +184,8 @@ export default {
 .team-standing-modal {
   width: auto;
   max-width: 700px;
-  height: 45%;
+  min-height: 45%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 40px;
@@ -204,7 +211,8 @@ export default {
 .game-info-modal-no-game {
   width: auto;
   max-width: 700px;
-  height: 20%;
+  min-height: 20%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 70px;
@@ -217,7 +225,8 @@ export default {
 .game-notice-modal {
   width: auto;
   max-width: 700px;
-  height: 30%;
+  min-height: 30%;
+  height: auto;
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 70px;
