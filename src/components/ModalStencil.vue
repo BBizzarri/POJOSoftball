@@ -55,6 +55,8 @@ export default {
           return 'game-info-modal-no-game'
         } else if (this.modal_type === 'game_notice_modal') {
           return 'game-notice-modal'
+        } else if(this.modal_type === 'announcements-modal') { 
+          return 'announcements-modal'
         } else {
           return null; 
         }
@@ -230,6 +232,20 @@ export default {
   margin: 0px auto;
   padding: 20px 30px;
   padding-bottom: 70px;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+}
+
+.announcements-modal {
+  width: auto;
+  max-width: 700px;
+  min-height: 45%;
+  height: auto;
+  margin: 0px auto;
+  padding: 20px 30px;
+  padding-bottom: 40px;
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);

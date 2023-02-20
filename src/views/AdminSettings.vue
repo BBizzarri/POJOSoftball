@@ -42,7 +42,14 @@
         </div>
      </div>
     </div>
-    <div class="setting-card">
+    <div class="setting-card"> 
+      <h1 class="margin-left">Email Message</h1>
+      <div class="email-message-container"> 
+        <textarea class="email-message-input" id="email-message" v-model="email_message"/>
+      </div>
+      <button @click="sendEmail()">Send Email</button>
+    </div>
+    <!-- <div class="setting-card">
       <h1 class="margin-left">Gallery Image Tags</h1>
       <h3 class="margin-left">Add tags for images that you upload to be utilized when filtering gallery images</h3>
       <div class="tag-creation-container margin-left"> 
@@ -70,27 +77,27 @@
       :showEditTagModal="show_edit_tag_modal"
       :tag_to_edit="tag_to_edit"
       @close="show_edit_tag_modal = false"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
   import TopPageHeader from '../components/TopPageHeader.vue';
   import NavBar from '../components/NavBar.vue';
-  import EditTagModal from '../components/EditTagModal.vue';
   import {
     useLoadHomePageImages,
     createHomePageImage,
     deleteHomePageImage,
     createGalleryImageTag,
     useLoadGalleryImageTags,
+    useLoadEmailSubscriptions
   } from '../firebase.js';
+  import emailjs from 'emailjs-com';
   export default {
     name: 'AdminSettings',
     components: {
       TopPageHeader,
       NavBar,
-      EditTagModal
     },
     data () {
       return {
@@ -101,12 +108,15 @@
         current_image_description: null,
         tag_name: null,
         show_edit_tag_modal: false,
-        tag_to_edit: []
+        tag_to_edit: [],
+        email_list: [],
+        email_message: null
       }
     },
     async mounted () {
       this.home_page_images = useLoadHomePageImages();
-      this.gallery_image_tags = useLoadGalleryImageTags()
+      this.gallery_image_tags = useLoadGalleryImageTags();
+      this.email_list = useLoadEmailSubscriptions();
     },
     methods: {
       selectHomePageImage () {
@@ -156,9 +166,25 @@
       openEditTagModal (tag) {
         this.tag_to_edit = tag
         this.show_edit_tag_modal = true;
+      },
+      sendEmail() {
+        this.email_list.forEach(email => {
+          try {
+          emailjs.send('service_usnnsib', 'template_dnhjx2c', {
+            email: email.Email,
+            message: this.email_message
+          },
+          'LjOCaWVfcyFTjx-1_')
+
+        } catch(error) {
+            console.log({error})
+        }
+        })
+        // Reset form field
+        this.email_message = ''
       }
     }
-  }  
+  } 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -233,6 +259,15 @@ td {
     transition: opacity .3s ease-out;
     vertical-align: middle;
     width: auto;
+  }
+
+  .email-message-input {
+    width: 750px;
+    height: 200px;
+  }
+  
+  .email-message-container {
+    text-align: center;
   }
 
 </style>

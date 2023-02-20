@@ -36,6 +36,7 @@ const gameNoticeMessage = db.collection('GameCancellationMessage')
 const registrationDeadlines = db.collection('RegistrationDeadlines')
 const standingsLastUpdatedTime = db.collection('StandingsLastUpdatedTime')
 const announcements = db.collection('Announcements')
+const emailSubscriptions = db.collection('EmailSubscriptions')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -529,3 +530,17 @@ export const useLoadAnnouncements = () => {
     onUnmounted(close)
     return announcements_list
 }
+
+export const createSubscription = subscription => {
+    return emailSubscriptions.add(subscription)
+}
+
+export const useLoadEmailSubscriptions = () => {
+    const email_list = ref([])
+    const close = emailSubscriptions.onSnapshot(snapshot => {
+        email_list.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return email_list
+}
+

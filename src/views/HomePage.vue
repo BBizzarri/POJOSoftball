@@ -35,6 +35,9 @@
           <h2>For students in Grades 3-6 that are interested in softball</h2>
         </div>
       </div>
+      <div class="subscribe-container"> 
+        <button class="subscribe-button" @click="showSubscribeModal=true">Subscribe Now</button>
+      </div>
       <div> 
         <div class="standings-container"> 
           <h1 class="standings-header">2023 Team Standings</h1>
@@ -82,21 +85,6 @@
           <button v-else-if="announcement.BottomTypeSelection === 'button' && announcement.BottomSelectedButtonDestination === 'externalLink'" class="view-results-button"><a class="no-anchor-styling" :href="announcement.BottomExternalLink"  target="_blank">{{ announcement.BottomButtonName }}</a></button>
           <router-link v-else-if="announcement.BottomTypeSelection === 'button'" :to="`/${announcement.BottomSelectedButtonDestination}`"><button class="view-results-button" style="width: 90%">{{ announcement.BottomButtonName }}</button></router-link> 
         </div>
-        <!-- <div class="grid-item single-news-annoucement-container"> 
-          <h2 class="announcements-text">POJO 2023 Draft Results Are In </h2>
-          <p class="announcements-paragraph">Click below to view the 2023 POJO league draft results. There are 4 10U and 3 12U teams.</p>
-          <button class="view-results-button"><a class="no-anchor-styling" href="https://docs.google.com/spreadsheets/d/1S82NKJy-IDDhrHRt9j4f8QX0HEAY1YUp/edit?usp=sharing&ouid=110825904390429464658&rtpof=true&sd=true"  target="_blank">View Results</a></button>
-        </div>
-        <div class="grid-item single-news-annoucement-container"> 
-          <h2 class="announcements-text">POJO League Pitching Lessons Have Begun</h2>
-          <p class="announcements-paragraph">We will be rotating between 10U and 12U every Thursday from 6-7 PM. Click below to see the rotation calnedar to know which Thrusday we are on.</p>
-          <router-link to="/calendar"><button class="view-results-button" style="width: 90%">View Calendar</button></router-link>
-        </div>
-        <div class="grid-item single-news-annoucement-container"> 
-          <h2 class="announcements-text">Next POJO Board Meeting Announced</h2>
-          <p class="announcements-paragraph">The next POJO Board meeting will be held on Sunday March 12th at 7:15 PM at Diamonback.</p>
-          <p class="announcements-paragraph">Address: 354 Enterprise Dr, Philipsburg, PA 16866</p>
-        </div> -->
       </div>
       <SponsorsSection />
       <ModalStencil
@@ -236,40 +224,40 @@
       </ModalStencil>
       <ModalStencil
         v-if="showAddAnnouncementModal"
-        modal_type="team_standing_modal"
+        modal_type="announcements-modal"
       >
         <template v-slot:header>
           <h2 class="modal-title color-white">New Annoucement</h2>
         </template>
         <template v-slot:body>
           <div> 
-            <h3>Top Section</h3>
+            <h3 style="color: white; text-decoration: underline;">Top Section</h3>
           </div>
           <div class="form-input-cont">
-            <label class="sr-only form-label" for="title">Title</label>
-            <input type="text" name="title" class="form-control mb-2 mr-sm-2 form-input" id="title" v-model="current_annoucement.title">
+            <label class="sr-only form-label-announcements" for="title">Title</label>
+            <input type="text" name="title" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-announcements'" id="title" v-model="current_annoucement.title">
           </div> 
           <div> 
-            <h3>Center Section</h3>
+            <h3 style="color: white; text-decoration: underline; margin-top: 40px;">Center Section</h3>
           </div> 
           <div class="form-input-cont">
-            <label class="sr-only form-label">Center Content Type</label>
-            <select id="centerContentType" class="form-input" v-model="current_annoucement.center_type_selection">
+            <label class="sr-only form-label-announcements">Center Content Type</label>
+            <select id="centerContentType" :class="this.windowWidth <= 654 ? 'form-input-select-small' : 'form-input-select'" v-model="current_annoucement.center_type_selection">
               <option value="text">Text</option>
               <option value="button">Button</option>
             </select>
           </div>
-          <div v-if="centerTextTypeSelected" id="text" class="form-input-cont">
-            <label class="sr-only form-label" for="text">Text</label>
-            <input type="text" name="text" class="form-control mb-2 mr-sm-2 form-input" id="text" v-model="current_annoucement.center_text">
+          <div v-if="centerTextTypeSelected" id="text" class="form-input-cont-text-area">
+            <label class="sr-only form-label-announcements" for="text">Text</label>
+            <textarea name="text" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-text-area-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-text-area-announcements'" id="text" v-model="current_annoucement.center_text"/>
           </div>
           <div v-if="centerButtonTypeSelected" id="button-name" class="form-input-cont">
-            <label class="sr-only form-label" for="buttonName">Button Name</label>
-            <input type="text" name="buttonName" class="form-control mb-2 mr-sm-2 form-input" id="buttonName" v-model="current_annoucement.center_button_name">
+            <label class="sr-only form-label-announcements" for="buttonName">Button Name</label>
+            <input type="text" name="buttonName" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-announcements'" id="buttonName" v-model="current_annoucement.center_button_name">
           </div>
           <div v-if="centerButtonTypeSelected" id="button-destination" class="form-input-cont">
-            <label class="sr-only form-label" for="buttonLocation">Button Location</label>
-            <select id="buttonLocation" class="form-input" v-model="current_annoucement.center_selected_button_destination">
+            <label class="sr-only form-label-announcements" for="buttonLocation">Button Location</label>
+            <select id="buttonLocation" :class="this.windowWidth <= 654 ? 'form-input-select-small' : 'form-input-select'" v-model="current_annoucement.center_selected_button_destination">
               <option value="calendar">Calendar Page</option>
               <option value="adminregistration">Regitrations Page</option>
               <option value="aboutus">About Us Page</option>
@@ -277,30 +265,30 @@
             </select>
           </div>
           <div v-if="centerExternalLinkSelected" id="external-link-input" class="form-input-cont">
-            <label class="sr-only form-label" for="externalLink">External Link</label>
-            <input type="text" name="externalLink" class="form-control mb-2 mr-sm-2 form-input" id="externalLink" v-model="current_annoucement.center_external_link">
+            <label class="sr-only form-label-announcements" for="externalLink">External Link</label>
+            <input type="text" name="externalLink" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-announcements'" id="externalLink" v-model="current_annoucement.center_external_link">
           </div>
           <div> 
-            <h3>Center Section</h3>
+            <h3 style="color: white; text-decoration: underline; margin-top: 40px;">Bottom Section</h3>
           </div>
           <div class="form-input-cont">
-            <label class="sr-only form-label">Bottom Content Type</label>
-            <select id="bottomContentType" class="form-input" v-model="current_annoucement.bottom_type_selection">
+            <label class="sr-only form-label-announcements">Bottom Content Type</label>
+            <select id="bottomContentType" :class="this.windowWidth <= 654 ? 'form-input-select-small' : 'form-input-select'" v-model="current_annoucement.bottom_type_selection">
               <option value="text">Text</option>
               <option value="button">Button</option>
             </select>
           </div>
           <div v-if="bottomTextTypeSelected" id="text" class="form-input-cont">
-            <label class="sr-only form-label" for="text">Text</label>
-            <input type="text" name="text" class="form-control mb-2 mr-sm-2 form-input" id="text" v-model="current_annoucement.bottom_text">
+            <label class="sr-only form-label-announcements" for="text">Text</label>
+            <textarea type="text" name="text" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-text-area-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-text-area-announcements'" id="text" v-model="current_annoucement.bottom_text"/>
           </div>
           <div v-if="bottomButtonTypeSelected" id="button-name" class="form-input-cont">
-            <label class="sr-only form-label" for="buttonName">Button Name</label>
-            <input type="text" name="buttonName" class="form-control mb-2 mr-sm-2 form-input" id="buttonName" v-model="current_annoucement.bottom_button_name">
+            <label class="sr-only form-label-announcements" for="buttonName">Button Name</label>
+            <input type="text" name="buttonName" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-announcements'" id="buttonName" v-model="current_annoucement.bottom_button_name">
           </div>
           <div v-if="bottomButtonTypeSelected" id="button-destination" class="form-input-cont">
-            <label class="sr-only form-label" for="buttonLocation">Button Location</label>
-            <select id="buttonLocation" class="form-input" v-model="current_annoucement.bottom_selected_button_destination">
+            <label class="sr-only form-label-announcements" for="buttonLocation">Button Location</label>
+            <select id="buttonLocation" :class="this.windowWidth <= 654 ? 'form-input-select-small' : 'form-input-select'" v-model="current_annoucement.bottom_selected_button_destination">
               <option value="calendar">Calendar Page</option>
               <option value="adminregistration">Regitrations Page</option>
               <option value="aboutus">About Us Page</option>
@@ -308,14 +296,51 @@
             </select>
           </div>
           <div v-if="bottomExternalLinkSelected" id="external-link-input" class="form-input-cont">
-            <label class="sr-only form-label" for="externalLink">External Link</label>
-            <input type="text" name="externalLink" class="form-control mb-2 mr-sm-2 form-input" id="externalLink" v-model="current_annoucement.bottom_external_link">
+            <label class="sr-only form-label-announcements" for="externalLink">External Link</label>
+            <input type="text" name="externalLink" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input-announcements-small' : 'form-control mb-2 mr-sm-2 form-input-announcements'" id="externalLink" v-model="current_annoucement.bottom_external_link">
           </div>
         </template>
         <template v-slot:footer>
           <div class="form-button-cont">
             <button type="submit" class="form-cancel-button" @click="closeAnnoucementModal">Cancel</button>
             <button type="submit" class="form-submit-button" @click="submitAnnouncement">Submit</button>
+          </div>
+        </template>
+      </ModalStencil>
+      <ModalStencil
+        v-if="showSubscribeModal"
+        modal_type="announcements-modal"
+      >
+        <template v-slot:header>
+          <h2 class="modal-title color-white">Subscribe Now</h2>
+          <p style="color: white;">Sign up now to recieve emails about game cancellations/updates, news, events, and much more.</p>
+        </template>
+        <template v-slot:body>
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="name">Name</label>
+            <input type="text" name="name" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input' : 'form-control mb-2 mr-sm-2 form-input'" id="name" v-model="subscribe_info.name">
+          </div> 
+          <div class="form-input-cont">
+            <label class="sr-only form-label" for="email">Email</label>
+            <input type="text" name="email" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input' : 'form-control mb-2 mr-sm-2 form-input'" id="email" v-model="subscribe_info.email">
+          </div> 
+          <div class="form-input-cont">
+            <label class="sr-only form-label-subscribe" for="gameCancellationsUpdates">POJO Game Cancellations/Updates</label>
+            <input type="checkbox" name="gameCancellationsUpdates" class="form-control mb-2 mr-sm-2" id="gameCancellationsUpdates" v-model="subscribe_info.games_updates">
+          </div> 
+          <div class="form-input-cont">
+            <label class="sr-only form-label-subscribe" for="newsEvents">POJO News and Events</label>
+            <input type="checkbox" name="newsEvents" class="form-control mb-2 mr-sm-2" id="newsEvents" v-model="subscribe_info.news_events">
+          </div>
+          <div class="form-input-cont">
+            <label class="sr-only form-label-subscribe" for="tournamentInfo">Travel Ball Tournament Info</label>
+            <input type="checkbox" name="tournamentInfo" class="form-control mb-2 mr-sm-2" id="tournamentInfo" v-model="subscribe_info.tournament_info">
+          </div>
+        </template>
+        <template v-slot:footer>
+          <div class="form-button-cont">
+            <button type="submit" class="form-cancel-button" @click="closeSubscribeModal">Cancel</button>
+            <button type="submit" :class="subscribeDisabled ? 'form-submit-button disabled' : 'form-submit-button'" @click="submitSubscription" :disabled="subscribeDisabled">Submit</button>
           </div>
         </template>
       </ModalStencil>
@@ -369,7 +394,8 @@
         createAnnouncement,
         useLoadAnnouncements,
         updateAnnouncement,
-        deleteAnnouncement
+        deleteAnnouncement,
+        createSubscription
     } from '../firebase.js'
     export default {
       name: 'HomePage',
@@ -434,7 +460,16 @@
             bottom_external_link: null
           },
           announcement_list: [],
-          announcement_action: null
+          announcement_action: null,
+          windowWidth: null,
+          showSubscribeModal: false,
+          subscribe_info: {
+            name: null, 
+            email: null, 
+            games_updates: false,
+            news_events: false,
+            tournament_info: false
+          }
         }
       },
       async mounted () {
@@ -452,6 +487,7 @@
         this.last_updated_time = useLoadStandingsLastUpdatedTime();
         this.announcement_list = useLoadAnnouncements();
         this.startTimer();
+        this.winWidth();
       },
       computed: {
         images () {
@@ -566,6 +602,9 @@
           } else {
             return false
           }
+        },
+        subscribeDisabled () {
+          return !this.subscribe_info.name || !this.subscribe_info.email || (!this.subscribe_info.games_updates && !this.subscribe_info.news_events && !this.subscribe_info.tournament_info)
         }
       },
       methods: {
@@ -914,6 +953,30 @@
         },
         deleteAnnouncement (announcement) {
           deleteAnnouncement(announcement.id);  
+        },
+        winWidth () {
+          setInterval(() => {
+              this.windowWidth = window.innerWidth;
+          }, 100);
+        },
+        submitSubscription () {
+          console.log('submitting subscription')
+          createSubscription({ 
+            Name: this.subscribe_info.name,
+            Email: this.subscribe_info.email,
+            GameUpdates: this.subscribe_info.games_updates,
+            NewsEvents: this.subscribe_info.news_events,
+            TournamentInfo: this.subscribe_info.tournament_info
+          });
+          this.closeSubscribeModal()
+        },
+        closeSubscribeModal () {
+          this.showSubscribeModal = false
+          this.subscribe_info.name = null
+          this.subscribe_info.email = null
+          this.subscribe_info.games_updates = false
+          this.subscribe_info.news_events = false
+          this.subscribe_info.tournament_info = false
         }
       }
     }  
@@ -1106,6 +1169,12 @@
     margin-bottom: 20px;
   }
 
+  .form-input-cont-text-area {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+
   .form-input {
   border: 1px solid #ced4da;
   border-radius: 2px;
@@ -1114,6 +1183,46 @@
   outline: none;
   padding: 0 10px;
   width: 210px;
+  }
+
+  .form-input-select {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 420px;
+  }
+
+  .form-input-select-small {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 170px;
+  }
+
+  .form-input-announcements {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 400px;
+  }
+
+  .form-input-announcements-small {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 150px;
   }
 
   .form-input-text-area {
@@ -1126,12 +1235,53 @@
     width: 600px;
     margin-top: 10px;
   }
-  
+
+  .form-input-text-area-announcements {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 60px;
+    outline: none;
+    padding: 0 10px;
+    width: 400px;
+    margin-top: 10px;
+  }
+
+  .form-input-text-area-announcements-small {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 60px;
+    outline: none;
+    padding: 0 10px;
+    width: 150px;
+    margin-top: 10px;
+  }
 
 .form-label {
   padding-right: 30px;
   display: inline-block;
   width: 100px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: Segoe UI,sans-serif!important;
+}
+
+.form-label-announcements {
+  padding-right: 30px;
+  display: inline-block;
+  width: 150px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: Segoe UI,sans-serif!important;
+}
+
+.form-label-subscribe {
+  padding-right: 30px;
+  display: inline-block;
+  width: 250px;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -1248,5 +1398,39 @@
   float: right;
   padding-right: 10px;
 }
+
+.subscribe-container {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.subscribe-button {
+    background: #293b51;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Segoe UI,sans-serif!important;
+    font-size: 13px;
+    font-weight: 600;
+    height: 60px;
+    letter-spacing: .5px;
+    margin: 0 8px;
+    min-width: 200px;
+    opacity: 1;
+    outline: 0;
+    padding: 0 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: opacity .3s ease-out;
+    vertical-align: middle;
+    width: auto;
+  }
+
+  .disabled {
+    opacity: 1;
+  }
   </style>
   
