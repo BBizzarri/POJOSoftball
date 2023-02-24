@@ -191,7 +191,6 @@ import 'firebase/storage';
           const arr_end_date = end_date.split('-');
 
           if (arr_start_date[1].charAt( 0 ) === '0') {
-            console.log('here')
             arr_start_date[1] = arr_start_date[1].substring(1);
           }
           if (arr_end_date[1].charAt( 0 ) === '0') {
@@ -227,7 +226,6 @@ import 'firebase/storage';
             this.showMoreInfo = true;
         },
         openMoreInfoEvent (event_id) {
-            console.log('here');
             this.showMoreInfoType = 'event'
             this.event_id_to_edit = event_id;
             const event_to_show = this.current_events.find(event => event.id === event_id);

@@ -32,7 +32,6 @@ export const showEventById = (req, res) => {
 
 //create new event
 export const createEvent = (req, res) => {
-  console.log('here');
   console.log(req.body);
   const data = req.body;
   addEvent(data, (err, results) => {

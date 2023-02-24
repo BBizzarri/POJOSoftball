@@ -37,6 +37,7 @@ const registrationDeadlines = db.collection('RegistrationDeadlines')
 const standingsLastUpdatedTime = db.collection('StandingsLastUpdatedTime')
 const announcements = db.collection('Announcements')
 const emailSubscriptions = db.collection('EmailSubscriptions')
+const emailSettings = db.collection('EmailSettings')
 
 export const createTournament = tournament => {
     return tournamentsCollection.add(tournament)
@@ -542,5 +543,18 @@ export const useLoadEmailSubscriptions = () => {
     })
     onUnmounted(close)
     return email_list
+}
+
+export const updateEmailSetting = (id, setting) => {
+    return emailSettings.doc(id).update(setting)
+}
+
+export const useLoadEmailSettings = () => {
+    const setting = ref([])
+    const close = emailSettings.onSnapshot(snapshot => {
+        setting.value = snapshot.docs.map(doc => ({id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close)
+    return setting
 }
 

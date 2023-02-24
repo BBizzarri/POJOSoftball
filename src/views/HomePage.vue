@@ -502,7 +502,6 @@
           return events.sort((a, b) => new Date(a.Date) - new Date(b.Date));
         },
         time () {
-          console.log('here');
           return new Date(this.sorted_events_for_countdown.find(event => new Date(event.Date) > this.now)?.Date) - this.now;
         },
         standing_age_groups () {
@@ -604,7 +603,7 @@
           }
         },
         subscribeDisabled () {
-          return !this.subscribe_info.name || !this.subscribe_info.email || (!this.subscribe_info.games_updates && !this.subscribe_info.news_events && !this.subscribe_info.tournament_info)
+          return !this.subscribe_info.name || !this.subscribe_info.email || !this.subscribe_info.email.includes('@') || (!this.subscribe_info.games_updates && !this.subscribe_info.news_events && !this.subscribe_info.tournament_info)
         }
       },
       methods: {
@@ -960,7 +959,6 @@
           }, 100);
         },
         submitSubscription () {
-          console.log('submitting subscription')
           createSubscription({ 
             Name: this.subscribe_info.name,
             Email: this.subscribe_info.email,
@@ -1430,7 +1428,7 @@
   }
 
   .disabled {
-    opacity: 1;
+    opacity: 0.5;
   }
   </style>
   

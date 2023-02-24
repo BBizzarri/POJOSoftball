@@ -42,12 +42,34 @@
         </div>
      </div>
     </div>
-    <div class="setting-card"> 
-      <h1 class="margin-left">Email Message</h1>
-      <div class="email-message-container"> 
-        <textarea class="email-message-input" id="email-message" v-model="email_message"/>
+    <div 
+      v-for="setting in email_settings"
+      :key="setting.id"
+      class="setting-card"> 
+      <h1 class="margin-left">{{ setting.Name }}</h1>
+      <div> 
+        <label class="email-message--subject-label form-label">Subject</label>
+        <input class="email-message-input form-input" type="text" v-model="setting.Subject"/>
       </div>
-      <button @click="sendEmail()">Send Email</button>
+      <div class="email-message-container"> 
+        <label class="email-message--subject-label form-label">Message</label>
+        <!-- <textarea class="email-message-input-text-area" id="email-message" v-model="setting.Message"/> -->
+        <Editor
+          class="email-message-input-text-area"
+          api-key="2int2cod8lc0gsm0c4hcipq30qbxzpg7lkxe773xq9vevs17"
+          :init="{
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          }"
+          v-model="setting.Message"
+    />
+      </div>
+      <div>
+        <button class="form-submit-button button-posistion" @click="sendEmail(setting)">Send Email</button>
+        <button class="form-submit-button button-posistion" @click="updateEmail(setting)">Update Email</button>
+        <p class="confirmation-text" v-if="isSent(setting.Name)">Email Sent Successfully</p>
+      </div>
+ 
     </div>
     <!-- <div class="setting-card">
       <h1 class="margin-left">Gallery Image Tags</h1>
@@ -90,14 +112,18 @@
     deleteHomePageImage,
     createGalleryImageTag,
     useLoadGalleryImageTags,
-    useLoadEmailSubscriptions
+    useLoadEmailSubscriptions,
+    useLoadEmailSettings,
+    updateEmailSetting
   } from '../firebase.js';
   import emailjs from 'emailjs-com';
+  import Editor from '@tinymce/tinymce-vue'
   export default {
     name: 'AdminSettings',
     components: {
       TopPageHeader,
       NavBar,
+      Editor
     },
     data () {
       return {
@@ -110,13 +136,18 @@
         show_edit_tag_modal: false,
         tag_to_edit: [],
         email_list: [],
-        email_message: null
+        email_message: null,
+        email_settings: null,
+        game_cancellation_update_sent_successfully: false,
+        news_events_sent_successfully: false,
+        tournament_info_sent_successfully: false
       }
     },
     async mounted () {
       this.home_page_images = useLoadHomePageImages();
       this.gallery_image_tags = useLoadGalleryImageTags();
       this.email_list = useLoadEmailSubscriptions();
+      this.email_settings = useLoadEmailSettings();
     },
     methods: {
       selectHomePageImage () {
@@ -167,21 +198,76 @@
         this.tag_to_edit = tag
         this.show_edit_tag_modal = true;
       },
-      sendEmail() {
-        this.email_list.forEach(email => {
-          try {
-          emailjs.send('service_usnnsib', 'template_dnhjx2c', {
-            email: email.Email,
-            message: this.email_message
-          },
-          'LjOCaWVfcyFTjx-1_')
-
-        } catch(error) {
-            console.log({error})
+      sendEmail(setting) {
+        if (setting.Name === 'Game Cancellations and Updates Email') {
+          this.email_list.forEach(email => {
+            if (email.GameUpdates) {
+              try {
+                emailjs.send('service_usnnsib', 'template_dnhjx2c', {
+                  email: email.Email,
+                  message: setting.Message,
+                  subject: setting.Subject
+                },
+                'LjOCaWVfcyFTjx-1_')
+                this.game_cancellation_update_sent_successfully = true
+              } catch(error) {
+                console.log({error})
+              }
+            }
+          })
+        } else if (setting.Name === 'Tournament Info Email') {
+          this.email_list.forEach(email => {
+            if (email.TournamentInfo) {
+              try {
+                emailjs.send('service_usnnsib', 'template_dnhjx2c', {
+                  email: email.Email,
+                  message: setting.Message,
+                  subject: setting.Subject
+                },
+                'LjOCaWVfcyFTjx-1_')
+                this.tournament_info_sent_successfully = true
+              } catch(error) {
+                console.log({error})
+              }
+            }
+          })
+        } else if (setting.Name === 'News/Events Email') {
+          this.email_list.forEach(email => {
+            if (email.NewsEvents) {
+              try {
+                emailjs.send('service_usnnsib', 'template_72hlbvx', {
+                  email: email.Email,
+                  message: setting.Message,
+                  subject: setting.Subject
+                },
+                'LjOCaWVfcyFTjx-1_')
+                this.news_events_sent_successfully = true
+              } catch(error) {
+                console.log({error})
+              }
+            }
+          })
         }
-        })
-        // Reset form field
-        this.email_message = ''
+       
+      },
+      updateEmail (setting) {
+        try {
+          updateEmailSetting(setting.id, {
+              Subject: setting.Subject.replace( /(<([^>]+)>)/ig, ''),
+              Message: setting.Message.replace( /(<([^>]+)>)/ig, '')
+            });
+          } catch(err) {
+            console.log(err);
+          }  
+      },
+      isSent (name) {
+        if (name === 'Game Cancellations and Updates Email') {
+          return this.game_cancellation_update_sent_successfully
+        } else if (name === 'Tournament Info Email') {
+          return this.tournament_info_sent_successfully
+        } else if (name === 'News/Events Email') {
+          return this.news_events_sent_successfully
+        }
       }
     }
   } 
@@ -261,13 +347,45 @@ td {
     width: auto;
   }
 
-  .email-message-input {
-    width: 750px;
-    height: 200px;
+  .email-message-input-text-area {
+    margin-bottom: 50px;
   }
-  
-  .email-message-container {
-    text-align: center;
+
+  .email-message-input {
+    margin-bottom: 50px;
+  }
+
+  .email-message--subject-label {
+    margin-left: 10px;
+  }
+
+  .form-input {
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    height: 35px;
+    outline: none;
+    padding: 0 10px;
+    width: 275px;
+  }
+
+  .form-label {
+    display: inline-block;
+    text-align: left;
+    padding-right: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: Segoe UI,sans-serif!important;
+  }
+
+  .button-posistion {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+
+  .confirmation-text {
+    color: green;
+    margin-left: 10px;
   }
 
 </style>
