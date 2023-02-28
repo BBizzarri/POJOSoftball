@@ -254,7 +254,7 @@
         try {
           updateEmailSetting(setting.id, {
               Subject: setting.Subject.replace( /(<([^>]+)>)/ig, ''),
-              Message: setting.Message.replace( /(<([^>]+)>)/ig, '')
+              Message: setting.Message
             });
           } catch(err) {
             console.log(err);

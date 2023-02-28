@@ -75,6 +75,20 @@
             v-if="loginStore.loggedIn"
             class="form-input-cont"
           >
+            <label class="sr-only form-label" for="location">Location</label>
+            <input type="text" name="location" class="form-control mb-2 mr-sm-2 form-input" id="location" v-model="event_info.location" required>
+          </div> 
+          <div
+            v-else
+            class="form-input-cont"
+          >
+            <label class="sr-only form-label" for="tournamentName">Location</label>
+            <label class="sr-only form-label-input" for="tournamentName">{{ event_info.location }}</label>
+          </div> 
+          <div
+            v-if="loginStore.loggedIn"
+            class="form-input-cont"
+          >
               <label class="sr-only form-label" for="startDate">Start Date</label>
               <input type="datetime-local" name="startDate" class="form-control mb-2 mr-sm-2 form-input" id="start-date" v-model="event_info.start_date" required>
           </div>
@@ -166,6 +180,7 @@
             event_info: {
               id: null,
               name: null, 
+              location: null,
               start_date: null,
               end_date: null,
               start_time: null,
@@ -191,11 +206,13 @@
             try {
               await createEventForLeagueSchedule({ 
                 title: this.event_info.name,
+                location: this.event_info.location,
                 startDate: this.event_info.start_date,
                 endDate: this.event_info.end_date
               });
               this.event_info.id = null
               this.event_info.name = null;
+              this.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -208,11 +225,13 @@
             try {
               await createEventForMinisSchedule({ 
                 title: this.event_info.name,
+                location: this.event_info.location,
                 startDate: this.event_info.start_date,
                 endDate: this.event_info.end_date
               });
               this.event_info.id = null
               this.event_info.name = null;
+              this.event_info.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -228,11 +247,13 @@
             try {
               updateEventForLeague(this.event_info.id, {
                 title: this.event_info.name,
+                location: this.event_info.location,
                 startDate: this.event_info.start_date,
                 endDate: this.event_info.end_date
               });
               this.event_info.id = null
               this.event_info.name = null;
+              this.event_info.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -245,11 +266,13 @@
             try {
               updateEventForMinis(this.event_info.id, {
                 title: this.event_info.name,
+                location: this.event_info.location,
                 startDate: this.event_info.start_date,
                 endDate: this.event_info.end_date
               });
               this.event_info.id = null
               this.event_info.name = null;
+              this.event_info.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -267,6 +290,7 @@
               this.showAddEventModal = false
               this.event_info.id = null
               this.event_info.name = null;
+              this.event_info.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -280,6 +304,7 @@
               this.showAddEventModal = false
               this.event_info.id = null
               this.event_info.name = null;
+              this.event_info.location = null;
               this.event_info.start_date = null;
               this.event_info.end_date = null;
               this.event_info.start_time = null;
@@ -303,6 +328,7 @@
           this.showAddEventModal = false
           this.event_info.id = null
           this.event_info.name = null;
+          this.event_info.location = null;
           this.event_info.start_date = null;
           this.event_info.end_date = null;
           this.event_info.start_time = null;
@@ -316,8 +342,10 @@
             const end = new Date(calendarItem.endDate);
             const start_date = this.toISOLocal(start);
             const end_date = this.toISOLocal(end);
+            const clicked_event = type === 'league' ? this.pojo_league_events.find(event => event.title === calendarItem.title && event.id === calendarItem.id) : this.pojo_minis_events.find(event => event.title === calendarItem.title && event.id === calendarItem.id)
             this.event_info.id = calendarItem.id
             this.event_info.name = calendarItem.title
+            this.event_info.location = clicked_event.location
             this.event_info.start_date = start_date.split('.')[0]
             this.event_info.end_date = end_date.split('.')[0]
             this.showAddEventModal = true
@@ -332,8 +360,10 @@
             const converted_start_time = this.militaryToNormalTime(start_time)
             const end_time = end_date.split('T')[1].split('.')[0]
             const converted_end_time = this.militaryToNormalTime(end_time)
+            const clicked_event = type === 'league' ? this.pojo_league_events.find(event => event.title === calendarItem.title && event.id === calendarItem.id) : this.pojo_minis_events.find(event => event.title === calendarItem.title && event.id === calendarItem.id)
             this.event_info.id = calendarItem.id
             this.event_info.name = calendarItem.title
+            this.event_info.location = clicked_event.location
             this.event_info.start_date = start_date.split('T')[0]
             this.event_info.end_date = end_date.split('T')[0]
             this.event_info.start_time = converted_start_time
