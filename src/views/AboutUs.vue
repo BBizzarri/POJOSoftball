@@ -6,35 +6,35 @@
       <h1 class="heading">POJO Board</h1>
       <div :class="this.windowWidth <= 654 ? 'board-container-small' : 'board-container'"> 
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Prestyn Showers</h3>
+          <h3 class="bold">Prestyn Showers</h3>
           <h3>Preisdent</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Matt Cover</h3>
+          <h3 class="bold">Matt Cover</h3>
           <h3>Vice President</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Kim Thorp</h3>
+          <h3 class="bold">Kim Thorp</h3>
           <h3>Treasurer</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container'"> 
-          <h3>Becky Briggs</h3>
+          <h3 class="bold">Becky Briggs</h3>
           <h3>Secratary</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Brady Bizarri</h3>
+          <h3 class="bold">Brady Bizarri</h3>
           <h3>Head Of Facilities</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Chelsea Showers</h3>
+          <h3 class="bold">Chelsea Showers</h3>
           <h3>Concessions Coordinator</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Angie Glessner</h3>
+          <h3 class="bold">Angie Glessner</h3>
           <h3>General Member</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container'"> 
-          <h3>Christie Bush</h3>
+          <h3 class="bold">Christie Bush</h3>
           <h3>General Member</h3>
         </div>
       </div>
@@ -43,31 +43,31 @@
       <h1 class="heading">POJO Leauge Coaches</h1>
       <div :class="this.windowWidth <= 654 ? 'board-container-small' : 'board-container'"> 
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>AES Drilling (10U)</h3>
+          <h3 class="bold">AES Drilling (10U)</h3>
           <h3>Derek Weitosh</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Diamondback (10U)</h3>
+          <h3 class="bold">Diamondback (10U)</h3>
           <h3>Dale Ward</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3>Lee Industries (10U)</h3>
+          <h3 class="bold">Lee Industries (10U)</h3>
           <h3>Matt Cover</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container'"> 
-          <h3>Philipsburg Elks (10U)</h3>
+          <h3 class="bold">Philipsburg Elks (10U)</h3>
           <h3>Heidi Meyers</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3 border-right'"> 
-          <h3>Amvets (12U)</h3>
+          <h3 class="bold">Amvets (12U)</h3>
           <h3>TJ Bush</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3 border-right'"> 
-          <h3>DT Mustangs (12U)</h3>
+          <h3 class="bold">DT Mustangs (12U)</h3>
           <h3>Bobby Mitchell</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3'"> 
-          <h3>Vaux (12U)</h3>
+          <h3 class="bold">Vaux (12U)</h3>
           <h3>Chris Demchek</h3>
         </div>
       </div>
@@ -76,20 +76,29 @@
       <h1 class="heading">POJO Minis Coaches</h1>
       <div :class="this.windowWidth <= 654 ? 'board-container-last-small' : 'board-container-last'"> 
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3>Expressions Counseling</h3>
-          <h3>TBD</h3>
+          <h3 class="bold">Expressions Counseling</h3>
+          <h3>Sue Patterson</h3>
+          <h3>Tammy Moul</h3>
+          <h3>Aaron Sandoval</h3>
+          <h3>Gary Walstrom</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3>Powerline Practice Facility</h3>
-          <h3>TBD</h3>
+          <h3 class="bold">Powerline Practice Facility</h3>
+          <h3>Prestyn Showers</h3>
+          <h3>Jeremy Potter</h3>
+          <h3>Anna Hendricks</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3>Brown Dog Catering</h3>
-          <h3>TDB</h3>
+          <h3 class="bold">Brown Dog Catering</h3>
+          <h3>Ed Shaw</h3>
+          <h3>Doug Sankey</h3>
+          <h3>Chris Husted</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3>Vaux Printworks</h3>
-          <h3>TDB</h3>
+          <h3 class="bold">Jr Coal</h3>
+          <h3>Brittany Lansberry</h3>
+          <h3>Brent Cowher</h3>
+          <h3>Amanda Tote</h3>
         </div>
       </div>
     </div>
@@ -206,6 +215,10 @@
   .border-right {
     box-sizing: border-box;
     border-right: solid black;
+  }
+
+  .bold {
+    font-weight: bold;
   }
   
 
