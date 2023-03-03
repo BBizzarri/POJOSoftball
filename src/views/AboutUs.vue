@@ -43,31 +43,31 @@
       <h1 class="heading">POJO Leauge Coaches</h1>
       <div :class="this.windowWidth <= 654 ? 'board-container-small' : 'board-container'"> 
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3 class="bold">AES Drilling (10U)</h3>
+          <h3 class="bold-underline">AES Drilling (10U)</h3>
           <h3>Derek Weitosh</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3 class="bold">Diamondback (10U)</h3>
+          <h3 class="bold-underline">Diamondback (10U)</h3>
           <h3>Dale Ward</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container border-right'"> 
-          <h3 class="bold">Lee Industries (10U)</h3>
+          <h3 class="bold-underline">Lee Industries (10U)</h3>
           <h3>Matt Cover</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-small' : 'left-right-img-container'"> 
-          <h3 class="bold">Philipsburg Elks (10U)</h3>
+          <h3 class="bold-underline">Philipsburg Elks (10U)</h3>
           <h3>Heidi Meyers</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3 border-right'"> 
-          <h3 class="bold">Amvets (12U)</h3>
+          <h3 class="bold-underline">Amvets (12U)</h3>
           <h3>TJ Bush</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3 border-right'"> 
-          <h3 class="bold">DT Mustangs (12U)</h3>
+          <h3 class="bold-underline">DT Mustangs (12U)</h3>
           <h3>Bobby Mitchell</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-container-3-small' : 'left-right-img-container-3'"> 
-          <h3 class="bold">Vaux (12U)</h3>
+          <h3 class="bold-underline">Vaux (12U)</h3>
           <h3>Chris Demchek</h3>
         </div>
       </div>
@@ -76,26 +76,26 @@
       <h1 class="heading">POJO Minis Coaches</h1>
       <div :class="this.windowWidth <= 654 ? 'board-container-last-small' : 'board-container-last'"> 
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3 class="bold">Expressions Counseling</h3>
+          <h3 class="bold-underline">Expressions Counseling</h3>
           <h3>Sue Patterson</h3>
           <h3>Tammy Moul</h3>
           <h3>Aaron Sandoval</h3>
           <h3>Gary Walstrom</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3 class="bold">Powerline Practice Facility</h3>
+          <h3 class="bold-underline">Powerline Practice Facility</h3>
           <h3>Prestyn Showers</h3>
           <h3>Jeremy Potter</h3>
           <h3>Anna Hendricks</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3 class="bold">Brown Dog Catering</h3>
+          <h3 class="bold-underline">Brown Dog Catering</h3>
           <h3>Ed Shaw</h3>
           <h3>Doug Sankey</h3>
           <h3>Chris Husted</h3>
         </div>
         <div :class="this.windowWidth <= 654 ? 'left-right-img-minis-small' : 'left-right-img-minis border-right'"> 
-          <h3 class="bold">Jr Coal</h3>
+          <h3 class="bold-underline">Jr Coal</h3>
           <h3>Brittany Lansberry</h3>
           <h3>Brent Cowher</h3>
           <h3>Amanda Tote</h3>
@@ -221,6 +221,10 @@
     font-weight: bold;
   }
   
+  .bold-underline {
+    font-weight: bold;
+    text-decoration: underline;
+  }
 
   </style>
   

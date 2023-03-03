@@ -69,7 +69,7 @@
       </div>
       <div class="grid-container news-announcemnets-cont">
         <div
-          v-for="announcement in announcement_list"
+          v-for="announcement in sorted_announcement_list"
           :key="announcement.id"
           class="grid-item single-news-annoucement-container"
         >
@@ -490,6 +490,14 @@
         this.winWidth();
       },
       computed: {
+        sorted_announcement_list () {
+          if (this.announcement_list) {
+            const announcements = this.announcement_list.slice();
+            return announcements.sort((b, a) => new Date(b.Date) - new Date(a.Date));
+          } else {
+            return []
+          }
+        },
         images () {
           const image_array = [];
           this.home_page_images?.forEach(image => {
@@ -876,6 +884,7 @@
         submitAnnouncement () {
           if (this.announcement_action === 'add') {
             createAnnouncement({ 
+              Date: new Date(),
               Title: this.current_annoucement.title,
               CenterTypeSelection: this.current_annoucement.center_type_selection,
               CenterText: this.current_annoucement.center_text, 
