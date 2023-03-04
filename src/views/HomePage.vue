@@ -337,7 +337,7 @@
             <input type="checkbox" name="tournamentInfo" class="form-control mb-2 mr-sm-2" id="tournamentInfo" v-model="subscribe_info.tournament_info">
           </div>
           <div v-if="showDuplicateSubscriptionError" class="form-input-cont">
-            <label style="color: red" class="sr-only form-label-subscribe" for="tournamentInfo">Oops! Looks like you have already subscribed. Please email pojosoftball@gmail.com to change emails that you are subscribed to opt out of subscription emails.</label>
+            <label style="color: red" class="sr-only form-label-subscribe" for="tournamentInfo">Oops! Looks like you have already subscribed. Please email pojosoftball@gmail.com to change emails that you are subscribed to or to opt out of subscription emails.</label>
           </div>
         </template>
         <template v-slot:footer>
@@ -501,7 +501,7 @@
         sorted_announcement_list () {
           if (this.announcement_list) {
             const announcements = this.announcement_list.slice();
-            return announcements.sort((b, a) => new Date(b.Date) - new Date(a.Date));
+            return announcements.sort((b, a) => new Date(a.Date) - new Date(b.Date));
           } else {
             return []
           }
@@ -619,7 +619,7 @@
           }
         },
         subscribeDisabled () {
-          return !this.subscribe_info.name || !this.subscribe_info.email || !this.subscribe_info.email.includes('@') || (!this.subscribe_info.minis_info && !this.subscribe_info.league_info && !this.subscribe_info.tournament_info)
+          return !this.subscribe_info.name || !this.subscribe_info.email || !this.subscribe_info.email.includes('@') || (!this.subscribe_info.minis_info && !this.subscribe_info.league_info && !this.subscribe_info.tournament_info) || this.showDuplicateSubscriptionError
         }
       },
       methods: {
@@ -892,7 +892,7 @@
         submitAnnouncement () {
           if (this.announcement_action === 'add') {
             createAnnouncement({ 
-              Date: new Date(),
+              Date: new Date().toISOString().split('T')[0],
               Title: this.current_annoucement.title,
               CenterTypeSelection: this.current_annoucement.center_type_selection,
               CenterText: this.current_annoucement.center_text, 
@@ -976,7 +976,7 @@
           }, 100);
         },
         submitSubscription () {
-          if (!this.email_list.find(e => e.Email !== this.subscribe_info.email)) {
+          if (this.email_list.find(e => e.Email !== this.subscribe_info.email)) {
             createSubscription({ 
               Name: this.subscribe_info.name,
               Email: this.subscribe_info.email,
