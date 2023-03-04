@@ -536,6 +536,10 @@ export const createSubscription = subscription => {
     return emailSubscriptions.add(subscription)
 }
 
+export const updateSubscription = (id, subscription) => {
+    return emailSubscriptions.doc(id).update(subscription)
+}
+
 export const useLoadEmailSubscriptions = () => {
     const email_list = ref([])
     const close = emailSubscriptions.onSnapshot(snapshot => {

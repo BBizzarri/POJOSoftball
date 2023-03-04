@@ -199,9 +199,9 @@
         this.show_edit_tag_modal = true;
       },
       sendEmail(setting) {
-        if (setting.Name === 'Game Cancellations and Updates Email') {
+        if (setting.Name === 'POJO Minis News And Events') {
           this.email_list.forEach(email => {
-            if (email.GameUpdates) {
+            if (email.MinisInfo) {
               try {
                 emailjs.send('service_usnnsib', 'template_dnhjx2c', {
                   email: email.Email,
@@ -231,9 +231,9 @@
               }
             }
           })
-        } else if (setting.Name === 'News/Events Email') {
+        } else if (setting.Name === 'POJO League News and Events') {
           this.email_list.forEach(email => {
-            if (email.NewsEvents) {
+            if (email.LeagueInfo) {
               try {
                 emailjs.send('service_usnnsib', 'template_72hlbvx', {
                   email: email.Email,
@@ -261,11 +261,11 @@
           }  
       },
       isSent (name) {
-        if (name === 'Game Cancellations and Updates Email') {
+        if (name === 'POJO Minis News and Events') {
           return this.game_cancellation_update_sent_successfully
         } else if (name === 'Tournament Info Email') {
           return this.tournament_info_sent_successfully
-        } else if (name === 'News/Events Email') {
+        } else if (name === 'POJO League News and Events') {
           return this.news_events_sent_successfully
         }
       }

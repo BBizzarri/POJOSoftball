@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="subscribe-container"> 
-        <button class="subscribe-button" @click="showSubscribeModal=true">Subscribe Now</button>
+        <button class="subscribe-button" @click="openSubscribeModal">Subscribe Now</button>
       </div>
       <div> 
         <div class="standings-container"> 
@@ -325,16 +325,19 @@
             <input type="text" name="email" :class="this.windowWidth <= 654 ? 'form-control mb-2 mr-sm-2 form-input' : 'form-control mb-2 mr-sm-2 form-input'" id="email" v-model="subscribe_info.email">
           </div> 
           <div class="form-input-cont">
-            <label class="sr-only form-label-subscribe" for="gameCancellationsUpdates">POJO Game Cancellations/Updates</label>
-            <input type="checkbox" name="gameCancellationsUpdates" class="form-control mb-2 mr-sm-2" id="gameCancellationsUpdates" v-model="subscribe_info.games_updates">
+            <label class="sr-only form-label-subscribe" for="gameCancellationsUpdates">PO Minis News and Events</label>
+            <input type="checkbox" name="gameCancellationsUpdates" class="form-control mb-2 mr-sm-2" id="gameCancellationsUpdates" v-model="subscribe_info.minis_info">
           </div> 
           <div class="form-input-cont">
-            <label class="sr-only form-label-subscribe" for="newsEvents">POJO News and Events</label>
-            <input type="checkbox" name="newsEvents" class="form-control mb-2 mr-sm-2" id="newsEvents" v-model="subscribe_info.news_events">
+            <label class="sr-only form-label-subscribe" for="newsEvents">POJO League News and Events</label>
+            <input type="checkbox" name="newsEvents" class="form-control mb-2 mr-sm-2" id="newsEvents" v-model="subscribe_info.league_info">
           </div>
           <div class="form-input-cont">
             <label class="sr-only form-label-subscribe" for="tournamentInfo">Travel Ball Tournament Info</label>
             <input type="checkbox" name="tournamentInfo" class="form-control mb-2 mr-sm-2" id="tournamentInfo" v-model="subscribe_info.tournament_info">
+          </div>
+          <div v-if="showDuplicateSubscriptionError" class="form-input-cont">
+            <label style="color: red" class="sr-only form-label-subscribe" for="tournamentInfo">Oops! Looks like you have already subscribed. Please email pojosoftball@gmail.com to change emails that you are subscribed to opt out of subscription emails.</label>
           </div>
         </template>
         <template v-slot:footer>
@@ -395,8 +398,9 @@
         useLoadAnnouncements,
         updateAnnouncement,
         deleteAnnouncement,
-        createSubscription
-    } from '../firebase.js'
+        createSubscription,
+        useLoadEmailSubscriptions
+      } from '../firebase.js'
     export default {
       name: 'HomePage',
       components: {
@@ -464,12 +468,15 @@
           windowWidth: null,
           showSubscribeModal: false,
           subscribe_info: {
+            id: null,
             name: null, 
             email: null, 
-            games_updates: false,
-            news_events: false,
+            minis_info: false,
+            league_info: false,
             tournament_info: false
-          }
+          },
+          email_list: [],
+          showDuplicateSubscriptionError: false
         }
       },
       async mounted () {
@@ -486,6 +493,7 @@
         this.game_notice_message = useLoadGameNoticeMessage();
         this.last_updated_time = useLoadStandingsLastUpdatedTime();
         this.announcement_list = useLoadAnnouncements();
+        this.email_list = useLoadEmailSubscriptions();
         this.startTimer();
         this.winWidth();
       },
@@ -611,7 +619,7 @@
           }
         },
         subscribeDisabled () {
-          return !this.subscribe_info.name || !this.subscribe_info.email || !this.subscribe_info.email.includes('@') || (!this.subscribe_info.games_updates && !this.subscribe_info.news_events && !this.subscribe_info.tournament_info)
+          return !this.subscribe_info.name || !this.subscribe_info.email || !this.subscribe_info.email.includes('@') || (!this.subscribe_info.minis_info && !this.subscribe_info.league_info && !this.subscribe_info.tournament_info)
         }
       },
       methods: {
@@ -968,22 +976,31 @@
           }, 100);
         },
         submitSubscription () {
-          createSubscription({ 
-            Name: this.subscribe_info.name,
-            Email: this.subscribe_info.email,
-            GameUpdates: this.subscribe_info.games_updates,
-            NewsEvents: this.subscribe_info.news_events,
-            TournamentInfo: this.subscribe_info.tournament_info
-          });
-          this.closeSubscribeModal()
+          if (!this.email_list.find(e => e.Email !== this.subscribe_info.email)) {
+            createSubscription({ 
+              Name: this.subscribe_info.name,
+              Email: this.subscribe_info.email,
+              MinisInfo: this.subscribe_info.minis_info,
+              LeagueInfo: this.subscribe_info.league_info,
+              TournamentInfo: this.subscribe_info.tournament_info
+            });
+            this.closeSubscribeModal()
+          } else {
+            this.showDuplicateSubscriptionError = true
+          }
         },
         closeSubscribeModal () {
           this.showSubscribeModal = false
+          this.subscribe_info.id = null
           this.subscribe_info.name = null
           this.subscribe_info.email = null
-          this.subscribe_info.games_updates = false
-          this.subscribe_info.news_events = false
+          this.subscribe_info.minis_info = false
+          this.subscribe_info.league_info = false
           this.subscribe_info.tournament_info = false
+          this.showDuplicateSubscriptionError = false
+        },
+        openSubscribeModal () {
+          this.showSubscribeModal = true
         }
       }
     }  
