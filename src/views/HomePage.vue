@@ -38,6 +38,12 @@
       <div class="subscribe-container"> 
         <button class="subscribe-button" @click="openSubscribeModal">Subscribe Now</button>
       </div>
+      <div class="opening-day-div">
+        <h1>POJO League Opening Day Schedule</h1>
+        <figure>
+          <img style="border-radius: 10px; max-width: 100%;" src="../Images/OpeningDayBracket.jpg">
+        </figure>
+      </div>
       <div> 
         <div class="standings-container"> 
           <h1 class="standings-header">2023 Team Standings</h1>
@@ -976,7 +982,7 @@
           }, 100);
         },
         submitSubscription () {
-          if (this.email_list.find(e => e.Email !== this.subscribe_info.email)) {
+          if (!this.email_list.find(e => e.Email === this.subscribe_info.email)) {
             createSubscription({ 
               Name: this.subscribe_info.name,
               Email: this.subscribe_info.email,
@@ -1455,6 +1461,12 @@
 
   .disabled {
     opacity: 0.5;
+  }
+
+  .opening-day-div {
+    text-align: center;
+    margin-top: 50px;
+    color: white;
   }
   </style>
   

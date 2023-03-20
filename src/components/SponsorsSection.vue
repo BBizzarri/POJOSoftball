@@ -9,36 +9,84 @@
         <a v-if="!about_us_page" onclick="window.open('https://www.facebook.com/groups/POJOSOFTBALL/')"><img title="Like us on facebook" src="../Images/LikeUsOnFacebook.png" Height="50px" Width="230px"></a>
       </div>
     </div>
-    <div :class="about_us_page ? 'grid-container-about-us' : 'grid-container'"> 
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/AESLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+    <div v-if="about_us_page">
+      <div class="grid-container-4"> 
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/AESLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/AmvetsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/BrownDogLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/DiamondbackLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
       </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/AmvetsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+      <div class="grid-container-3">
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/DTLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/ElksLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/ExpressionsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
       </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/BrownDogLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+      <div class="grid-container-4"> 
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/LeeLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/PowerlineLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/VauxLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/juniorcoal.jpg" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
       </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/DiamondbackLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+    </div>
+    <div v-else>
+      <div class="grid-container-6"> 
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/AESLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/AmvetsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/BrownDogLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/DiamondbackLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/DTLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/ElksLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
       </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/DTLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
-      </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/ElksLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
-      </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/ExpressionsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
-      </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/LeeLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
-      </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/PowerlineLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
-      </div>
-      <div class="grid-item"> 
-        <img src="../Images/SponsorLogos/VauxLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+      <div class="grid-container-5"> 
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/ExpressionsLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/LeeLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/PowerlineLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/VauxLogo.png" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
+        <div class="grid-item"> 
+          <img src="../Images/SponsorLogos/juniorcoal.jpg" class="scale-down" :Height="about_us_page ? 150 : 50" :Width="about_us_page ? 250 : 150"/>
+        </div>
       </div>
     </div>
   </div>
@@ -71,10 +119,31 @@
     object-fit: scale-down;
   }
   
-  .grid-container {
+   .grid-container-4 {
     width: 100%;
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
+    overflow-x: auto;
+  }
+
+   .grid-container-3 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    overflow-x: auto;
+  }
+
+  .grid-container-6 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    overflow-x: auto;
+  }
+
+  .grid-container-5 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
     overflow-x: auto;
   }
 
